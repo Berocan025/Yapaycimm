@@ -8,8 +8,11 @@
     <meta name="keywords" content="canlı maç, futbol, basketbol, DiziPortal.Com, Box Sports">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     
-    <!-- DiziPortal.Com HLS.js Library -->
+    <!-- DiziPortal.Com Video Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet">
+    <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@videojs/http-streaming@3.0.2/dist/videojs-http-streaming.min.js"></script>
     
     <!-- diziportal CSS Styles -->
     <style>
@@ -181,12 +184,186 @@
             position: relative;
             width: 100%;
             height: 100%;
+            background: radial-gradient(ellipse at center, #1a1a1a 0%, #000000 100%);
+            border-radius: 15px;
+            overflow: hidden;
         }
 
         .diziportal-video-player {
             width: 100%;
             height: 100%;
             border: none;
+            background: transparent;
+        }
+
+        /* Custom Video.js Styling */
+        .video-js {
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            background-color: transparent;
+        }
+
+        .video-js .vjs-big-play-button {
+            background: linear-gradient(45deg, rgba(0, 255, 136, 0.9), rgba(0, 212, 255, 0.9));
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            line-height: 76px;
+            font-size: 24px;
+            left: 50%;
+            top: 50%;
+            margin-left: -40px;
+            margin-top: -40px;
+            transition: all 0.3s ease;
+        }
+
+        .video-js .vjs-big-play-button:hover {
+            background: linear-gradient(45deg, rgba(0, 255, 136, 1), rgba(0, 212, 255, 1));
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
+        }
+
+        .video-js .vjs-control-bar {
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.3));
+            backdrop-filter: blur(10px);
+            border-radius: 0 0 15px 15px;
+        }
+
+        .video-js .vjs-button > .vjs-icon-placeholder:before {
+            color: #00ff88;
+        }
+
+        .video-js .vjs-progress-control .vjs-progress-holder {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            height: 6px;
+        }
+
+        .video-js .vjs-progress-control .vjs-play-progress {
+            background: linear-gradient(90deg, #00ff88, #00d4ff);
+            border-radius: 10px;
+        }
+
+        .video-js .vjs-volume-level {
+            background: linear-gradient(90deg, #00ff88, #00d4ff);
+        }
+
+        .video-js .vjs-poster {
+            background-size: cover;
+            background-position: center;
+            border-radius: 15px;
+        }
+
+        /* Custom Loading Animation */
+        .diziportal-loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(0, 255, 136, 0.3);
+            border-top: 4px solid #00ff88;
+            border-radius: 50%;
+            animation: diziportalSpin 1s linear infinite;
+            z-index: 100;
+        }
+
+        @keyframes diziportalSpin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Quality Selector */
+        .diziportal-quality-selector {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+        }
+
+        .diziportal-quality-btn {
+            background: rgba(0, 0, 0, 0.7);
+            color: #00ff88;
+            border: 1px solid rgba(0, 255, 136, 0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .diziportal-quality-btn:hover {
+            background: rgba(0, 255, 136, 0.2);
+        }
+
+        /* Live Badge */
+        .diziportal-live-badge {
+            position: absolute;
+            top: 15px;
+            right: 60px;
+            background: linear-gradient(45deg, #ff0000, #ff4444);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        /* Error Display */
+        .diziportal-player-error {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(20, 20, 30, 0.95), rgba(30, 30, 40, 0.95));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            border-radius: 15px;
+            z-index: 200;
+        }
+
+        .diziportal-error-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ff6b6b;
+        }
+
+        .diziportal-error-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #ff6b6b;
+        }
+
+        .diziportal-error-message {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .diziportal-retry-btn {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .diziportal-retry-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
         }
 
         .diziportal-player-logo {
@@ -730,6 +907,7 @@
                 this.matches = [];
                 this.playerElement = null;
                 this.hlsPlayer = null;
+                this.player = null; // Video.js player
                 this.apiEndpoint = 'api/matches.php';
                 this.refreshInterval = 10000; // 10 seconds
                 this.init();
@@ -878,88 +1056,264 @@
                     return;
                 }
 
-                // Destroy existing player if any
-                if (this.hlsPlayer) {
-                    this.hlsPlayer.diziportalDestroy();
-                    this.hlsPlayer = null;
-                }
+                // Dispose existing players
+                this.diziportalDisposePlayer();
 
-                // Create video element with advanced HLS support and logo
+                // Create advanced video player with enhanced features
                 const videoHtml = `
                     <div class="diziportal-player-wrapper">
-                        <video 
+                        <video-js 
                             id="diziportalMainVideo"
-                            class="diziportal-video-player" 
-                            controls 
-                            autoplay 
-                            muted
-                            playsinline
+                            class="video-js vjs-default-skin diziportal-video-player"
+                            controls
+                            preload="auto"
+                            data-setup='{"fluid": true, "responsive": true}'
                             crossorigin="anonymous"
+                            playsinline
                         >
-                            Tarayıcınız video oynatmayı desteklemiyor.
-                        </video>
+                            <p class="vjs-no-js">
+                                Video oynatmak için 
+                                <a href="https://videojs.com/html5-video-support/" target="_blank">
+                                    HTML5 desteği
+                                </a> gereklidir.
+                            </p>
+                        </video-js>
+                        
+                        <div class="diziportal-quality-selector">
+                            <button class="diziportal-quality-btn" id="diziportalQualityBtn">AUTO</button>
+                        </div>
+                        
+                        <div class="diziportal-live-badge" id="diziportalLiveBadge" style="display: none;">
+                            🔴 CANLI
+                        </div>
+                        
                         <div class="diziportal-player-logo">
                             <img src="https://i.hizliresim.com/inetemu.png" alt="DiziPortal.Com" />
                         </div>
+                        
+                        <div class="diziportal-loading-spinner" id="diziportalLoadingSpinner" style="display: none;"></div>
                     </div>
                 `;
 
                 playerContainer.innerHTML = videoHtml;
 
-                // Setup advanced HLS player
-                const video = document.getElementById('diziportalMainVideo');
-                if (video) {
-                    this.diziportalSetupAdvancedHLS(video, hlsUrl);
-                }
+                // Setup advanced video player
+                setTimeout(() => {
+                    this.diziportalSetupAdvancedPlayer(hlsUrl);
+                }, 100);
             }
 
-            diziportalSetupAdvancedHLS(video, hlsUrl) {
+            diziportalSetupAdvancedPlayer(hlsUrl) {
+                console.log('🎬 DiziPortal.Com: Setting up advanced video player...');
+                
+                // Show loading spinner
+                this.diziportalShowLoading(true);
+                
                 try {
-                    // Initialize advanced HLS player
-                    this.hlsPlayer = new DiziPortalHLSPlayer(video, {
-                        debug: false,
-                        lowLatencyMode: true,
-                        enableWorker: true
+                    // Initialize Video.js player
+                    this.player = videojs('diziportalMainVideo', {
+                        fluid: true,
+                        responsive: true,
+                        controls: true,
+                        preload: 'auto',
+                        autoplay: 'muted',
+                        playsinline: true,
+                        techOrder: ['html5'],
+                        html5: {
+                            vhs: {
+                                overrideNative: true,
+                                enableLowInitialPlaylist: true,
+                                smoothQualityChange: true,
+                                useBandwidthFromLocalStorage: true
+                            },
+                            nativeAudioTracks: false,
+                            nativeVideoTracks: false
+                        },
+                        liveui: true
                     });
 
-                    // Load the stream
-                    const success = this.hlsPlayer.diziportalLoadSource(hlsUrl, this.currentMatch?.name || 'Canlı Maç');
-                    
-                    if (!success) {
-                        console.error('❌ DiziPortal.Com: Failed to load stream');
-                        this.diziportalHandleStreamError();
-                    } else {
-                        console.log('✅ DiziPortal.Com: Advanced HLS player setup complete');
-                        
-                        // Add live indicator if stream is live
-                        setTimeout(() => {
-                            if (this.hlsPlayer && this.hlsPlayer.diziportalIsLive()) {
-                                this.diziportalAddLiveIndicator();
-                            }
-                        }, 2000);
-                    }
+                    // Player ready event
+                    this.player.ready(() => {
+                        console.log('✅ DiziPortal.Com: Video.js player ready');
+                        this.diziportalLoadStreamWithFallbacks(hlsUrl);
+                    });
+
+                    // Player events
+                    this.player.on('loadstart', () => {
+                        console.log('🔄 DiziPortal.Com: Stream loading started');
+                        this.diziportalShowLoading(true);
+                    });
+
+                    this.player.on('canplay', () => {
+                        console.log('✅ DiziPortal.Com: Stream can play');
+                        this.diziportalShowLoading(false);
+                        this.diziportalShowLiveBadge(true);
+                    });
+
+                    this.player.on('error', (error) => {
+                        console.error('❌ DiziPortal.Com: Player error:', error);
+                        this.diziportalShowLoading(false);
+                        this.diziportalShowError('Video yüklenirken hata oluştu', 'Bağlantı sorunu olabilir');
+                    });
+
+                    this.player.on('ended', () => {
+                        console.log('🏁 DiziPortal.Com: Stream ended');
+                        this.diziportalShowLiveBadge(false);
+                    });
+
+                    this.player.on('play', () => {
+                        console.log('▶️ DiziPortal.Com: Playback started');
+                    });
+
+                    this.player.on('pause', () => {
+                        console.log('⏸️ DiziPortal.Com: Playback paused');
+                    });
+
                 } catch (error) {
-                    console.error('❌ DiziPortal.Com: Error setting up advanced HLS player:', error);
-                    this.diziportalFallbackToBasicPlayer(video, hlsUrl);
+                    console.error('❌ DiziPortal.Com: Error initializing player:', error);
+                    this.diziportalShowLoading(false);
+                    this.diziportalShowError('Player başlatılamadı', 'Tarayıcı uyumsuzluğu olabilir');
                 }
             }
 
-            diziportalFallbackToBasicPlayer(video, hlsUrl) {
-                console.log('🔄 DiziPortal.Com: Falling back to basic HLS setup');
-                
-                // Simple HLS fallback
-                if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                    video.src = hlsUrl;
-                    console.log('📱 DiziPortal.Com: Using native HLS support');
-                } else {
-                    video.src = hlsUrl;
-                    console.log('🌐 DiziPortal.Com: Attempting direct playback');
-                }
+            async diziportalLoadStreamWithFallbacks(originalUrl) {
+                const corsProxies = [
+                    '', // Direct first
+                    'https://cors-anywhere.herokuapp.com/',
+                    'https://api.allorigins.win/raw?url=',
+                    'https://corsproxy.io/?',
+                    'https://thingproxy.freeboard.io/fetch/'
+                ];
 
-                video.addEventListener('error', (e) => {
-                    console.error('❌ DiziPortal.Com: Basic player error:', e);
-                    this.diziportalHandleStreamError();
-                });
+                console.log('🔄 DiziPortal.Com: Attempting to load stream with fallbacks...');
+
+                for (let i = 0; i < corsProxies.length; i++) {
+                    const proxy = corsProxies[i];
+                    const url = proxy ? proxy + encodeURIComponent(originalUrl) : originalUrl;
+                    
+                    console.log(`🌐 DiziPortal.Com: Trying ${proxy ? 'proxy ' + (i) : 'direct'}: ${url.substring(0, 100)}...`);
+                    
+                    try {
+                        // Set source
+                        this.player.src({
+                            src: url,
+                            type: 'application/x-mpegURL'
+                        });
+
+                        // Wait for load attempt
+                        await new Promise((resolve, reject) => {
+                            const timeout = setTimeout(() => {
+                                reject(new Error('Timeout'));
+                            }, 10000);
+
+                            const onCanPlay = () => {
+                                clearTimeout(timeout);
+                                this.player.off('error', onError);
+                                console.log(`✅ DiziPortal.Com: Stream loaded successfully with ${proxy ? 'proxy' : 'direct connection'}`);
+                                resolve();
+                            };
+
+                            const onError = () => {
+                                clearTimeout(timeout);
+                                this.player.off('canplay', onCanPlay);
+                                reject(new Error('Player error'));
+                            };
+
+                            this.player.one('canplay', onCanPlay);
+                            this.player.one('error', onError);
+                        });
+
+                        // Success - stop trying other proxies
+                        this.diziportalShowLoading(false);
+                        this.diziportalShowLiveBadge(true);
+                        return;
+
+                    } catch (error) {
+                        console.log(`❌ DiziPortal.Com: Failed with ${proxy ? 'proxy ' + i : 'direct'}: ${error.message}`);
+                        
+                        if (i === corsProxies.length - 1) {
+                            // All attempts failed
+                            console.error('💥 DiziPortal.Com: All streaming attempts failed');
+                            this.diziportalShowLoading(false);
+                            this.diziportalShowError(
+                                'Yayın yüklenemedi', 
+                                'URL geçersiz olabilir veya yayın aktif olmayabilir',
+                                originalUrl
+                            );
+                        }
+                    }
+                }
+            }
+
+            diziportalShowLoading(show) {
+                const spinner = document.getElementById('diziportalLoadingSpinner');
+                if (spinner) {
+                    spinner.style.display = show ? 'block' : 'none';
+                }
+            }
+
+            diziportalShowLiveBadge(show) {
+                const badge = document.getElementById('diziportalLiveBadge');
+                if (badge) {
+                    badge.style.display = show ? 'block' : 'none';
+                }
+            }
+
+            diziportalShowError(title, message, url = '') {
+                const playerContainer = document.getElementById('diziportalVideoPlayer');
+                if (!playerContainer) return;
+
+                const errorHtml = `
+                    <div class="diziportal-player-error">
+                        <div class="diziportal-error-icon">⚠️</div>
+                        <div class="diziportal-error-title">${title}</div>
+                        <div class="diziportal-error-message">${message}</div>
+                        ${url ? `<div style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 1rem;">${url.substring(0, 50)}...</div>` : ''}
+                        <button class="diziportal-retry-btn" onclick="diziportalManager.diziportalRetryStream()">
+                            🔄 Tekrar Dene
+                        </button>
+                        <div style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">
+                            Powered by DiziPortal.Com
+                        </div>
+                    </div>
+                `;
+
+                // Find player wrapper and add error
+                const wrapper = playerContainer.querySelector('.diziportal-player-wrapper');
+                if (wrapper) {
+                    // Remove existing error if any
+                    const existingError = wrapper.querySelector('.diziportal-player-error');
+                    if (existingError) {
+                        existingError.remove();
+                    }
+                    wrapper.insertAdjacentHTML('beforeend', errorHtml);
+                }
+            }
+
+            diziportalRetryStream() {
+                if (this.currentMatch && this.currentMatch.hls) {
+                    console.log('🔄 DiziPortal.Com: Retrying stream...');
+                    
+                    // Remove error display
+                    const error = document.querySelector('.diziportal-player-error');
+                    if (error) {
+                        error.remove();
+                    }
+                    
+                    // Dispose current player and recreate
+                    if (this.player) {
+                        try {
+                            this.player.dispose();
+                        } catch (e) {
+                            console.log('Player dispose error:', e);
+                        }
+                    }
+                    
+                    // Restart stream
+                    setTimeout(() => {
+                        this.diziportalPlayStream(this.currentMatch.hls);
+                    }, 500);
+                }
             }
 
             diziportalAddLiveIndicator() {
@@ -1016,20 +1370,34 @@
                 }
             }
 
-            diziportalHandleStreamError() {
-                const playerContainer = document.getElementById('diziportalVideoPlayer');
-                if (playerContainer) {
-                    playerContainer.innerHTML = `
-                        <div class="diziportal-no-match">
-                            <div>
-                                <h3>⚠️ Yayın Hatası</h3>
-                                <p>Yayın bağlantısında sorun oluştu</p>
-                                <p>Lütfen farklı bir maç deneyin</p>
-                                <small>DiziPortal.Com - Box Sports</small>
-                            </div>
-                        </div>
-                    `;
+            diziportalDisposePlayer() {
+                // Dispose Video.js player
+                if (this.player) {
+                    try {
+                        this.player.dispose();
+                        console.log('🗑️ DiziPortal.Com: Video.js player disposed');
+                    } catch (error) {
+                        console.log('Player dispose error:', error);
+                    }
+                    this.player = null;
                 }
+
+                // Dispose old HLS player if exists
+                if (this.hlsPlayer) {
+                    try {
+                        this.hlsPlayer.diziportalDestroy();
+                    } catch (error) {
+                        console.log('HLS player dispose error:', error);
+                    }
+                    this.hlsPlayer = null;
+                }
+            }
+
+            diziportalHandleStreamError() {
+                this.diziportalShowError(
+                    'Yayın Hatası',
+                    'Yayın bağlantısında sorun oluştu. Lütfen farklı bir maç deneyin.'
+                );
             }
 
             diziportalSetupEventListeners() {
