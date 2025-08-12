@@ -613,104 +613,159 @@
         class DiziPortalAdminManager {
             constructor() {
                 this.matches = [];
+                this.apiEndpoint = 'api/matches.php';
                 this.init();
             }
 
-            init() {
+            async init() {
                 console.log('🚀 DiziPortal.Com Admin Panel initializing...');
-                this.diziportalLoadMatches();
+                await this.diziportalLoadMatches();
                 this.diziportalUpdateAdminMatchesList();
                 this.diziportalUpdateStatistics();
                 this.diziportalSetupEventListeners();
             }
 
-            diziportalLoadMatches() {
-                // Load matches from localStorage (DiziPortal.Com storage)
-                const storedMatches = localStorage.getItem('diziportalMatches');
-                if (storedMatches) {
-                    try {
-                        this.matches = JSON.parse(storedMatches);
-                        console.log('📊 DiziPortal.Com Admin: Matches loaded from storage');
-                    } catch (error) {
-                        console.error('❌ DiziPortal.Com Admin: Error loading matches', error);
+            async diziportalLoadMatches() {
+                try {
+                    console.log('📊 DiziPortal.Com Admin: Loading matches from server...');
+                    const response = await fetch(this.apiEndpoint);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.success && data.data) {
+                        this.matches = data.data;
+                        console.log('✅ DiziPortal.Com Admin: Matches loaded from server', this.matches.length, 'matches');
+                    } else {
+                        throw new Error('Invalid server response');
+                    }
+                } catch (error) {
+                    console.error('❌ DiziPortal.Com Admin: Error loading matches from server:', error);
+                    
+                    // Fallback to localStorage
+                    const storedMatches = localStorage.getItem('diziportalMatches');
+                    if (storedMatches) {
+                        try {
+                            this.matches = JSON.parse(storedMatches);
+                            console.log('📦 DiziPortal.Com Admin: Using localStorage fallback');
+                        } catch (e) {
+                            this.matches = [];
+                        }
+                    } else {
                         this.matches = [];
                     }
-                } else {
-                    this.matches = [];
                 }
             }
 
-            diziportalSaveMatches() {
-                try {
-                    localStorage.setItem('diziportalMatches', JSON.stringify(this.matches));
-                    console.log('💾 DiziPortal.Com Admin: Matches saved to storage');
-                    
-                    // Trigger storage event for other tabs
-                    window.dispatchEvent(new StorageEvent('storage', {
-                        key: 'diziportalMatches',
-                        newValue: JSON.stringify(this.matches)
-                    }));
-                } catch (error) {
-                    console.error('❌ DiziPortal.Com Admin: Error saving matches', error);
-                    this.diziportalShowNotification('Kaydetme hatası!', 'error');
-                }
-            }
 
-            diziportalAddMatch(name, time, hls) {
-                if (!name || !time || !hls) {
-                    this.diziportalShowNotification('Tüm alanları doldurun!', 'error');
+
+            async diziportalAddMatch(name, time, hls) {
+                if (!name || !time) {
+                    this.diziportalShowNotification('Maç adı ve saati gerekli!', 'error');
                     return false;
                 }
 
-                const match = {
-                    id: 'match_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                const matchData = {
                     name: name.trim(),
                     time: time,
-                    hls: hls.trim(),
-                    createdAt: new Date().toISOString()
+                    hls: hls.trim()
                 };
 
-                this.matches.push(match);
-                this.diziportalSaveMatches();
-                this.diziportalUpdateAdminMatchesList();
-                this.diziportalUpdateStatistics();
-                
-                console.log('✅ DiziPortal.Com Admin: Match added', match);
-                this.diziportalShowNotification('Maç başarıyla eklendi!', 'success');
-                return true;
-            }
+                try {
+                    console.log('➕ DiziPortal.Com Admin: Adding match to server...');
+                    const response = await fetch(this.apiEndpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(matchData)
+                    });
 
-            diziportalDeleteMatch(matchId) {
-                const matchIndex = this.matches.findIndex(m => m.id === matchId);
-                if (matchIndex === -1) {
-                    this.diziportalShowNotification('Maç bulunamadı!', 'error');
-                    return;
+                    const data = await response.json();
+
+                    if (data.success) {
+                        await this.diziportalLoadMatches();
+                        this.diziportalUpdateAdminMatchesList();
+                        this.diziportalUpdateStatistics();
+                        
+                        console.log('✅ DiziPortal.Com Admin: Match added successfully');
+                        this.diziportalShowNotification('Maç başarıyla eklendi!', 'success');
+                        return true;
+                    } else {
+                        throw new Error(data.error || 'Server error');
+                    }
+                } catch (error) {
+                    console.error('❌ DiziPortal.Com Admin: Error adding match:', error);
+                    this.diziportalShowNotification('Maç eklenirken hata oluştu!', 'error');
+                    return false;
                 }
-
-                const matchName = this.matches[matchIndex].name;
-                this.matches.splice(matchIndex, 1);
-                this.diziportalSaveMatches();
-                this.diziportalUpdateAdminMatchesList();
-                this.diziportalUpdateStatistics();
-                
-                console.log('🗑️ DiziPortal.Com Admin: Match deleted', matchName);
-                this.diziportalShowNotification('Maç silindi!', 'success');
             }
 
-            diziportalClearAllMatches() {
+            async diziportalDeleteMatch(matchId) {
+                try {
+                    console.log('🗑️ DiziPortal.Com Admin: Deleting match from server...');
+                    const response = await fetch(this.apiEndpoint, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ id: matchId })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        await this.diziportalLoadMatches();
+                        this.diziportalUpdateAdminMatchesList();
+                        this.diziportalUpdateStatistics();
+                        
+                        console.log('✅ DiziPortal.Com Admin: Match deleted successfully');
+                        this.diziportalShowNotification('Maç silindi!', 'success');
+                    } else {
+                        throw new Error(data.error || 'Server error');
+                    }
+                } catch (error) {
+                    console.error('❌ DiziPortal.Com Admin: Error deleting match:', error);
+                    this.diziportalShowNotification('Maç silinirken hata oluştu!', 'error');
+                }
+            }
+
+            async diziportalClearAllMatches() {
                 if (this.matches.length === 0) {
                     this.diziportalShowNotification('Silinecek maç bulunmuyor!', 'error');
                     return;
                 }
 
-                if (confirm('Tüm maçları silmek istediğinizden emin misiniz?')) {
-                    this.matches = [];
-                    this.diziportalSaveMatches();
-                    this.diziportalUpdateAdminMatchesList();
-                    this.diziportalUpdateStatistics();
-                    
-                    console.log('🗑️ DiziPortal.Com Admin: All matches cleared');
-                    this.diziportalShowNotification('Tüm maçlar silindi!', 'success');
+                if (confirm('Tüm maçları silmek istediğinizden emin misiniz? Varsayılan maçlar geri yüklenecek.')) {
+                    try {
+                        console.log('🗑️ DiziPortal.Com Admin: Clearing all matches...');
+                        const response = await fetch(this.apiEndpoint, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ action: 'clear_all' })
+                        });
+
+                        const data = await response.json();
+
+                        if (data.success) {
+                            await this.diziportalLoadMatches();
+                            this.diziportalUpdateAdminMatchesList();
+                            this.diziportalUpdateStatistics();
+                            
+                            console.log('✅ DiziPortal.Com Admin: All matches cleared, defaults restored');
+                            this.diziportalShowNotification('Tüm maçlar temizlendi, varsayılanlar geri yüklendi!', 'success');
+                        } else {
+                            throw new Error(data.error || 'Server error');
+                        }
+                    } catch (error) {
+                        console.error('❌ DiziPortal.Com Admin: Error clearing matches:', error);
+                        this.diziportalShowNotification('Maçlar temizlenirken hata oluştu!', 'error');
+                    }
                 }
             }
 
@@ -768,14 +823,15 @@
                 // Add Match Form
                 const addMatchForm = document.getElementById('diziportalAddMatchForm');
                 if (addMatchForm) {
-                    addMatchForm.addEventListener('submit', (e) => {
+                    addMatchForm.addEventListener('submit', async (e) => {
                         e.preventDefault();
                         
                         const name = document.getElementById('matchName').value;
                         const time = document.getElementById('matchTime').value;
                         const hls = document.getElementById('matchHls').value;
 
-                        if (this.diziportalAddMatch(name, time, hls)) {
+                        const success = await this.diziportalAddMatch(name, time, hls);
+                        if (success) {
                             addMatchForm.reset();
                         }
                     });

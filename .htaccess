@@ -1,0 +1,88 @@
+# DiziPortal.Com - Box Sports .htaccess Configuration
+# Developer: DiziPortal.Com Development Team
+
+# Enable rewrite engine
+RewriteEngine On
+
+# CORS Headers for API requests
+<IfModule mod_headers.c>
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+    Header always set Access-Control-Max-Age "3600"
+</IfModule>
+
+# Handle preflight OPTIONS requests
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule .* - [R=200,L]
+
+# PHP Configuration
+<IfModule mod_php7.c>
+    php_value upload_max_filesize 32M
+    php_value post_max_size 32M
+    php_value memory_limit 128M
+    php_value max_execution_time 300
+    php_value max_input_vars 1000
+</IfModule>
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Cache Control for API responses
+<Files "*.php">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires 0
+    </IfModule>
+</Files>
+
+# Cache Control for static files
+<FilesMatch "\.(js|css|png|jpg|jpeg|gif|ico|svg)$">
+    <IfModule mod_expires.c>
+        ExpiresActive On
+        ExpiresDefault "access plus 1 month"
+    </IfModule>
+    <IfModule mod_headers.c>
+        Header set Cache-Control "public, max-age=2592000"
+    </IfModule>
+</FilesMatch>
+
+# Deny access to sensitive files
+<Files "matches.json">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Error pages
+ErrorDocument 404 /index.html
+ErrorDocument 500 /index.html
+
+# Directory index
+DirectoryIndex index.html index.php
+
+# Prevent directory browsing
+Options -Indexes
+
+# DiziPortal.Com Security - Block common attack patterns
+<IfModule mod_rewrite.c>
+    RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} \.\./\.\. [OR]
+    RewriteCond %{QUERY_STRING} (javascript|vbscript|onload|onunload|onchange|onsubmit|onreset|onselect|onblur|onfocus|onabort|onkeydown|onkeypress|onkeyup|onclick|ondblclick|onmousedown|onmouseup|onmouseover|onmousemove|onmouseout) [NC,OR]
+    RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} (<|%3C)([^e]*e)+mbed.*(>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} (<|%3C)([^o]*o)+bject.*(>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} (<|%3C)([^i]*i)+frame.*(>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [NC,OR]
+    RewriteCond %{QUERY_STRING} base64_(en|de)code[^(]*\([^)]*\) [NC,OR]
+    RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+    RewriteRule .* - [F]
+</IfModule>

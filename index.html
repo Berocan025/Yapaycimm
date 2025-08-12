@@ -730,12 +730,14 @@
                 this.matches = [];
                 this.playerElement = null;
                 this.hlsPlayer = null;
+                this.apiEndpoint = 'api/matches.php';
+                this.refreshInterval = 10000; // 10 seconds
                 this.init();
             }
 
-            init() {
+            async init() {
                 console.log('🚀 DiziPortal.Com Box Sports initializing...');
-                this.diziportalLoadMatches();
+                await this.diziportalLoadMatches();
                 this.diziportalSetupEventListeners();
                 this.diziportalUpdateMatchesList();
                 
@@ -743,42 +745,68 @@
                 setTimeout(() => {
                     this.diziportalAutoPlayDefaultStream();
                 }, 1000);
+
+                // Setup auto-refresh
+                this.diziportalSetupAutoRefresh();
             }
 
-            diziportalLoadMatches() {
-                // Load matches from localStorage (DiziPortal.Com storage)
-                const storedMatches = localStorage.getItem('diziportalMatches');
-                if (storedMatches) {
-                    try {
-                        this.matches = JSON.parse(storedMatches);
-                        console.log('📊 DiziPortal.Com: Matches loaded from storage');
-                    } catch (error) {
-                        console.error('❌ DiziPortal.Com: Error loading matches', error);
-                        this.matches = [];
+            async diziportalLoadMatches() {
+                try {
+                    console.log('📊 DiziPortal.Com: Loading matches from server...');
+                    const response = await fetch(this.apiEndpoint);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
                     }
-                } else {
-                    // Default demo matches if no stored data
-                    this.matches = [
-                        {
-                            id: 'beinsports1',
-                            name: '📺 beIN Sports 1 HD - Canlı Yayın',
-                            time: 'Canlı',
-                            hls: 'https://andro.yangin1yerihep2sayende.cfd/checklist/androstreamlivebs1.m3u8'
-                        },
-                        {
-                            id: 'demo1',
-                            name: '⚽ Galatasaray vs Fenerbahçe - Süper Lig',
-                            time: '20:00',
-                            hls: ''
-                        },
-                        {
-                            id: 'demo2',
-                            name: '🏀 Lakers vs Warriors - NBA Playoffs',
-                            time: '22:00',
-                            hls: ''
+                    
+                    const data = await response.json();
+                    
+                    if (data.success && data.data) {
+                        this.matches = data.data;
+                        console.log('✅ DiziPortal.Com: Matches loaded from server', this.matches.length, 'matches');
+                    } else {
+                        throw new Error('Invalid server response');
+                    }
+                } catch (error) {
+                    console.error('❌ DiziPortal.Com: Error loading matches from server:', error);
+                    
+                    // Fallback to localStorage
+                    const storedMatches = localStorage.getItem('diziportalMatches');
+                    if (storedMatches) {
+                        try {
+                            this.matches = JSON.parse(storedMatches);
+                            console.log('📦 DiziPortal.Com: Using localStorage fallback');
+                        } catch (e) {
+                            this.diziportalUseDefaultMatches();
                         }
-                    ];
+                    } else {
+                        this.diziportalUseDefaultMatches();
+                    }
                 }
+            }
+
+            diziportalUseDefaultMatches() {
+                this.matches = [
+                    {
+                        id: 'beinsports1',
+                        name: '📺 beIN Sports 1 HD - Canlı Yayın',
+                        time: 'Canlı',
+                        hls: 'https://andro.yangin1yerihep2sayende.cfd/checklist/androstreamlivebs1.m3u8'
+                    },
+                    {
+                        id: 'demo1',
+                        name: '⚽ Galatasaray vs Fenerbahçe - Süper Lig',
+                        time: '20:00',
+                        hls: ''
+                    },
+                    {
+                        id: 'demo2',
+                        name: '🏀 Lakers vs Warriors - NBA Playoffs',
+                        time: '22:00',
+                        hls: ''
+                    }
+                ];
+                console.log('🔄 DiziPortal.Com: Using default matches');
             }
 
             diziportalUpdateMatchesList() {
@@ -1005,20 +1033,58 @@
             }
 
             diziportalSetupEventListeners() {
-                // Listen for storage changes (for real-time updates)
+                // Listen for storage changes (for localStorage fallback)
                 window.addEventListener('storage', (e) => {
                     if (e.key === 'diziportalMatches') {
-                        console.log('🔄 DiziPortal.Com: Matches updated from admin panel');
-                        this.diziportalLoadMatches();
-                        this.diziportalUpdateMatchesList();
+                        console.log('🔄 DiziPortal.Com: Storage updated');
                     }
                 });
 
-                // Auto-refresh matches every 30 seconds
-                setInterval(() => {
-                    this.diziportalLoadMatches();
-                    this.diziportalUpdateMatchesList();
-                }, 30000);
+                // Focus event to refresh when user returns to tab
+                window.addEventListener('focus', () => {
+                    this.diziportalRefreshMatches();
+                });
+
+                // Visibility change to refresh when tab becomes visible
+                document.addEventListener('visibilitychange', () => {
+                    if (!document.hidden) {
+                        this.diziportalRefreshMatches();
+                    }
+                });
+            }
+
+            diziportalSetupAutoRefresh() {
+                // Auto-refresh matches from server every 10 seconds
+                setInterval(async () => {
+                    await this.diziportalRefreshMatches();
+                }, this.refreshInterval);
+
+                console.log(`🔄 DiziPortal.Com: Auto-refresh setup (${this.refreshInterval/1000}s intervals)`);
+            }
+
+            async diziportalRefreshMatches() {
+                try {
+                    const response = await fetch(this.apiEndpoint);
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.success && data.data) {
+                            // Compare with current matches to avoid unnecessary updates
+                            const newMatchesJson = JSON.stringify(data.data);
+                            const currentMatchesJson = JSON.stringify(this.matches);
+                            
+                            if (newMatchesJson !== currentMatchesJson) {
+                                this.matches = data.data;
+                                this.diziportalUpdateMatchesList();
+                                console.log('🔄 DiziPortal.Com: Matches refreshed from server');
+                                
+                                // Backup to localStorage
+                                localStorage.setItem('diziportalMatches', newMatchesJson);
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.error('❌ DiziPortal.Com: Error refreshing matches:', error);
+                }
             }
 
             // Method to handle CORS issues
