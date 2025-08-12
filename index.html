@@ -341,25 +341,7 @@
             gap: 0.3rem;
         }
 
-        .diziportal-admin-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: linear-gradient(45deg, #00ff88, #00d4ff);
-            color: #000;
-            padding: 1rem;
-            border-radius: 50%;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
 
-        .diziportal-admin-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 30px rgba(0, 255, 136, 0.6);
-        }
 
         .diziportal-footer {
             background: linear-gradient(135deg, rgba(15, 15, 35, 0.95), rgba(26, 26, 46, 0.95));
@@ -527,12 +509,6 @@
                 padding: 1rem;
             }
 
-            .diziportal-admin-btn {
-                bottom: 15px;
-                right: 15px;
-                padding: 0.8rem;
-            }
-
             .diziportal-footer {
                 padding: 1.5rem 0;
             }
@@ -627,7 +603,7 @@
                     <li><a href="#" class="diziportal-nav-link">Ana Sayfa</a></li>
                     <li><a href="#" class="diziportal-nav-link">Canlı Maçlar</a></li>
                     <li><a href="#" class="diziportal-nav-link">Program</a></li>
-                    <li><a href="login.html" class="diziportal-nav-link">Admin</a></li>
+                    <li><a href="#" class="diziportal-nav-link">İletişim</a></li>
                 </ul>
                 
                 <!-- DiziPortal.Com Hamburger Menu -->
@@ -683,22 +659,21 @@
             <li><a href="#" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">🏠 Ana Sayfa</a></li>
             <li><a href="#" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">📺 Canlı Maçlar</a></li>
             <li><a href="#" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">📅 Program</a></li>
-            <li><a href="login.html" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">⚙️ Admin Panel</a></li>
             <li><a href="#" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">📞 İletişim</a></li>
             <li><a href="#" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">ℹ️ Hakkında</a></li>
+            <li><a href="#" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">🌟 Premium</a></li>
         </ul>
     </div>
 
-    <!-- DiziPortal.Com Admin Button -->
-    <a href="login.html" class="diziportal-admin-btn" title="Admin Panel">⚙️</a>
+
 
     <!-- DiziPortal.Com Footer -->
     <footer class="diziportal-footer">
         <div class="diziportal-container">
-            <div class="diziportal-footer-content">
-                <p>&copy; 2025 <span class="diziportal-footer-brand">DiziPortal.Com</span> - Box Sports | Tüm hakları saklıdır</p>
-                <p>En kaliteli canlı maç yayınları ve spor içerikleri</p>
-            </div>
+                    <div class="diziportal-footer-content">
+            <p>&copy; 2025 <span class="diziportal-footer-brand" onclick="diziportalSecretAdminAccess()" style="cursor: pointer;">DiziPortal.Com</span> - Box Sports | Tüm hakları saklıdır</p>
+            <p>En kaliteli canlı maç yayınları ve spor içerikleri</p>
+        </div>
         </div>
     </footer>
 
@@ -724,6 +699,11 @@
                 this.diziportalLoadMatches();
                 this.diziportalSetupEventListeners();
                 this.diziportalUpdateMatchesList();
+                
+                // Auto-play BeIN Sports 1 if available
+                setTimeout(() => {
+                    this.diziportalAutoPlayDefaultStream();
+                }, 1000);
             }
 
             diziportalLoadMatches() {
@@ -741,6 +721,12 @@
                     // Default demo matches if no stored data
                     this.matches = [
                         {
+                            id: 'beinsports1',
+                            name: '📺 beIN Sports 1 HD - Canlı Yayın',
+                            time: 'Canlı',
+                            hls: 'https://andro.yangin1yerihep2sayende.cfd/checklist/androstreamlivebs1.m3u8'
+                        },
+                        {
                             id: 'demo1',
                             name: '⚽ Galatasaray vs Fenerbahçe - Süper Lig',
                             time: '20:00',
@@ -750,12 +736,6 @@
                             id: 'demo2',
                             name: '🏀 Lakers vs Warriors - NBA Playoffs',
                             time: '22:00',
-                            hls: ''
-                        },
-                        {
-                            id: 'demo3',
-                            name: '🏈 Real Madrid vs Barcelona - El Clasico',
-                            time: '19:30',
                             hls: ''
                         }
                     ];
@@ -932,6 +912,38 @@
                 }
             }
 
+            diziportalAutoPlayDefaultStream() {
+                // Auto-play BeIN Sports 1 if available
+                const beinSportsMatch = this.matches.find(m => m.id === 'beinsports1');
+                if (beinSportsMatch && beinSportsMatch.hls) {
+                    console.log('📺 DiziPortal.Com: Auto-playing BeIN Sports 1');
+                    this.currentMatch = beinSportsMatch;
+                    
+                    // Update match info
+                    const matchInfo = document.getElementById('diziportalMatchInfo');
+                    if (matchInfo) {
+                        matchInfo.innerHTML = `
+                            <h4 style="color: #00ff88;">📺 ${beinSportsMatch.name}</h4>
+                            <p>🔴 ${beinSportsMatch.time}</p>
+                            <small>Powered by DiziPortal.Com</small>
+                        `;
+                    }
+
+                    // Highlight the BeIN Sports match
+                    setTimeout(() => {
+                        const matchItems = document.querySelectorAll('.diziportal-match-item');
+                        matchItems.forEach(item => {
+                            if (item.onclick && item.onclick.toString().includes('beinsports1')) {
+                                item.classList.add('active');
+                            }
+                        });
+                    }, 500);
+
+                    // Play the stream
+                    this.diziportalPlayStream(beinSportsMatch.hls);
+                }
+            }
+
             diziportalHandleStreamError() {
                 const playerContainer = document.getElementById('diziportalVideoPlayer');
                 if (playerContainer) {
@@ -1040,6 +1052,21 @@
                 diziportalCloseMobileMenu();
             }
         });
+
+        // DiziPortal.Com Secret Admin Access
+        let diziportalClickCount = 0;
+        window.diziportalSecretAdminAccess = () => {
+            diziportalClickCount++;
+            if (diziportalClickCount === 5) {
+                console.log('🔐 DiziPortal.Com: Secret admin access activated');
+                window.location.href = 'login.html';
+            }
+            
+            // Reset click count after 3 seconds
+            setTimeout(() => {
+                diziportalClickCount = 0;
+            }, 3000);
+        };
 
         // DiziPortal.Com Console branding
         console.log(`
