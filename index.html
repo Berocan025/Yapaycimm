@@ -177,10 +177,49 @@
                 0 0 60px rgba(0, 255, 136, 0.3);
         }
 
+        .diziportal-player-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
         .diziportal-video-player {
             width: 100%;
             height: 100%;
             border: none;
+        }
+
+        .diziportal-player-logo {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .diziportal-player-logo img {
+            height: 40px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .diziportal-video-container:hover .diziportal-player-logo {
+            opacity: 0.6;
+        }
+
+        /* Mobile logo adjustment */
+        @media (max-width: 768px) {
+            .diziportal-player-logo {
+                top: 10px;
+                right: 10px;
+            }
+            
+            .diziportal-player-logo img {
+                height: 30px;
+            }
         }
 
         .diziportal-no-match {
@@ -817,19 +856,24 @@
                     this.hlsPlayer = null;
                 }
 
-                // Create video element with advanced HLS support
+                // Create video element with advanced HLS support and logo
                 const videoHtml = `
-                    <video 
-                        id="diziportalMainVideo"
-                        class="diziportal-video-player" 
-                        controls 
-                        autoplay 
-                        muted
-                        playsinline
-                        crossorigin="anonymous"
-                    >
-                        Tarayıcınız video oynatmayı desteklemiyor.
-                    </video>
+                    <div class="diziportal-player-wrapper">
+                        <video 
+                            id="diziportalMainVideo"
+                            class="diziportal-video-player" 
+                            controls 
+                            autoplay 
+                            muted
+                            playsinline
+                            crossorigin="anonymous"
+                        >
+                            Tarayıcınız video oynatmayı desteklemiyor.
+                        </video>
+                        <div class="diziportal-player-logo">
+                            <img src="https://i.hizliresim.com/inetemu.png" alt="DiziPortal.Com" />
+                        </div>
+                    </div>
                 `;
 
                 playerContainer.innerHTML = videoHtml;
@@ -1068,6 +1112,133 @@
             }, 3000);
         };
 
+        // DiziPortal.Com Anti-DevTools Protection System
+        class DiziPortalDevToolsProtection {
+            constructor() {
+                this.devToolsOpen = false;
+                this.threshold = 160;
+                this.init();
+            }
+
+            init() {
+                this.diziportalDetectDevTools();
+                this.diziportalPreventRightClick();
+                this.diziportalPreventKeyShortcuts();
+                this.diziportalObfuscateConsole();
+                
+                // Continuous monitoring
+                setInterval(() => {
+                    this.diziportalDetectDevTools();
+                }, 500);
+            }
+
+            diziportalDetectDevTools() {
+                const widthThreshold = window.outerWidth - window.innerWidth > this.threshold;
+                const heightThreshold = window.outerHeight - window.innerHeight > this.threshold;
+                
+                if (widthThreshold || heightThreshold) {
+                    if (!this.devToolsOpen) {
+                        this.devToolsOpen = true;
+                        this.diziportalRedirectUser();
+                    }
+                }
+            }
+
+            diziportalPreventRightClick() {
+                document.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    this.diziportalShowWarning();
+                    return false;
+                });
+            }
+
+            diziportalPreventKeyShortcuts() {
+                document.addEventListener('keydown', (e) => {
+                    // F12, Ctrl+Shift+I, Ctrl+U, Ctrl+Shift+C, Ctrl+Shift+J
+                    if (e.key === 'F12' || 
+                        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'C' || e.key === 'J')) ||
+                        (e.ctrlKey && e.key === 'U')) {
+                        e.preventDefault();
+                        this.diziportalRedirectUser();
+                        return false;
+                    }
+                });
+            }
+
+            diziportalObfuscateConsole() {
+                // Override console methods
+                const originalLog = console.log;
+                console.log = function() {
+                    if (arguments.length > 0 && typeof arguments[0] === 'string' && arguments[0].includes('██')) {
+                        originalLog.apply(console, arguments);
+                    }
+                };
+                
+                // Add fake console messages
+                setTimeout(() => {
+                    originalLog(`%c🚫 UYARI! Bu özellik web geliştiricileri içindir.`, 'color: red; font-size: 20px; font-weight: bold;');
+                    originalLog(`%c⚠️ Bu konsolu açarak DiziPortal.Com güvenlik kurallarını ihlal ediyorsunuz!`, 'color: orange; font-size: 16px;');
+                    originalLog(`%c🔒 Hesabınız güvenlik nedeniyle askıya alınabilir.`, 'color: red; font-size: 14px;');
+                }, 1000);
+            }
+
+            diziportalShowWarning() {
+                const warningDiv = document.createElement('div');
+                warningDiv.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(255, 0, 0, 0.9);
+                    color: white;
+                    padding: 20px;
+                    border-radius: 10px;
+                    z-index: 10000;
+                    font-size: 16px;
+                    text-align: center;
+                `;
+                warningDiv.innerHTML = '🚫 Sağ tık engellendi! DiziPortal.Com güvenlik sistemi aktif.';
+                document.body.appendChild(warningDiv);
+                
+                setTimeout(() => {
+                    document.body.removeChild(warningDiv);
+                }, 2000);
+            }
+
+            diziportalRedirectUser() {
+                const redirectDiv = document.createElement('div');
+                redirectDiv.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(45deg, #ff0000, #ff4444);
+                    color: white;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 99999;
+                    font-family: Arial, sans-serif;
+                `;
+                redirectDiv.innerHTML = `
+                    <h1>🚫 ERİŞİM ENGELLENDİ</h1>
+                    <p>Geliştirici araçları tespit edildi!</p>
+                    <p>DiziPortal.Com güvenlik sistemi tarafından engellendiniz.</p>
+                    <p>3 saniye içinde yönlendirileceksiniz...</p>
+                `;
+                document.body.appendChild(redirectDiv);
+                
+                setTimeout(() => {
+                    window.location.href = 'about:blank';
+                }, 3000);
+            }
+        }
+
+        // Initialize protection system
+        const diziportalProtection = new DiziPortalDevToolsProtection();
+
         // DiziPortal.Com Console branding
         console.log(`
         ██████╗ ██╗███████╗██╗██████╗  ██████╗ ██████╗ ████████╗ █████╗ ██╗         ██████╗ ██████╗ ███╗   ███╗
@@ -1079,7 +1250,7 @@
         
         🎬 Box Sports - Premium Live Sports Streaming Platform
         🚀 Developed by DiziPortal.Com Team
-        ⚡ Version 1.0 - Advanced Sports Streaming Solution
+        ⚡ Version 2.0 - Advanced Sports Streaming Solution with Security
         `);
     </script>
 </body>

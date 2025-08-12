@@ -579,6 +579,32 @@
         if (!diziportalCheckAdminAuth()) {
             // Will redirect to login
         }
+
+        // DiziPortal.Com Anti-DevTools Protection for Admin
+        class DiziPortalAdminProtection {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'F12' || 
+                        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'C' || e.key === 'J')) ||
+                        (e.ctrlKey && e.key === 'U')) {
+                        e.preventDefault();
+                        window.location.href = 'about:blank';
+                        return false;
+                    }
+                });
+
+                document.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    return false;
+                });
+            }
+        }
+
+        new DiziPortalAdminProtection();
     </script>
     <script>
         // DiziPortal.Com - Box Sports Admin Panel JavaScript

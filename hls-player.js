@@ -1,7 +1,7 @@
 /**
- * DiziPortal.Com - Advanced HLS Player Module
+ * DiziPortal.Com - Advanced HLS Player Module with CORS Protection
  * Developer: DiziPortal.Com Development Team
- * Version: 1.0 - Professional Sports Streaming Solution
+ * Version: 2.0 - Professional Sports Streaming Solution with Anti-DevTools
  */
 
 class DiziPortalHLSPlayer {
@@ -9,6 +9,13 @@ class DiziPortalHLSPlayer {
         this.video = videoElement;
         this.hls = null;
         this.currentUrl = null;
+        this.corsProxyList = [
+            'https://cors-anywhere.herokuapp.com/',
+            'https://api.allorigins.win/raw?url=',
+            'https://corsproxy.io/?',
+            'https://thingproxy.freeboard.io/fetch/'
+        ];
+        this.currentProxyIndex = 0;
         this.options = {
             debug: false,
             enableWorker: true,
@@ -26,22 +33,27 @@ class DiziPortalHLSPlayer {
             liveMaxLatencyDurationCount: 10,
             liveDurationInfinity: false,
             enableSoftwareAES: true,
-            manifestLoadingTimeOut: 10000,
-            manifestLoadingMaxRetry: 1,
-            manifestLoadingRetryDelay: 1000,
-            levelLoadingTimeOut: 10000,
-            levelLoadingMaxRetry: 4,
-            levelLoadingRetryDelay: 1000,
-            fragLoadingTimeOut: 20000,
-            fragLoadingMaxRetry: 6,
-            fragLoadingRetryDelay: 1000,
-            startFragPrefetch: false,
+            manifestLoadingTimeOut: 15000,
+            manifestLoadingMaxRetry: 3,
+            manifestLoadingRetryDelay: 2000,
+            levelLoadingTimeOut: 15000,
+            levelLoadingMaxRetry: 6,
+            levelLoadingRetryDelay: 2000,
+            fragLoadingTimeOut: 25000,
+            fragLoadingMaxRetry: 8,
+            fragLoadingRetryDelay: 2000,
+            startFragPrefetch: true,
             testBandwidth: true,
             progressive: false,
+            xhrSetup: (xhr, url) => {
+                xhr.setRequestHeader('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+                xhr.setRequestHeader('Referer', 'https://diziportal.com/');
+                xhr.setRequestHeader('Origin', 'https://diziportal.com');
+            },
             ...options
         };
         
-        console.log('🚀 DiziPortal.Com HLS Player initializing...');
+        console.log('🚀 DiziPortal.Com HLS Player v2.0 initializing...');
         this.diziportalInit();
     }
 
@@ -167,12 +179,8 @@ class DiziPortalHLSPlayer {
         // Clean whitespace
         url = url.trim();
         
-        // Handle CORS for known problematic domains
-        if (this.diziportalNeedsCORSProxy(url)) {
-            url = this.diziportalApplyCORSProxy(url);
-        }
-        
-        return url;
+        // Always try CORS proxy for better compatibility
+        return this.diziportalApplyCORSProxy(url);
     }
 
     diziportalValidateURL(url) {
@@ -213,10 +221,23 @@ class DiziPortalHLSPlayer {
     }
 
     diziportalApplyCORSProxy(url) {
-        // Simple CORS proxy - in production you might want to use your own proxy
-        // For now, just return the original URL
-        console.log('🔄 DiziPortal.Com: CORS proxy might be needed for:', url);
-        return url;
+        // Skip proxy if URL is already proxied or is a data URL
+        if (url.includes('cors-anywhere') || url.includes('allorigins') || 
+            url.includes('corsproxy') || url.includes('thingproxy') || 
+            url.startsWith('data:') || url.startsWith('blob:')) {
+            return url;
+        }
+
+        // Try different CORS proxies for better reliability
+        const proxyUrl = this.corsProxyList[this.currentProxyIndex] + encodeURIComponent(url);
+        console.log(`🔄 DiziPortal.Com: Using CORS proxy (${this.currentProxyIndex + 1}/${this.corsProxyList.length}):`, proxyUrl);
+        return proxyUrl;
+    }
+
+    diziportalTryNextProxy(originalUrl) {
+        this.currentProxyIndex = (this.currentProxyIndex + 1) % this.corsProxyList.length;
+        console.log(`🔄 DiziPortal.Com: Trying next CORS proxy (${this.currentProxyIndex + 1}/${this.corsProxyList.length})`);
+        return this.diziportalApplyCORSProxy(originalUrl);
     }
 
     diziportalAttemptPlay() {
@@ -249,6 +270,16 @@ class DiziPortalHLSPlayer {
         switch (data.type) {
             case Hls.ErrorTypes.NETWORK_ERROR:
                 console.log('🌐 DiziPortal.Com: Network error, attempting recovery...');
+                if (data.details === Hls.ErrorDetails.MANIFEST_LOAD_ERROR && this.currentProxyIndex < this.corsProxyList.length - 1) {
+                    console.log('🔄 DiziPortal.Com: Trying next CORS proxy...');
+                    const originalUrl = this.currentUrl.split(this.corsProxyList[this.currentProxyIndex])[1];
+                    if (originalUrl) {
+                        const decodedUrl = decodeURIComponent(originalUrl);
+                        const nextProxyUrl = this.diziportalTryNextProxy(decodedUrl);
+                        this.diziportalLoadSource(nextProxyUrl);
+                        return;
+                    }
+                }
                 this.diziportalRecoverNetworkError();
                 break;
                 
@@ -260,8 +291,8 @@ class DiziPortalHLSPlayer {
             default:
                 if (data.fatal) {
                     console.error('💥 DiziPortal.Com: Fatal error, destroying player');
-                    this.diziportalShowError('Kritik video hatası oluştu');
-                    this.diziportalDestroy();
+                    this.diziportalShowError('Yayın bağlantısında sorun oluştu. Lütfen daha sonra tekrar deneyin.');
+                    // Don't destroy, just show error
                 }
                 break;
         }

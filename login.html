@@ -507,7 +507,32 @@
         document.addEventListener('DOMContentLoaded', () => {
             console.log('🎯 DiziPortal.Com: Login page loaded');
             new DiziPortalLoginManager();
+            new DiziPortalLoginProtection();
         });
+
+        // DiziPortal.Com Anti-DevTools Protection for Login
+        class DiziPortalLoginProtection {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'F12' || 
+                        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'C' || e.key === 'J')) ||
+                        (e.ctrlKey && e.key === 'U')) {
+                        e.preventDefault();
+                        window.location.href = 'about:blank';
+                        return false;
+                    }
+                });
+
+                document.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    return false;
+                });
+            }
+        }
 
         // DiziPortal.Com Console branding
         console.log(`
