@@ -31,8 +31,11 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="apple-touch-icon" href="https://i.hizliresim.com/inetemu.png">
     
-    <!-- Player.js Integration -->
-    <script src="https://cdn.playerjs.com/latest/player.js"></script>
+    <!-- HLS.js Primary -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <!-- Video.js Alternative -->
+    <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
+    <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet">
     
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -860,31 +863,41 @@
                 }
             }
 
-            loadFallbackMatches() {
-                this.matches = [
-                    {
-                        id: '1',
-                        name: 'Barcelona vs Real Madrid',
-                        homeTeam: 'Barcelona',
-                        awayTeam: 'Real Madrid',
-                        homeTeamLogo: 'https://via.placeholder.com/30x30/dc2626/ffffff?text=B',
-                        awayTeamLogo: 'https://via.placeholder.com/30x30/dc2626/ffffff?text=R',
-                        time: '21:00',
-                        hls: 'https://andro.yangin1yerihep2sayende.cfd/checklist/androstreamlivebs1.m3u8'
-                    },
-                    {
-                        id: '2', 
-                        name: 'Manchester United vs Liverpool',
-                        homeTeam: 'Manchester United',
-                        awayTeam: 'Liverpool',
-                        homeTeamLogo: 'https://via.placeholder.com/30x30/dc2626/ffffff?text=M',
-                        awayTeamLogo: 'https://via.placeholder.com/30x30/dc2626/ffffff?text=L',
-                        time: '19:00',
-                        hls: 'https://andro.yangin1yerihep2sayende.cfd/checklist/androstreamlivebs1.m3u8'
-                    }
-                ];
-                this.renderMatches();
-            }
+                         loadFallbackMatches() {
+                 this.matches = [
+                     {
+                         id: 'beinsports1',
+                         name: 'BeIN Sports 1 HD - Canlı Yayın',
+                         homeTeam: 'BeIN Sports',
+                         awayTeam: 'HD Yayın',
+                         homeTeamLogo: 'https://via.placeholder.com/30x30/dc2626/ffffff?text=BS',
+                         awayTeamLogo: 'https://via.placeholder.com/30x30/ef4444/ffffff?text=HD',
+                         time: 'Canlı',
+                         hls: 'https://andro.yangin1yerihep2sayende.cfd/checklist/androstreamlivebs1.m3u8'
+                     },
+                     {
+                         id: 'demo1',
+                         name: 'Galatasaray vs Fenerbahçe',
+                         homeTeam: 'Galatasaray',
+                         awayTeam: 'Fenerbahçe',
+                         homeTeamLogo: 'https://via.placeholder.com/30x30/dc2626/ffffff?text=GS',
+                         awayTeamLogo: 'https://via.placeholder.com/30x30/1a237e/ffffff?text=FB',
+                         time: '20:00',
+                         hls: 'https://andro.yangin1yerihep2sayende.cfd/checklist/androstreamlivebs1.m3u8'
+                     },
+                     {
+                         id: 'demo2',
+                         name: 'Barcelona vs Real Madrid',
+                         homeTeam: 'Barcelona',
+                         awayTeam: 'Real Madrid',
+                         homeTeamLogo: 'https://via.placeholder.com/30x30/dc2626/ffffff?text=BAR',
+                         awayTeamLogo: 'https://via.placeholder.com/30x30/ffffff/000000?text=RM',
+                         time: '22:00',
+                         hls: 'https://andro.yangin1yerihep2sayende.cfd/checklist/androstreamlivebs1.m3u8'
+                     }
+                 ];
+                 this.renderMatches();
+             }
 
             loadFallbackChannels() {
                 this.channels = [
@@ -925,27 +938,45 @@
                     return;
                 }
 
-                const matchesHtml = this.matches.map(match => `
-                    <div class="match-item" onclick="playStream('${match.hls}', '${match.name}')">
-                        <div class="match-teams">
-                            <div class="team">
-                                <img src="${match.homeTeamLogo || 'https://via.placeholder.com/30x30/dc2626/ffffff?text=H'}" 
-                                     alt="${match.homeTeam}" class="team-logo">
-                                <span class="team-name">${match.homeTeam || 'Ev Sahibi'}</span>
-                            </div>
-                            <div class="vs-separator">VS</div>
-                            <div class="team">
-                                <img src="${match.awayTeamLogo || 'https://via.placeholder.com/30x30/dc2626/ffffff?text=A'}" 
-                                     alt="${match.awayTeam}" class="team-logo">
-                                <span class="team-name">${match.awayTeam || 'Misafir'}</span>
-                            </div>
-                        </div>
-                        <div class="match-info">
-                            <span class="match-time"><i class="fas fa-clock"></i> ${match.time}</span>
-                            <span class="match-status">CANLI</span>
-                        </div>
-                    </div>
-                `).join('');
+                                 const matchesHtml = this.matches.map(match => {
+                     // Check if match has team info
+                     if (match.homeTeam && match.awayTeam) {
+                         return `
+                             <div class="match-item" onclick="playStream('${match.hls}', '${match.name}')">
+                                 <div class="match-teams">
+                                     <div class="team">
+                                         <img src="${match.homeTeamLogo || 'https://via.placeholder.com/30x30/dc2626/ffffff?text=' + encodeURIComponent(match.homeTeam.charAt(0))}" 
+                                              alt="${match.homeTeam}" class="team-logo" onerror="this.src='https://via.placeholder.com/30x30/dc2626/ffffff?text=' + encodeURIComponent('${match.homeTeam}'.charAt(0))">
+                                         <span class="team-name">${match.homeTeam}</span>
+                                     </div>
+                                     <div class="vs-separator">VS</div>
+                                     <div class="team">
+                                         <img src="${match.awayTeamLogo || 'https://via.placeholder.com/30x30/dc2626/ffffff?text=' + encodeURIComponent(match.awayTeam.charAt(0))}" 
+                                              alt="${match.awayTeam}" class="team-logo" onerror="this.src='https://via.placeholder.com/30x30/dc2626/ffffff?text=' + encodeURIComponent('${match.awayTeam}'.charAt(0))">
+                                         <span class="team-name">${match.awayTeam}</span>
+                                     </div>
+                                 </div>
+                                 <div class="match-info">
+                                     <span class="match-time"><i class="fas fa-clock"></i> ${match.time}</span>
+                                     <span class="match-status">CANLI</span>
+                                 </div>
+                             </div>
+                         `;
+                     } else {
+                         // Fallback for matches without team info
+                         return `
+                             <div class="match-item" onclick="playStream('${match.hls}', '${match.name}')">
+                                 <div style="text-align: center; padding: 1rem;">
+                                     <h4 style="margin-bottom: 0.5rem;">${match.name}</h4>
+                                     <div class="match-info">
+                                         <span class="match-time"><i class="fas fa-clock"></i> ${match.time}</span>
+                                         <span class="match-status">CANLI</span>
+                                     </div>
+                                 </div>
+                             </div>
+                         `;
+                     }
+                 }).join('');
 
                 matchesList.innerHTML = matchesHtml;
                 if (allMatchesList) allMatchesList.innerHTML = matchesHtml;
@@ -982,63 +1013,145 @@
                 if (allChannelsList) allChannelsList.innerHTML = channelsHtml;
             }
 
-            // Player Management
-            initPlayer(streamUrl, title) {
-                try {
-                    // Dispose existing player
-                    if (this.currentPlayer) {
-                        try {
-                            this.currentPlayer.api('destroy');
-                        } catch (e) {
-                            console.log('Player dispose error:', e);
-                        }
-                    }
+                         // Player Management
+             initPlayer(streamUrl, title) {
+                 try {
+                     console.log('🎬 Initializing player for:', title, 'URL:', streamUrl);
+                     
+                     // Dispose existing player
+                     if (this.currentPlayer) {
+                         try {
+                             if (typeof this.currentPlayer.api === 'function') {
+                                 this.currentPlayer.api('destroy');
+                             }
+                         } catch (e) {
+                             console.log('Player dispose error:', e);
+                         }
+                         this.currentPlayer = null;
+                     }
 
-                    // Hide overlay
-                    const overlay = document.getElementById('playerOverlay');
-                    if (overlay) overlay.style.display = 'none';
+                     // Clear player container
+                     const playerContainer = document.getElementById('player');
+                     if (playerContainer) {
+                         playerContainer.innerHTML = '';
+                     }
 
-                    // Show live badge
-                    const liveBadge = document.getElementById('liveBadge');
-                    if (liveBadge) liveBadge.style.display = 'block';
+                     // Hide overlay
+                     const overlay = document.getElementById('playerOverlay');
+                     if (overlay) overlay.style.display = 'none';
 
-                    // Initialize Player.js
-                    this.currentPlayer = new Playerjs({
-                        id: 'player',
-                        file: streamUrl,
-                        poster: 'https://i.hizliresim.com/inetemu.png',
-                        title: title,
-                        autoplay: true,
-                        muted: true,
-                        playsinline: true,
-                        preload: 'metadata',
-                        controls: true,
-                        fluid: true,
-                        responsive: true,
-                        skin: 'dark',
-                        colors: {
-                            primary: '#dc2626',
-                            secondary: '#ef4444',
-                            accent: '#fee2e2'
-                        },
-                        lang: 'tr',
-                        i18n: {
-                            'Play': 'Oynat',
-                            'Pause': 'Duraklat',
-                            'Mute': 'Sessiz',
-                            'Unmute': 'Sesli',
-                            'Fullscreen': 'Tam Ekran',
-                            'Exit Fullscreen': 'Tam Ekrandan Çık'
-                        }
-                    });
+                     // Show live badge
+                     const liveBadge = document.getElementById('liveBadge');
+                     if (liveBadge) liveBadge.style.display = 'block';
 
-                    console.log('✅ Player.js initialized for:', title);
+                                           // Use HLS.js directly for reliability
+                      this.initHLSFallback(streamUrl, title);
 
-                } catch (error) {
-                    console.error('❌ Error initializing player:', error);
-                    this.showPlayerError();
-                }
-            }
+                 } catch (error) {
+                     console.error('❌ Error initializing player:', error);
+                     this.initHLSFallback(streamUrl, title);
+                 }
+             }
+
+             initPlayerJS(streamUrl, title) {
+                 try {
+                     this.currentPlayer = new Playerjs({
+                         id: 'player',
+                         file: streamUrl,
+                         poster: 'https://i.hizliresim.com/inetemu.png',
+                         title: title,
+                         autoplay: true,
+                         muted: true,
+                         playsinline: true,
+                         preload: 'metadata',
+                         controls: true,
+                         fluid: true,
+                         responsive: true,
+                         skin: 'shaka'
+                     });
+
+                     console.log('✅ Player.js initialized successfully');
+
+                 } catch (error) {
+                     console.error('❌ Player.js error:', error);
+                     this.initHLSFallback(streamUrl, title);
+                 }
+             }
+
+             initHLSFallback(streamUrl, title) {
+                 try {
+                     console.log('🔄 Using HLS.js fallback...');
+                     
+                     const playerContainer = document.getElementById('player');
+                     if (!playerContainer) return;
+
+                     // Create video element
+                     playerContainer.innerHTML = `
+                         <video 
+                             id="hlsVideo" 
+                             controls 
+                             autoplay 
+                             muted
+                             playsinline
+                             style="width: 100%; height: 100%; background: #000;"
+                             poster="https://i.hizliresim.com/inetemu.png">
+                             <p>Your browser does not support video playback.</p>
+                         </video>
+                     `;
+
+                     const video = document.getElementById('hlsVideo');
+                     
+                     if (Hls.isSupported()) {
+                         const hls = new Hls({
+                             enableWorker: true,
+                             lowLatencyMode: true,
+                             backBufferLength: 90,
+                             maxBufferLength: 30,
+                             maxMaxBufferLength: 600,
+                             maxBufferSize: 60 * 1000 * 1000,
+                             maxBufferHole: 0.5
+                         });
+                         
+                         hls.loadSource(streamUrl);
+                         hls.attachMedia(video);
+                         
+                         hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                             console.log('✅ HLS stream loaded successfully');
+                             video.play().catch(e => console.log('Autoplay prevented:', e));
+                         });
+
+                         hls.on(Hls.Events.ERROR, (event, data) => {
+                             console.error('❌ HLS error:', data);
+                             if (data.fatal) {
+                                 this.showPlayerError();
+                             }
+                         });
+
+                         this.currentPlayer = { hls: hls };
+                         
+                     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                         // Native HLS support (Safari)
+                         video.src = streamUrl;
+                         video.addEventListener('loadedmetadata', () => {
+                             console.log('✅ Native HLS loaded successfully');
+                             video.play().catch(e => console.log('Autoplay prevented:', e));
+                         });
+                         
+                         video.addEventListener('error', () => {
+                             console.error('❌ Native HLS error');
+                             this.showPlayerError();
+                         });
+                         
+                         this.currentPlayer = { video: video };
+                     } else {
+                         this.showPlayerError();
+                     }
+
+                 } catch (error) {
+                     console.error('❌ HLS fallback error:', error);
+                     this.showPlayerError();
+                 }
+             }
 
             showPlayerError() {
                 const overlay = document.getElementById('playerOverlay');
@@ -1079,13 +1192,15 @@
             }
         }
 
-        // Global Functions
-        function playStream(streamUrl, title) {
-            console.log('🎬 Playing:', title);
-            if (window.sportsManager) {
-                window.sportsManager.initPlayer(streamUrl, title);
-            }
-        }
+                 // Global Functions
+         function playStream(streamUrl, title) {
+             console.log('🎬 Playing:', title, 'URL:', streamUrl);
+             if (window.sportsManager) {
+                 window.sportsManager.initPlayer(streamUrl, title);
+             } else {
+                 console.error('❌ SportsManager not available');
+             }
+         }
 
         function showPage(pageId) {
             // Hide all pages

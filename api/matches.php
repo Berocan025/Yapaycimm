@@ -5,10 +5,11 @@
  * Simple JSON-based matches management system
  */
 
-header('Content-Type: application/json');
+// Set CORS headers first
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+header('Access-Control-Max-Age: 3600');
 
 // Handle preflight requests
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
@@ -16,27 +17,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit();
 }
 
+// Set content type after CORS
+header('Content-Type: application/json; charset=utf-8');
+
 $dataFile = 'matches.json';
 $defaultMatches = [
     [
         'id' => 'beinsports1',
-        'name' => '📺 beIN Sports 1 HD - Canlı Yayın',
+        'name' => 'BeIN Sports 1 HD - Canlı Yayın',
         'time' => 'Canlı',
+        'homeTeam' => 'BeIN Sports',
+        'awayTeam' => 'HD Yayın',
+        'homeTeamLogo' => 'https://via.placeholder.com/30x30/dc2626/ffffff?text=BS',
+        'awayTeamLogo' => 'https://via.placeholder.com/30x30/ef4444/ffffff?text=HD',
         'hls' => 'https://andro.yangin1yerihep2sayende.cfd/checklist/androstreamlivebs1.m3u8',
         'createdAt' => date('c')
     ],
     [
         'id' => 'demo1',
-        'name' => '⚽ Galatasaray vs Fenerbahçe - Süper Lig',
+        'name' => 'Galatasaray vs Fenerbahçe',
         'time' => '20:00',
-        'hls' => '',
+        'homeTeam' => 'Galatasaray',
+        'awayTeam' => 'Fenerbahçe',
+        'homeTeamLogo' => 'https://via.placeholder.com/30x30/dc2626/ffffff?text=GS',
+        'awayTeamLogo' => 'https://via.placeholder.com/30x30/1a237e/ffffff?text=FB',
+        'hls' => 'https://andro.yangin1yerihep2sayende.cfd/checklist/androstreamlivebs1.m3u8',
         'createdAt' => date('c')
     ],
     [
         'id' => 'demo2',
-        'name' => '🏀 Lakers vs Warriors - NBA Playoffs',
+        'name' => 'Barcelona vs Real Madrid',
         'time' => '22:00',
-        'hls' => '',
+        'homeTeam' => 'Barcelona',
+        'awayTeam' => 'Real Madrid',
+        'homeTeamLogo' => 'https://via.placeholder.com/30x30/dc2626/ffffff?text=BAR',
+        'awayTeamLogo' => 'https://via.placeholder.com/30x30/ffffff/000000?text=RM',
+        'hls' => 'https://andro.yangin1yerihep2sayende.cfd/checklist/androstreamlivebs1.m3u8',
         'createdAt' => date('c')
     ]
 ];

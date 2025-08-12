@@ -59,6 +59,11 @@ RewriteRule .* - [R=200,L]
     Deny from all
 </Files>
 
+<Files "channels.json">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
 # Error pages
 ErrorDocument 404 /index.html
 ErrorDocument 500 /index.html
