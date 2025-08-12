@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box Sports Admin Panel | DiziPortal.Com</title>
+    <meta name="description" content="Box Sports Admin Panel - Maç yönetimi DiziPortal.Com">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+    <!-- diziportal Admin CSS Styles -->
+    <style>
+        /* DiziPortal.Com - Box Sports Admin Panel Styles - Developer: DiziPortal.Com Team */
+        .diziportal-admin-reset {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .diziportal-admin-body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .diziportal-admin-header {
+            background: rgba(15, 15, 35, 0.95);
+            padding: 1rem 0;
+            border-bottom: 2px solid #ff6b6b;
+            box-shadow: 0 4px 20px rgba(255, 107, 107, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .diziportal-admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .diziportal-admin-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .diziportal-admin-logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+        }
+
+        .diziportal-admin-nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .diziportal-admin-nav-link {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .diziportal-admin-nav-link:hover {
+            background: rgba(255, 107, 107, 0.1);
+            border-color: #ff6b6b;
+            transform: translateY(-2px);
+        }
+
+        .diziportal-admin-main {
+            padding: 2rem 0;
+            min-height: calc(100vh - 200px);
+        }
+
+        .diziportal-admin-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .diziportal-admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .diziportal-admin-panel {
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .diziportal-admin-panel-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #ff6b6b;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        }
+
+        .diziportal-admin-form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .diziportal-admin-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .diziportal-admin-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            border-radius: 8px;
+            background: rgba(15, 15, 35, 0.8);
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .diziportal-admin-input:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .diziportal-admin-textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+
+        .diziportal-admin-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            color: #000;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .diziportal-admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .diziportal-admin-btn:active {
+            transform: translateY(0);
+        }
+
+        .diziportal-admin-btn-danger {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+
+        .diziportal-admin-matches-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .diziportal-admin-match-item {
+            background: rgba(15, 15, 35, 0.9);
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .diziportal-admin-match-info {
+            flex: 1;
+        }
+
+        .diziportal-admin-match-name {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .diziportal-admin-match-details {
+            color: #ff6b6b;
+            font-size: 0.9rem;
+        }
+
+        .diziportal-admin-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .diziportal-admin-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: bold;
+            z-index: 2000;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+
+        .diziportal-admin-notification.show {
+            transform: translateX(0);
+        }
+
+        .diziportal-admin-notification.success {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            border: 1px solid #28a745;
+        }
+
+        .diziportal-admin-notification.error {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+            border: 1px solid #dc3545;
+        }
+
+        .diziportal-admin-footer {
+            background: rgba(15, 15, 35, 0.95);
+            padding: 1.5rem 0;
+            text-align: center;
+            border-top: 2px solid #ff6b6b;
+            margin-top: 2rem;
+        }
+
+        .diziportal-admin-footer-content {
+            color: #888;
+        }
+
+        .diziportal-admin-footer-brand {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .diziportal-admin-back-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #000;
+            padding: 1rem;
+            border-radius: 50%;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .diziportal-admin-back-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(0, 255, 136, 0.6);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .diziportal-admin-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .diziportal-admin-nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .diziportal-admin-nav-links {
+                gap: 1rem;
+            }
+
+            .diziportal-admin-match-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .diziportal-admin-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+
+        /* Custom Scrollbar */
+        .diziportal-admin-matches-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .diziportal-admin-matches-list::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        .diziportal-admin-matches-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="diziportal-admin-reset diziportal-admin-body">
+    <!-- DiziPortal.Com Admin Header -->
+    <header class="diziportal-admin-header">
+        <div class="diziportal-admin-container">
+            <nav class="diziportal-admin-nav">
+                <div class="diziportal-admin-logo">⚙️ Box Sports Admin</div>
+                <ul class="diziportal-admin-nav-links">
+                    <li><a href="index.html" class="diziportal-admin-nav-link">Ana Sayfa</a></li>
+                    <li><a href="#" class="diziportal-admin-nav-link">Maç Yönetimi</a></li>
+                    <li><a href="#" class="diziportal-admin-nav-link">İstatistikler</a></li>
+                    <li><a href="#" class="diziportal-admin-nav-link">Ayarlar</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- DiziPortal.Com Admin Main Content -->
+    <main class="diziportal-admin-container">
+        <div class="diziportal-admin-main">
+            <h1 class="diziportal-admin-title">🏆 Box Sports Yönetim Paneli</h1>
+            
+            <div class="diziportal-admin-grid">
+                <!-- Add Match Panel -->
+                <div class="diziportal-admin-panel">
+                    <h2 class="diziportal-admin-panel-title">➕ Yeni Maç Ekle</h2>
+                    <form id="diziportalAddMatchForm">
+                        <div class="diziportal-admin-form-group">
+                            <label for="matchName" class="diziportal-admin-label">📝 Maç Adı:</label>
+                            <input 
+                                type="text" 
+                                id="matchName" 
+                                class="diziportal-admin-input" 
+                                placeholder="Örn: Galatasaray vs Fenerbahçe"
+                                required
+                            >
+                        </div>
+                        
+                        <div class="diziportal-admin-form-group">
+                            <label for="matchTime" class="diziportal-admin-label">⏰ Maç Saati:</label>
+                            <input 
+                                type="time" 
+                                id="matchTime" 
+                                class="diziportal-admin-input"
+                                required
+                            >
+                        </div>
+                        
+                        <div class="diziportal-admin-form-group">
+                            <label for="matchHls" class="diziportal-admin-label">📺 HLS Yayın Linki:</label>
+                            <textarea 
+                                id="matchHls" 
+                                class="diziportal-admin-input diziportal-admin-textarea" 
+                                placeholder="https://example.com/stream.m3u8"
+                                required
+                            ></textarea>
+                        </div>
+                        
+                        <button type="submit" class="diziportal-admin-btn">
+                            🚀 Maç Ekle
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Manage Matches Panel -->
+                <div class="diziportal-admin-panel">
+                    <h2 class="diziportal-admin-panel-title">📋 Mevcut Maçlar</h2>
+                    <div id="diziportalAdminMatchesList" class="diziportal-admin-matches-list">
+                        <div class="diziportal-admin-match-item">
+                            <div class="diziportal-admin-match-info">
+                                <div class="diziportal-admin-match-name">🔄 Maçlar yükleniyor...</div>
+                                <div class="diziportal-admin-match-details">DiziPortal.Com</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="diziportalAdminManager.diziportalClearAllMatches()" class="diziportal-admin-btn diziportal-admin-btn-danger" style="margin-top: 1rem;">
+                        🗑️ Tüm Maçları Temizle
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistics Panel -->
+            <div class="diziportal-admin-panel">
+                <h2 class="diziportal-admin-panel-title">📊 İstatistikler</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div style="text-align: center; padding: 1rem; background: rgba(15, 15, 35, 0.8); border-radius: 10px;">
+                        <div style="font-size: 2rem; color: #ff6b6b;">📺</div>
+                        <div style="font-size: 1.5rem; font-weight: bold;" id="diziportalTotalMatches">0</div>
+                        <div style="color: #888;">Toplam Maç</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: rgba(15, 15, 35, 0.8); border-radius: 10px;">
+                        <div style="font-size: 2rem; color: #00ff88;">🔴</div>
+                        <div style="font-size: 1.5rem; font-weight: bold;" id="diziportalActiveMatches">0</div>
+                        <div style="color: #888;">Aktif Yayın</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: rgba(15, 15, 35, 0.8); border-radius: 10px;">
+                        <div style="font-size: 2rem; color: #ffa500;">👨‍💻</div>
+                        <div style="font-size: 1.5rem; font-weight: bold;">DiziPortal</div>
+                        <div style="color: #888;">Powered By</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- DiziPortal.Com Back to Site Button -->
+    <a href="index.html" class="diziportal-admin-back-btn" title="Ana Siteye Dön">🏠</a>
+
+    <!-- DiziPortal.Com Admin Footer -->
+    <footer class="diziportal-admin-footer">
+        <div class="diziportal-admin-container">
+            <div class="diziportal-admin-footer-content">
+                <p>&copy; 2025 <span class="diziportal-admin-footer-brand">DiziPortal.Com</span> - Box Sports Admin Panel</p>
+                <p>Güvenli ve profesyonel maç yönetimi sistemi</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification -->
+    <div id="diziportalNotification" class="diziportal-admin-notification"></div>
+
+    <!-- diziportal Admin JavaScript -->
+    <script>
+        // DiziPortal.Com - Box Sports Admin Panel JavaScript
+        // Developer: DiziPortal.Com Development Team
+        
+        class DiziPortalAdminManager {
+            constructor() {
+                this.matches = [];
+                this.init();
+            }
+
+            init() {
+                console.log('🚀 DiziPortal.Com Admin Panel initializing...');
+                this.diziportalLoadMatches();
+                this.diziportalUpdateAdminMatchesList();
+                this.diziportalUpdateStatistics();
+                this.diziportalSetupEventListeners();
+            }
+
+            diziportalLoadMatches() {
+                // Load matches from localStorage (DiziPortal.Com storage)
+                const storedMatches = localStorage.getItem('diziportalMatches');
+                if (storedMatches) {
+                    try {
+                        this.matches = JSON.parse(storedMatches);
+                        console.log('📊 DiziPortal.Com Admin: Matches loaded from storage');
+                    } catch (error) {
+                        console.error('❌ DiziPortal.Com Admin: Error loading matches', error);
+                        this.matches = [];
+                    }
+                } else {
+                    this.matches = [];
+                }
+            }
+
+            diziportalSaveMatches() {
+                try {
+                    localStorage.setItem('diziportalMatches', JSON.stringify(this.matches));
+                    console.log('💾 DiziPortal.Com Admin: Matches saved to storage');
+                    
+                    // Trigger storage event for other tabs
+                    window.dispatchEvent(new StorageEvent('storage', {
+                        key: 'diziportalMatches',
+                        newValue: JSON.stringify(this.matches)
+                    }));
+                } catch (error) {
+                    console.error('❌ DiziPortal.Com Admin: Error saving matches', error);
+                    this.diziportalShowNotification('Kaydetme hatası!', 'error');
+                }
+            }
+
+            diziportalAddMatch(name, time, hls) {
+                if (!name || !time || !hls) {
+                    this.diziportalShowNotification('Tüm alanları doldurun!', 'error');
+                    return false;
+                }
+
+                const match = {
+                    id: 'match_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                    name: name.trim(),
+                    time: time,
+                    hls: hls.trim(),
+                    createdAt: new Date().toISOString()
+                };
+
+                this.matches.push(match);
+                this.diziportalSaveMatches();
+                this.diziportalUpdateAdminMatchesList();
+                this.diziportalUpdateStatistics();
+                
+                console.log('✅ DiziPortal.Com Admin: Match added', match);
+                this.diziportalShowNotification('Maç başarıyla eklendi!', 'success');
+                return true;
+            }
+
+            diziportalDeleteMatch(matchId) {
+                const matchIndex = this.matches.findIndex(m => m.id === matchId);
+                if (matchIndex === -1) {
+                    this.diziportalShowNotification('Maç bulunamadı!', 'error');
+                    return;
+                }
+
+                const matchName = this.matches[matchIndex].name;
+                this.matches.splice(matchIndex, 1);
+                this.diziportalSaveMatches();
+                this.diziportalUpdateAdminMatchesList();
+                this.diziportalUpdateStatistics();
+                
+                console.log('🗑️ DiziPortal.Com Admin: Match deleted', matchName);
+                this.diziportalShowNotification('Maç silindi!', 'success');
+            }
+
+            diziportalClearAllMatches() {
+                if (this.matches.length === 0) {
+                    this.diziportalShowNotification('Silinecek maç bulunmuyor!', 'error');
+                    return;
+                }
+
+                if (confirm('Tüm maçları silmek istediğinizden emin misiniz?')) {
+                    this.matches = [];
+                    this.diziportalSaveMatches();
+                    this.diziportalUpdateAdminMatchesList();
+                    this.diziportalUpdateStatistics();
+                    
+                    console.log('🗑️ DiziPortal.Com Admin: All matches cleared');
+                    this.diziportalShowNotification('Tüm maçlar silindi!', 'success');
+                }
+            }
+
+            diziportalUpdateAdminMatchesList() {
+                const matchesList = document.getElementById('diziportalAdminMatchesList');
+                if (!matchesList) return;
+
+                if (this.matches.length === 0) {
+                    matchesList.innerHTML = `
+                        <div class="diziportal-admin-match-item">
+                            <div class="diziportal-admin-match-info">
+                                <div class="diziportal-admin-match-name">📺 Henüz maç eklenmemiş</div>
+                                <div class="diziportal-admin-match-details">DiziPortal.Com Admin Panel</div>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                matchesList.innerHTML = this.matches.map(match => `
+                    <div class="diziportal-admin-match-item">
+                        <div class="diziportal-admin-match-info">
+                            <div class="diziportal-admin-match-name">${match.name}</div>
+                            <div class="diziportal-admin-match-details">
+                                ⏰ ${match.time} | 📺 ${match.hls ? 'HLS: Mevcut' : 'HLS: Yok'}
+                            </div>
+                        </div>
+                        <div class="diziportal-admin-actions">
+                            <button 
+                                onclick="diziportalAdminManager.diziportalDeleteMatch('${match.id}')" 
+                                class="diziportal-admin-btn diziportal-admin-btn-danger"
+                            >
+                                🗑️ Sil
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            diziportalUpdateStatistics() {
+                const totalMatches = document.getElementById('diziportalTotalMatches');
+                const activeMatches = document.getElementById('diziportalActiveMatches');
+
+                if (totalMatches) {
+                    totalMatches.textContent = this.matches.length;
+                }
+
+                if (activeMatches) {
+                    const active = this.matches.filter(m => m.hls && m.hls.trim() !== '').length;
+                    activeMatches.textContent = active;
+                }
+            }
+
+            diziportalSetupEventListeners() {
+                // Add Match Form
+                const addMatchForm = document.getElementById('diziportalAddMatchForm');
+                if (addMatchForm) {
+                    addMatchForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        
+                        const name = document.getElementById('matchName').value;
+                        const time = document.getElementById('matchTime').value;
+                        const hls = document.getElementById('matchHls').value;
+
+                        if (this.diziportalAddMatch(name, time, hls)) {
+                            addMatchForm.reset();
+                        }
+                    });
+                }
+
+                // Auto-refresh every 30 seconds
+                setInterval(() => {
+                    this.diziportalUpdateStatistics();
+                }, 30000);
+            }
+
+            diziportalShowNotification(message, type = 'success') {
+                const notification = document.getElementById('diziportalNotification');
+                if (!notification) return;
+
+                notification.textContent = message;
+                notification.className = `diziportal-admin-notification ${type}`;
+                notification.classList.add('show');
+
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+
+            // Method to export matches (for backup)
+            diziportalExportMatches() {
+                const dataStr = JSON.stringify(this.matches, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'diziportal_matches_backup.json';
+                link.click();
+                
+                URL.revokeObjectURL(url);
+                this.diziportalShowNotification('Maçlar dışa aktarıldı!', 'success');
+            }
+        }
+
+        // Initialize DiziPortal.Com Admin Manager
+        let diziportalAdminManager;
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🎯 DiziPortal.Com Admin: DOM loaded, initializing admin panel...');
+            diziportalAdminManager = new DiziPortalAdminManager();
+        });
+
+        // Global admin functions for DiziPortal.Com
+        window.diziportalAdminRefresh = () => {
+            if (diziportalAdminManager) {
+                diziportalAdminManager.diziportalLoadMatches();
+                diziportalAdminManager.diziportalUpdateAdminMatchesList();
+                diziportalAdminManager.diziportalUpdateStatistics();
+            }
+        };
+
+        // DiziPortal.Com Admin Console branding
+        console.log(`
+        ██████╗ ██╗███████╗██╗██████╗  ██████╗ ██████╗ ████████╗ █████╗ ██╗         ██████╗ ██████╗ ███╗   ███╗
+        ██╔══██╗██║╚══███╔╝██║██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝██╔══██╗██║        ██╔════╝██╔═══██╗████╗ ████║
+        ██║  ██║██║  ███╔╝ ██║██████╔╝██║   ██║██████╔╝   ██║   ███████║██║        ██║     ██║   ██║██╔████╔██║
+        ██║  ██║██║ ███╔╝  ██║██╔═══╝ ██║   ██║██╔══██╗   ██║   ██╔══██║██║        ██║     ██║   ██║██║╚██╔╝██║
+        ██████╔╝██║███████╗██║██║     ╚██████╔╝██║  ██║   ██║   ██║  ██║███████╗██╗╚██████╗╚██████╔╝██║ ╚═╝ ██║
+        ╚═════╝ ╚═╝╚══════╝╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝
+        
+        🎬 Box Sports Admin Panel - Advanced Management System
+        🚀 Developed by DiziPortal.Com Team
+        ⚡ Version 1.0 - Professional Sports Management Solution
+        `);
+    </script>
+</body>
+</html>

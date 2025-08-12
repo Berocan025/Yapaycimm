@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box Sports - Canlı Maç İzle | DiziPortal.Com</title>
+    <meta name="description" content="Box Sports - En kaliteli canlı maç yayınları DiziPortal.Com'da">
+    <meta name="keywords" content="canlı maç, futbol, basketbol, DiziPortal.Com, Box Sports">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+    <!-- DiziPortal.Com HLS.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    
+    <!-- diziportal CSS Styles -->
+    <style>
+        /* DiziPortal.Com - Box Sports Custom Styles - Developer: DiziPortal.Com Team */
+        .diziportal-reset {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .diziportal-body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .diziportal-header {
+            background: rgba(15, 15, 35, 0.95);
+            padding: 1rem 0;
+            border-bottom: 2px solid #00ff88;
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .diziportal-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .diziportal-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .diziportal-logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .diziportal-nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .diziportal-nav-link {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .diziportal-nav-link:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: #00ff88;
+            transform: translateY(-2px);
+        }
+
+        .diziportal-main {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            padding: 2rem 0;
+            min-height: calc(100vh - 200px);
+        }
+
+        .diziportal-player-section {
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .diziportal-player-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #00ff88;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .diziportal-video-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid rgba(0, 255, 136, 0.5);
+        }
+
+        .diziportal-video-player {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .diziportal-no-match {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #888;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+        }
+
+        .diziportal-matches-section {
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .diziportal-matches-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #00ff88;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .diziportal-match-item {
+            background: rgba(15, 15, 35, 0.9);
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .diziportal-match-item:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: #00ff88;
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .diziportal-match-item.active {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .diziportal-match-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .diziportal-match-time {
+            color: #00ff88;
+            font-size: 0.9rem;
+        }
+
+        .diziportal-admin-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #000;
+            padding: 1rem;
+            border-radius: 50%;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .diziportal-admin-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(0, 255, 136, 0.6);
+        }
+
+        .diziportal-footer {
+            background: rgba(15, 15, 35, 0.95);
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 2px solid #00ff88;
+            margin-top: 2rem;
+        }
+
+        .diziportal-footer-content {
+            color: #888;
+        }
+
+        .diziportal-footer-brand {
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .diziportal-main {
+                grid-template-columns: 1fr;
+            }
+            
+            .diziportal-nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .diziportal-nav-links {
+                gap: 1rem;
+            }
+        }
+
+        /* Custom Scrollbar */
+        .diziportal-matches-section::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .diziportal-matches-section::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        .diziportal-matches-section::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            border-radius: 4px;
+        }
+
+        /* DiziPortal.Com Animations */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+            }
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(0, 255, 136, 0.8), 0 0 30px rgba(0, 255, 136, 0.6);
+            }
+        }
+
+        /* Video Error Overlay Styles */
+        .diziportal-video-error {
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .diziportal-error-content {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .diziportal-error-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .diziportal-error-message {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #ff6b6b;
+        }
+
+        .diziportal-error-footer {
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body class="diziportal-reset diziportal-body">
+    <!-- DiziPortal.Com Header Section -->
+    <header class="diziportal-header">
+        <div class="diziportal-container">
+            <nav class="diziportal-nav">
+                <div class="diziportal-logo">📺 Box Sports</div>
+                <ul class="diziportal-nav-links">
+                    <li><a href="#" class="diziportal-nav-link">Ana Sayfa</a></li>
+                    <li><a href="#" class="diziportal-nav-link">Canlı Maçlar</a></li>
+                    <li><a href="#" class="diziportal-nav-link">Program</a></li>
+                    <li><a href="admin.html" class="diziportal-nav-link">Admin</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- DiziPortal.Com Main Content -->
+    <main class="diziportal-container">
+        <div class="diziportal-main">
+            <!-- Video Player Section -->
+            <section class="diziportal-player-section">
+                <h2 class="diziportal-player-title">🔴 Canlı Yayın</h2>
+                <div class="diziportal-video-container">
+                    <div id="diziportalVideoPlayer" class="diziportal-no-match">
+                        <div>
+                            <h3>📺 Box Sports</h3>
+                            <p>Bir maç seçerek izlemeye başlayın</p>
+                            <small>Powered by DiziPortal.Com</small>
+                        </div>
+                    </div>
+                </div>
+                <div id="diziportalMatchInfo" style="margin-top: 1rem; text-align: center; color: #888;">
+                    <p>Maç bilgisi görüntülenecek</p>
+                </div>
+            </section>
+
+            <!-- Matches List Section -->
+            <section class="diziportal-matches-section">
+                <h2 class="diziportal-matches-title">⚽ Canlı Maçlar</h2>
+                <div id="diziportalMatchesList">
+                    <div class="diziportal-match-item">
+                        <div class="diziportal-match-name">🔄 Maçlar yükleniyor...</div>
+                        <div class="diziportal-match-time">DiziPortal.Com</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- DiziPortal.Com Admin Button -->
+    <a href="admin.html" class="diziportal-admin-btn" title="Admin Panel">⚙️</a>
+
+    <!-- DiziPortal.Com Footer -->
+    <footer class="diziportal-footer">
+        <div class="diziportal-container">
+            <div class="diziportal-footer-content">
+                <p>&copy; 2025 <span class="diziportal-footer-brand">DiziPortal.Com</span> - Box Sports | Tüm hakları saklıdır</p>
+                <p>En kaliteli canlı maç yayınları ve spor içerikleri</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- DiziPortal.Com Advanced HLS Player -->
+    <script src="hls-player.js"></script>
+    
+    <!-- diziportal JavaScript -->
+    <script>
+        // DiziPortal.Com - Box Sports JavaScript Functions
+        // Developer: DiziPortal.Com Development Team
+        
+        class DiziPortalSportsManager {
+            constructor() {
+                this.currentMatch = null;
+                this.matches = [];
+                this.playerElement = null;
+                this.hlsPlayer = null;
+                this.init();
+            }
+
+            init() {
+                console.log('🚀 DiziPortal.Com Box Sports initializing...');
+                this.diziportalLoadMatches();
+                this.diziportalSetupEventListeners();
+                this.diziportalUpdateMatchesList();
+            }
+
+            diziportalLoadMatches() {
+                // Load matches from localStorage (DiziPortal.Com storage)
+                const storedMatches = localStorage.getItem('diziportalMatches');
+                if (storedMatches) {
+                    try {
+                        this.matches = JSON.parse(storedMatches);
+                        console.log('📊 DiziPortal.Com: Matches loaded from storage');
+                    } catch (error) {
+                        console.error('❌ DiziPortal.Com: Error loading matches', error);
+                        this.matches = [];
+                    }
+                } else {
+                    // Default demo matches if no stored data
+                    this.matches = [
+                        {
+                            id: 'demo1',
+                            name: '🔴 Demo Maç 1 - Galatasaray vs Fenerbahçe',
+                            time: '20:00',
+                            hls: ''
+                        },
+                        {
+                            id: 'demo2',
+                            name: '🔴 Demo Maç 2 - Barcelona vs Real Madrid',
+                            time: '22:00',
+                            hls: ''
+                        }
+                    ];
+                }
+            }
+
+            diziportalUpdateMatchesList() {
+                const matchesList = document.getElementById('diziportalMatchesList');
+                if (!matchesList) return;
+
+                if (this.matches.length === 0) {
+                    matchesList.innerHTML = `
+                        <div class="diziportal-match-item">
+                            <div class="diziportal-match-name">📺 Henüz canlı maç bulunmuyor</div>
+                            <div class="diziportal-match-time">DiziPortal.Com Admin panelinden maç ekleyebilirsiniz</div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                matchesList.innerHTML = this.matches.map(match => `
+                    <div class="diziportal-match-item" onclick="diziportalManager.diziportalPlayMatch('${match.id}')">
+                        <div class="diziportal-match-name">${match.name}</div>
+                        <div class="diziportal-match-time">⏰ ${match.time}</div>
+                    </div>
+                `).join('');
+            }
+
+            diziportalPlayMatch(matchId) {
+                const match = this.matches.find(m => m.id === matchId);
+                if (!match) {
+                    console.error('❌ DiziPortal.Com: Match not found');
+                    return;
+                }
+
+                console.log('▶️ DiziPortal.Com: Playing match', match.name);
+                this.currentMatch = match;
+
+                // Update active match styling
+                document.querySelectorAll('.diziportal-match-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                event.currentTarget.classList.add('active');
+
+                // Update match info
+                const matchInfo = document.getElementById('diziportalMatchInfo');
+                if (matchInfo) {
+                    matchInfo.innerHTML = `
+                        <h4 style="color: #00ff88;">🔴 ${match.name}</h4>
+                        <p>⏰ Maç Saati: ${match.time}</p>
+                        <small>Powered by DiziPortal.Com</small>
+                    `;
+                }
+
+                // Play the stream
+                this.diziportalPlayStream(match.hls);
+            }
+
+            diziportalPlayStream(hlsUrl) {
+                const playerContainer = document.getElementById('diziportalVideoPlayer');
+                if (!playerContainer) return;
+
+                if (!hlsUrl || hlsUrl.trim() === '') {
+                    playerContainer.innerHTML = `
+                        <div class="diziportal-no-match">
+                            <div>
+                                <h3>⚠️ Yayın Başlamadı</h3>
+                                <p>Bu maç için henüz yayın linki eklenmemiş</p>
+                                <small>DiziPortal.Com - Box Sports</small>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Destroy existing player if any
+                if (this.hlsPlayer) {
+                    this.hlsPlayer.diziportalDestroy();
+                    this.hlsPlayer = null;
+                }
+
+                // Create video element with advanced HLS support
+                const videoHtml = `
+                    <video 
+                        id="diziportalMainVideo"
+                        class="diziportal-video-player" 
+                        controls 
+                        autoplay 
+                        muted
+                        playsinline
+                        crossorigin="anonymous"
+                    >
+                        Tarayıcınız video oynatmayı desteklemiyor.
+                    </video>
+                `;
+
+                playerContainer.innerHTML = videoHtml;
+
+                // Setup advanced HLS player
+                const video = document.getElementById('diziportalMainVideo');
+                if (video) {
+                    this.diziportalSetupAdvancedHLS(video, hlsUrl);
+                }
+            }
+
+            diziportalSetupAdvancedHLS(video, hlsUrl) {
+                try {
+                    // Initialize advanced HLS player
+                    this.hlsPlayer = new DiziPortalHLSPlayer(video, {
+                        debug: false,
+                        lowLatencyMode: true,
+                        enableWorker: true
+                    });
+
+                    // Load the stream
+                    const success = this.hlsPlayer.diziportalLoadSource(hlsUrl, this.currentMatch?.name || 'Canlı Maç');
+                    
+                    if (!success) {
+                        console.error('❌ DiziPortal.Com: Failed to load stream');
+                        this.diziportalHandleStreamError();
+                    } else {
+                        console.log('✅ DiziPortal.Com: Advanced HLS player setup complete');
+                        
+                        // Add live indicator if stream is live
+                        setTimeout(() => {
+                            if (this.hlsPlayer && this.hlsPlayer.diziportalIsLive()) {
+                                this.diziportalAddLiveIndicator();
+                            }
+                        }, 2000);
+                    }
+                } catch (error) {
+                    console.error('❌ DiziPortal.Com: Error setting up advanced HLS player:', error);
+                    this.diziportalFallbackToBasicPlayer(video, hlsUrl);
+                }
+            }
+
+            diziportalFallbackToBasicPlayer(video, hlsUrl) {
+                console.log('🔄 DiziPortal.Com: Falling back to basic HLS setup');
+                
+                // Simple HLS fallback
+                if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = hlsUrl;
+                    console.log('📱 DiziPortal.Com: Using native HLS support');
+                } else {
+                    video.src = hlsUrl;
+                    console.log('🌐 DiziPortal.Com: Attempting direct playback');
+                }
+
+                video.addEventListener('error', (e) => {
+                    console.error('❌ DiziPortal.Com: Basic player error:', e);
+                    this.diziportalHandleStreamError();
+                });
+            }
+
+            diziportalAddLiveIndicator() {
+                const matchInfo = document.getElementById('diziportalMatchInfo');
+                if (matchInfo && !document.querySelector('.diziportal-live-indicator')) {
+                    const liveIndicator = document.createElement('div');
+                    liveIndicator.className = 'diziportal-live-indicator';
+                    liveIndicator.innerHTML = `
+                        <span style="
+                            background: linear-gradient(45deg, #ff0000, #ff4444);
+                            color: white;
+                            padding: 0.3rem 0.8rem;
+                            border-radius: 20px;
+                            font-size: 0.8rem;
+                            font-weight: bold;
+                            animation: pulse 2s infinite;
+                            display: inline-block;
+                            margin-top: 0.5rem;
+                        ">🔴 CANLI YAYIN</span>
+                    `;
+                    matchInfo.appendChild(liveIndicator);
+                }
+            }
+
+            diziportalHandleStreamError() {
+                const playerContainer = document.getElementById('diziportalVideoPlayer');
+                if (playerContainer) {
+                    playerContainer.innerHTML = `
+                        <div class="diziportal-no-match">
+                            <div>
+                                <h3>⚠️ Yayın Hatası</h3>
+                                <p>Yayın bağlantısında sorun oluştu</p>
+                                <p>Lütfen farklı bir maç deneyin</p>
+                                <small>DiziPortal.Com - Box Sports</small>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            diziportalSetupEventListeners() {
+                // Listen for storage changes (for real-time updates)
+                window.addEventListener('storage', (e) => {
+                    if (e.key === 'diziportalMatches') {
+                        console.log('🔄 DiziPortal.Com: Matches updated from admin panel');
+                        this.diziportalLoadMatches();
+                        this.diziportalUpdateMatchesList();
+                    }
+                });
+
+                // Auto-refresh matches every 30 seconds
+                setInterval(() => {
+                    this.diziportalLoadMatches();
+                    this.diziportalUpdateMatchesList();
+                }, 30000);
+            }
+
+            // Method to handle CORS issues
+            diziportalProxyUrl(url) {
+                // In production, you might want to use a CORS proxy
+                // For now, return the original URL
+                return url;
+            }
+        }
+
+        // Initialize DiziPortal.Com Sports Manager
+        let diziportalManager;
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🎯 DiziPortal.Com: DOM loaded, initializing Box Sports...');
+            diziportalManager = new DiziPortalSportsManager();
+        });
+
+        // Global functions for DiziPortal.Com
+        window.diziportalRefreshMatches = () => {
+            if (diziportalManager) {
+                diziportalManager.diziportalLoadMatches();
+                diziportalManager.diziportalUpdateMatchesList();
+            }
+        };
+
+        // DiziPortal.Com Console branding
+        console.log(`
+        ██████╗ ██╗███████╗██╗██████╗  ██████╗ ██████╗ ████████╗ █████╗ ██╗         ██████╗ ██████╗ ███╗   ███╗
+        ██╔══██╗██║╚══███╔╝██║██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝██╔══██╗██║        ██╔════╝██╔═══██╗████╗ ████║
+        ██║  ██║██║  ███╔╝ ██║██████╔╝██║   ██║██████╔╝   ██║   ███████║██║        ██║     ██║   ██║██╔████╔██║
+        ██║  ██║██║ ███╔╝  ██║██╔═══╝ ██║   ██║██╔══██╗   ██║   ██╔══██║██║        ██║     ██║   ██║██║╚██╔╝██║
+        ██████╔╝██║███████╗██║██║     ╚██████╔╝██║  ██║   ██║   ██║  ██║███████╗██╗╚██████╗╚██████╔╝██║ ╚═╝ ██║
+        ╚═════╝ ╚═╝╚══════╝╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝
+        
+        🎬 Box Sports - Premium Live Sports Streaming Platform
+        🚀 Developed by DiziPortal.Com Team
+        ⚡ Version 1.0 - Advanced Sports Streaming Solution
+        `);
+    </script>
+</body>
+</html>
