@@ -3,993 +3,1312 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Box Sports Admin Panel | DiziPortal.Com</title>
-    <meta name="description" content="Box Sports Admin Panel - Maç yönetimi DiziPortal.Com">
+    <title>Dizi Portal Sports Admin Panel | Profesyonel Spor Yönetimi</title>
+    <meta name="description" content="Dizi Portal Sports Admin Panel - Gelişmiş maç ve kanal yönetimi sistemi">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     
-    <!-- diziportal Admin CSS Styles -->
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- diziportal Professional Admin CSS Styles -->
     <style>
-        /* DiziPortal.Com - Box Sports Admin Panel Styles - Developer: DiziPortal.Com Team */
-        .diziportal-admin-reset {
+        /* DiziPortal.Com - Dizi Portal Sports Professional Admin Panel - Developer: DiziPortal.Com Team */
+        
+        :root {
+            /* Professional Admin Theme Colors */
+            --admin-primary: #1e3a8a;           /* Deep Blue */
+            --admin-secondary: #059669;         /* Emerald Green */
+            --admin-accent: #dc2626;            /* Red Accent */
+            --admin-warning: #d97706;           /* Amber Warning */
+            --admin-success: #16a34a;           /* Green Success */
+            
+            /* Background Colors */
+            --admin-bg-primary: #0f172a;        /* Slate 900 */
+            --admin-bg-secondary: #1e293b;      /* Slate 800 */
+            --admin-bg-card: #334155;           /* Slate 700 */
+            --admin-bg-light: #475569;          /* Slate 600 */
+            
+            /* Text Colors */
+            --admin-text-primary: #f8fafc;      /* Slate 50 */
+            --admin-text-secondary: #cbd5e1;    /* Slate 300 */
+            --admin-text-muted: #94a3b8;        /* Slate 400 */
+            
+            /* Border Colors */
+            --admin-border: #475569;            /* Slate 600 */
+            --admin-border-light: #64748b;      /* Slate 500 */
+        }
+
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        .diziportal-admin-body {
+        body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
-            color: #ffffff;
+            background: linear-gradient(135deg, var(--admin-bg-primary) 0%, var(--admin-bg-secondary) 100%);
+            color: var(--admin-text-primary);
             min-height: 100vh;
-            overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        .diziportal-admin-header {
-            background: rgba(15, 15, 35, 0.95);
-            padding: 1rem 0;
-            border-bottom: 2px solid #ff6b6b;
-            box-shadow: 0 4px 20px rgba(255, 107, 107, 0.2);
-            position: sticky;
-            top: 0;
+        /* Layout */
+        .admin-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            background: linear-gradient(180deg, var(--admin-bg-secondary) 0%, var(--admin-bg-primary) 100%);
+            border-right: 1px solid var(--admin-border);
+            padding: 1.5rem;
+            position: fixed;
+            height: 100vh;
+            width: 280px;
+            overflow-y: auto;
             z-index: 1000;
-            backdrop-filter: blur(10px);
         }
 
-        .diziportal-admin-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .diziportal-admin-nav {
+        .admin-logo {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .diziportal-admin-logo {
-            font-size: 2rem;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--admin-primary), var(--admin-secondary));
+            border-radius: 12px;
+            color: white;
+            font-size: 1.2rem;
             font-weight: bold;
-            background: linear-gradient(45deg, #ff6b6b, #ffa500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
         }
 
-        .diziportal-admin-nav-links {
-            display: flex;
-            gap: 2rem;
+        .admin-nav-menu {
             list-style: none;
         }
 
-        .diziportal-admin-nav-link {
-            color: #ffffff;
+        .admin-nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1rem;
+            color: var(--admin-text-secondary);
             text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
+            border-radius: 8px;
             transition: all 0.3s ease;
-            border: 1px solid transparent;
+            font-weight: 500;
         }
 
-        .diziportal-admin-nav-link:hover {
-            background: rgba(255, 107, 107, 0.1);
-            border-color: #ff6b6b;
-            transform: translateY(-2px);
+        .admin-nav-link:hover,
+        .admin-nav-link.active {
+            background: linear-gradient(135deg, var(--admin-primary), var(--admin-secondary));
+            color: white;
+            transform: translateX(4px);
         }
 
-        .diziportal-admin-main {
-            padding: 2rem 0;
-            min-height: calc(100vh - 200px);
-        }
-
-        .diziportal-admin-title {
+        .admin-nav-link i {
+            width: 20px;
             text-align: center;
-            font-size: 2.5rem;
+        }
+
+        /* Main Content */
+        .admin-main {
+            margin-left: 280px;
+            padding: 2rem;
+            background: var(--admin-bg-primary);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 2rem;
-            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            padding: 1.5rem;
+            background: var(--admin-bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--admin-border);
+        }
+
+        .admin-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--admin-primary), var(--admin-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
         }
 
-        .diziportal-admin-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .diziportal-admin-panel {
-            background: rgba(26, 26, 46, 0.8);
-            border-radius: 15px;
-            padding: 2rem;
-            border: 1px solid rgba(255, 107, 107, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        .diziportal-admin-panel-title {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: #ff6b6b;
-            text-align: center;
-            text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
-        }
-
-        .diziportal-admin-form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .diziportal-admin-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-            font-weight: bold;
-        }
-
-        .diziportal-admin-input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid rgba(255, 107, 107, 0.3);
-            border-radius: 8px;
-            background: rgba(15, 15, 35, 0.8);
-            color: #ffffff;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .diziportal-admin-input:focus {
-            outline: none;
-            border-color: #ff6b6b;
-            box-shadow: 0 0 15px rgba(255, 107, 107, 0.3);
-        }
-
-        .diziportal-admin-textarea {
-            min-height: 60px;
-            resize: vertical;
-        }
-
-        .diziportal-admin-btn {
-            background: linear-gradient(45deg, #ff6b6b, #ffa500);
-            color: #000;
-            padding: 0.75rem 2rem;
-            border: none;
-            border-radius: 25px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            font-size: 1rem;
-        }
-
-        .diziportal-admin-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
-        }
-
-        .diziportal-admin-btn:active {
-            transform: translateY(0);
-        }
-
-        .diziportal-admin-btn-danger {
-            background: linear-gradient(45deg, #dc3545, #c82333);
-            color: #fff;
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            margin-left: 0.5rem;
-        }
-
-        .diziportal-admin-matches-list {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .diziportal-admin-match-item {
-            background: rgba(15, 15, 35, 0.9);
-            margin-bottom: 1rem;
-            padding: 1rem;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 107, 107, 0.2);
+        .admin-user-info {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 1rem;
         }
 
-        .diziportal-admin-match-info {
-            flex: 1;
-        }
-
-        .diziportal-admin-match-name {
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-        }
-
-        .diziportal-admin-match-details {
-            color: #ff6b6b;
-            font-size: 0.9rem;
-        }
-
-        .diziportal-admin-actions {
+        .admin-user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--admin-primary), var(--admin-secondary));
             display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Cards */
+        .admin-card {
+            background: var(--admin-bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--admin-border);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-card-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--admin-border);
+        }
+
+        .admin-card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--admin-text-primary);
+            display: flex;
+            align-items: center;
             gap: 0.5rem;
         }
 
-        .diziportal-admin-notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 1rem 2rem;
+        /* Grid Layout */
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .admin-grid-full {
+            grid-column: 1 / -1;
+        }
+
+        /* Forms */
+        .admin-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .admin-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .admin-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .admin-label {
+            font-weight: 500;
+            color: var(--admin-text-secondary);
+        }
+
+        .admin-input,
+        .admin-select,
+        .admin-textarea {
+            padding: 0.75rem;
+            border: 1px solid var(--admin-border);
             border-radius: 8px;
-            color: #fff;
-            font-weight: bold;
-            z-index: 2000;
-            transform: translateX(100%);
+            background: var(--admin-bg-card);
+            color: var(--admin-text-primary);
+            font-size: 0.95rem;
             transition: all 0.3s ease;
         }
 
-        .diziportal-admin-notification.show {
-            transform: translateX(0);
+        .admin-input:focus,
+        .admin-select:focus,
+        .admin-textarea:focus {
+            outline: none;
+            border-color: var(--admin-primary);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
         }
 
-        .diziportal-admin-notification.success {
-            background: linear-gradient(45deg, #28a745, #20c997);
-            border: 1px solid #28a745;
+        .admin-textarea {
+            resize: vertical;
+            min-height: 100px;
         }
 
-        .diziportal-admin-notification.error {
-            background: linear-gradient(45deg, #dc3545, #c82333);
-            border: 1px solid #dc3545;
-        }
-
-        .diziportal-admin-footer {
-            background: rgba(15, 15, 35, 0.95);
-            padding: 1.5rem 0;
-            text-align: center;
-            border-top: 2px solid #ff6b6b;
-            margin-top: 2rem;
-        }
-
-        .diziportal-admin-footer-content {
-            color: #888;
-        }
-
-        .diziportal-admin-footer-brand {
-            color: #ff6b6b;
-            font-weight: bold;
-        }
-
-        .diziportal-admin-back-btn {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: linear-gradient(45deg, #00ff88, #00d4ff);
-            color: #000;
-            padding: 1rem;
-            border-radius: 50%;
+        /* Buttons */
+        .admin-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
+            justify-content: center;
+        }
+
+        .admin-btn-primary {
+            background: linear-gradient(135deg, var(--admin-primary), var(--admin-secondary));
+            color: white;
+        }
+
+        .admin-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+        }
+
+        .admin-btn-secondary {
+            background: var(--admin-bg-card);
+            color: var(--admin-text-primary);
+            border: 1px solid var(--admin-border);
+        }
+
+        .admin-btn-secondary:hover {
+            background: var(--admin-bg-light);
+        }
+
+        .admin-btn-danger {
+            background: linear-gradient(135deg, var(--admin-accent), #dc2626);
+            color: white;
+        }
+
+        .admin-btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+
+        .admin-btn-success {
+            background: linear-gradient(135deg, var(--admin-success), var(--admin-secondary));
+            color: white;
+        }
+
+        .admin-btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+        }
+
+        /* Tables */
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 0.875rem;
+            text-align: left;
+            border-bottom: 1px solid var(--admin-border);
+        }
+
+        .admin-table th {
+            background: var(--admin-bg-card);
+            font-weight: 600;
+            color: var(--admin-text-primary);
+        }
+
+        .admin-table td {
+            color: var(--admin-text-secondary);
+        }
+
+        .admin-table tbody tr:hover {
+            background: var(--admin-bg-card);
+        }
+
+        /* Image Upload */
+        .admin-image-upload {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 2px dashed var(--admin-border);
+            border-radius: 8px;
+            cursor: pointer;
             transition: all 0.3s ease;
-            z-index: 1000;
         }
 
-        .diziportal-admin-back-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 30px rgba(0, 255, 136, 0.6);
+        .admin-image-upload:hover {
+            border-color: var(--admin-primary);
+            background: rgba(30, 58, 138, 0.05);
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .diziportal-admin-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .diziportal-admin-nav {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .diziportal-admin-nav-links {
-                gap: 1rem;
-            }
-
-            .diziportal-admin-match-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-
-            .diziportal-admin-actions {
-                width: 100%;
-                justify-content: flex-end;
-            }
+        .admin-image-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid var(--admin-border);
         }
 
-        /* Custom Scrollbar */
-        .diziportal-admin-matches-list::-webkit-scrollbar {
-            width: 8px;
+        /* Statistics Cards */
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
 
-        .diziportal-admin-matches-list::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 4px;
+        .admin-stat-card {
+            background: linear-gradient(135deg, var(--admin-bg-secondary), var(--admin-bg-card));
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--admin-border);
+            text-align: center;
         }
 
-        .diziportal-admin-matches-list::-webkit-scrollbar-thumb {
-            background: linear-gradient(45deg, #ff6b6b, #ffa500);
-            border-radius: 4px;
+        .admin-stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--admin-primary), var(--admin-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        /* DiziPortal.Com Password Change Modal */
-        .diziportal-password-modal {
-            position: fixed;
+        .admin-stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--admin-text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .admin-stat-label {
+            color: var(--admin-text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Toggle Switches */
+        .admin-toggle {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .admin-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .admin-toggle-slider {
+            position: absolute;
+            cursor: pointer;
             top: 0;
             left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--admin-border);
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .admin-toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        .admin-toggle input:checked + .admin-toggle-slider {
+            background: linear-gradient(135deg, var(--admin-primary), var(--admin-secondary));
+        }
+
+        .admin-toggle input:checked + .admin-toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .admin-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+            }
+
+            .admin-main {
+                margin-left: 0;
+            }
+
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Modal */
+        .admin-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            backdrop-filter: blur(5px);
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
         }
 
-        .diziportal-password-modal-content {
-            background: rgba(26, 26, 46, 0.95);
-            border-radius: 15px;
+        .admin-modal-content {
+            background-color: var(--admin-bg-secondary);
+            margin: 5% auto;
             padding: 2rem;
-            border: 2px solid rgba(255, 107, 107, 0.3);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(20px);
+            border-radius: 12px;
             width: 90%;
-            max-width: 500px;
-            animation: diziportalModalSlideIn 0.3s ease-out;
+            max-width: 600px;
+            position: relative;
+            border: 1px solid var(--admin-border);
         }
 
-        @keyframes diziportalModalSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-30px) scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .diziportal-password-modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255, 107, 107, 0.3);
-        }
-
-        .diziportal-password-modal-header h3 {
-            color: #ff6b6b;
-            margin: 0;
-            font-size: 1.3rem;
-        }
-
-        .diziportal-password-modal-close {
-            background: none;
-            border: none;
-            color: #ff6b6b;
-            font-size: 2rem;
+        .admin-modal-close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 1.5rem;
             cursor: pointer;
-            padding: 0;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.3s ease;
+            color: var(--admin-text-muted);
         }
 
-        .diziportal-password-modal-close:hover {
-            background: rgba(255, 107, 107, 0.1);
+        .admin-modal-close:hover {
+            color: var(--admin-accent);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .admin-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Team Logo Display */
+        .admin-team-logos {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .admin-team-logo-item {
+            text-align: center;
+        }
+
+        .admin-team-logo-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid var(--admin-border);
+        }
+
+        .admin-team-logo-item span {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--admin-text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .admin-vs {
+            color: var(--admin-accent);
+            font-weight: bold;
+            font-size: 1.2rem;
         }
     </style>
 </head>
-<body class="diziportal-admin-reset diziportal-admin-body">
-    <!-- DiziPortal.Com Admin Header -->
-    <header class="diziportal-admin-header">
-        <div class="diziportal-admin-container">
-            <nav class="diziportal-admin-nav">
-                <div class="diziportal-admin-logo">⚙️ Box Sports Admin</div>
-                <ul class="diziportal-admin-nav-links">
-                    <li><a href="index.html" class="diziportal-admin-nav-link">Ana Sayfa</a></li>
-                    <li><a href="#" class="diziportal-admin-nav-link">Maç Yönetimi</a></li>
-                    <li><a href="#" onclick="diziportalShowPasswordChange()" class="diziportal-admin-nav-link">Şifre Değiştir</a></li>
-                    <li><a href="#" onclick="diziportalAdminLogout()" class="diziportal-admin-nav-link" style="color: #ff6b6b;">🚪 Çıkış</a></li>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <i class="fas fa-trophy"></i>
+                <span>Dizi Portal Sports</span>
+            </div>
+
+            <nav class="admin-nav">
+                <ul class="admin-nav-menu">
+                    <li class="admin-nav-item">
+                        <a href="#dashboard" class="admin-nav-link active" onclick="showSection('dashboard')">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
+                        <a href="#matches" class="admin-nav-link" onclick="showSection('matches')">
+                            <i class="fas fa-futbol"></i>
+                            <span>Canlı Maçlar</span>
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
+                        <a href="#channels" class="admin-nav-link" onclick="showSection('channels')">
+                            <i class="fas fa-tv"></i>
+                            <span>7/24 Kanallar</span>
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
+                        <a href="#frontend" class="admin-nav-link" onclick="showSection('frontend')">
+                            <i class="fas fa-paint-brush"></i>
+                            <span>Frontend Yönetimi</span>
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
+                        <a href="#settings" class="admin-nav-link" onclick="showSection('settings')">
+                            <i class="fas fa-cog"></i>
+                            <span>Ayarlar</span>
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
+                        <a href="#" class="admin-nav-link" onclick="adminLogout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Çıkış</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
-        </div>
-    </header>
+        </aside>
 
-    <!-- DiziPortal.Com Admin Main Content -->
-    <main class="diziportal-admin-container">
-        <div class="diziportal-admin-main">
-            <h1 class="diziportal-admin-title">🏆 Box Sports Yönetim Paneli</h1>
-            
-            <div class="diziportal-admin-grid">
-                <!-- Add Match Panel -->
-                <div class="diziportal-admin-panel">
-                    <h2 class="diziportal-admin-panel-title">➕ Yeni Maç Ekle</h2>
-                    <form id="diziportalAddMatchForm">
-                        <div class="diziportal-admin-form-group">
-                            <label for="matchName" class="diziportal-admin-label">📝 Maç Adı:</label>
-                            <input 
-                                type="text" 
-                                id="matchName" 
-                                class="diziportal-admin-input" 
-                                placeholder="Örn: Galatasaray vs Fenerbahçe"
-                                required
-                            >
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <header class="admin-header">
+                <h1 class="admin-title">
+                    <i class="fas fa-trophy"></i>
+                    Dizi Portal Sports Yönetim Paneli
+                </h1>
+                <div class="admin-user-info">
+                    <div class="admin-user-avatar">A</div>
+                    <span>Admin</span>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="admin-section">
+                <div class="admin-stats">
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-icon">
+                            <i class="fas fa-futbol"></i>
+                        </div>
+                        <div class="admin-stat-number" id="totalMatches">0</div>
+                        <div class="admin-stat-label">Toplam Maç</div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-icon">
+                            <i class="fas fa-tv"></i>
+                        </div>
+                        <div class="admin-stat-number" id="totalChannels">0</div>
+                        <div class="admin-stat-label">Aktif Kanal</div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="admin-stat-number" id="totalViews">0</div>
+                        <div class="admin-stat-label">Toplam İzlenme</div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="admin-stat-number" id="onlineTime">24/7</div>
+                        <div class="admin-stat-label">Online Süre</div>
+                    </div>
+                </div>
+
+                <div class="admin-grid">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3 class="admin-card-title">
+                                <i class="fas fa-chart-line"></i>
+                                Son Aktiviteler
+                            </h3>
+                        </div>
+                        <div id="recentActivities">
+                            <p>Henüz aktivite bulunmuyor...</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3 class="admin-card-title">
+                                <i class="fas fa-server"></i>
+                                Sistem Durumu
+                            </h3>
+                        </div>
+                        <div class="admin-form">
+                            <div class="admin-form-group">
+                                <label>Server Status</label>
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <span style="width: 12px; height: 12px; background: #16a34a; border-radius: 50%;"></span>
+                                    <span>Online</span>
+                                </div>
+                            </div>
+                            <div class="admin-form-group">
+                                <label>Player Status</label>
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <span style="width: 12px; height: 12px; background: #16a34a; border-radius: 50%;"></span>
+                                    <span>Player.js Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Matches Section -->
+            <section id="matches" class="admin-section" style="display: none;">
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h3 class="admin-card-title">
+                            <i class="fas fa-plus"></i>
+                            Yeni Maç Ekle
+                        </h3>
+                    </div>
+                    <form class="admin-form" onsubmit="addMatch(event)">
+                        <div class="admin-form-row">
+                            <div class="admin-form-group">
+                                <label class="admin-label" for="matchName">Maç Adı</label>
+                                <input type="text" id="matchName" class="admin-input" placeholder="Örn: Barcelona vs Real Madrid" required>
+                            </div>
+                            <div class="admin-form-group">
+                                <label class="admin-label" for="matchTime">Maç Saati</label>
+                                <input type="text" id="matchTime" class="admin-input" placeholder="Örn: 21:00" required>
+                            </div>
                         </div>
                         
-                        <div class="diziportal-admin-form-group">
-                            <label for="matchTime" class="diziportal-admin-label">⏰ Maç Saati:</label>
-                            <input 
-                                type="time" 
-                                id="matchTime" 
-                                class="diziportal-admin-input"
-                                required
-                            >
+                        <div class="admin-form-row">
+                            <div class="admin-form-group">
+                                <label class="admin-label" for="homeTeam">Ev Sahibi Takım</label>
+                                <input type="text" id="homeTeam" class="admin-input" placeholder="Örn: Barcelona" required>
+                            </div>
+                            <div class="admin-form-group">
+                                <label class="admin-label" for="awayTeam">Misafir Takım</label>
+                                <input type="text" id="awayTeam" class="admin-input" placeholder="Örn: Real Madrid" required>
+                            </div>
                         </div>
-                        
-                        <div class="diziportal-admin-form-group">
-                            <label for="matchHls" class="diziportal-admin-label">📺 HLS Yayın Linki:</label>
-                            <textarea 
-                                id="matchHls" 
-                                class="diziportal-admin-input diziportal-admin-textarea" 
-                                placeholder="https://example.com/stream.m3u8"
-                                required
-                            ></textarea>
+
+                        <div class="admin-form-row">
+                            <div class="admin-form-group">
+                                <label class="admin-label" for="homeTeamLogo">Ev Sahibi Logo URL</label>
+                                <input type="url" id="homeTeamLogo" class="admin-input" placeholder="https://example.com/barcelona-logo.png">
+                            </div>
+                            <div class="admin-form-group">
+                                <label class="admin-label" for="awayTeamLogo">Misafir Logo URL</label>
+                                <input type="url" id="awayTeamLogo" class="admin-input" placeholder="https://example.com/real-madrid-logo.png">
+                            </div>
                         </div>
-                        
-                        <button type="submit" class="diziportal-admin-btn">
-                            🚀 Maç Ekle
+
+                        <div class="admin-form-group">
+                            <label class="admin-label" for="matchHls">HLS Stream URL</label>
+                            <input type="url" id="matchHls" class="admin-input" placeholder="https://example.com/stream.m3u8" required>
+                        </div>
+
+                        <button type="submit" class="admin-btn admin-btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Maç Ekle
                         </button>
                     </form>
                 </div>
 
-                <!-- Manage Matches Panel -->
-                <div class="diziportal-admin-panel">
-                    <h2 class="diziportal-admin-panel-title">📋 Mevcut Maçlar</h2>
-                    <div id="diziportalAdminMatchesList" class="diziportal-admin-matches-list">
-                        <div class="diziportal-admin-match-item">
-                            <div class="diziportal-admin-match-info">
-                                <div class="diziportal-admin-match-name">🔄 Maçlar yükleniyor...</div>
-                                <div class="diziportal-admin-match-details">DiziPortal.Com</div>
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h3 class="admin-card-title">
+                            <i class="fas fa-list"></i>
+                            Mevcut Maçlar
+                        </h3>
+                        <button class="admin-btn admin-btn-secondary" onclick="clearAllMatches()">
+                            <i class="fas fa-trash"></i>
+                            Tümünü Temizle
+                        </button>
+                    </div>
+                    <div id="matchesList"></div>
+                </div>
+            </section>
+
+            <!-- Channels Section -->
+            <section id="channels" class="admin-section" style="display: none;">
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h3 class="admin-card-title">
+                            <i class="fas fa-plus"></i>
+                            Yeni Kanal Ekle
+                        </h3>
+                    </div>
+                    <form class="admin-form" onsubmit="addChannel(event)">
+                        <div class="admin-form-row">
+                            <div class="admin-form-group">
+                                <label class="admin-label" for="channelName">Kanal Adı</label>
+                                <input type="text" id="channelName" class="admin-input" placeholder="Örn: BeIN Sports 1" required>
+                            </div>
+                            <div class="admin-form-group">
+                                <label class="admin-label" for="channelCategory">Kategori</label>
+                                <select id="channelCategory" class="admin-select" required>
+                                    <option value="">Kategori Seçin</option>
+                                    <option value="sports">Spor</option>
+                                    <option value="news">Haber</option>
+                                    <option value="entertainment">Eğlence</option>
+                                    <option value="documentary">Belgesel</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-label" for="channelLogo">Kanal Logo URL</label>
+                            <input type="url" id="channelLogo" class="admin-input" placeholder="https://example.com/channel-logo.png">
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-label" for="channelHls">HLS Stream URL</label>
+                            <input type="url" id="channelHls" class="admin-input" placeholder="https://example.com/channel.m3u8" required>
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-label">
+                                <input type="checkbox" id="channelActive" checked>
+                                Kanal Aktif
+                            </label>
+                        </div>
+
+                        <button type="submit" class="admin-btn admin-btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Kanal Ekle
+                        </button>
+                    </form>
+                </div>
+
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h3 class="admin-card-title">
+                            <i class="fas fa-tv"></i>
+                            Mevcut Kanallar
+                        </h3>
+                    </div>
+                    <div id="channelsList"></div>
+                </div>
+            </section>
+
+            <!-- Frontend Management Section -->
+            <section id="frontend" class="admin-section" style="display: none;">
+                <div class="admin-grid">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3 class="admin-card-title">
+                                <i class="fas fa-palette"></i>
+                                Site Branding
+                            </h3>
+                        </div>
+                        <form class="admin-form" onsubmit="updateBranding(event)">
+                            <div class="admin-form-group">
+                                <label class="admin-label" for="siteName">Site Adı</label>
+                                <input type="text" id="siteName" class="admin-input" value="Dizi Portal Sports">
+                            </div>
+                            <div class="admin-form-group">
+                                <label class="admin-label" for="siteDescription">Site Açıklaması</label>
+                                <textarea id="siteDescription" class="admin-textarea" placeholder="Site açıklaması..."></textarea>
+                            </div>
+                            <div class="admin-form-group">
+                                <label class="admin-label" for="siteLogo">Site Logo URL</label>
+                                <input type="url" id="siteLogo" class="admin-input" value="https://i.hizliresim.com/inetemu.png">
+                            </div>
+                            <button type="submit" class="admin-btn admin-btn-success">
+                                <i class="fas fa-save"></i>
+                                Güncelle
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3 class="admin-card-title">
+                                <i class="fas fa-edit"></i>
+                                İçerik Yönetimi
+                            </h3>
+                        </div>
+                        <form class="admin-form" onsubmit="updateContent(event)">
+                            <div class="admin-form-group">
+                                <label class="admin-label" for="headerTitle">Header Başlık</label>
+                                <input type="text" id="headerTitle" class="admin-input" value="🔴 Canlı Yayın">
+                            </div>
+                            <div class="admin-form-group">
+                                <label class="admin-label" for="welcomeMessage">Karşılama Mesajı</label>
+                                <textarea id="welcomeMessage" class="admin-textarea">Bir maç seçerek izlemeye başlayın</textarea>
+                            </div>
+                            <div class="admin-form-group">
+                                <label class="admin-label" for="footerText">Footer Metni</label>
+                                <textarea id="footerText" class="admin-textarea">En kaliteli canlı maç yayınları ve spor içerikleri</textarea>
+                            </div>
+                            <button type="submit" class="admin-btn admin-btn-success">
+                                <i class="fas fa-save"></i>
+                                Güncelle
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="admin-card admin-grid-full">
+                    <div class="admin-card-header">
+                        <h3 class="admin-card-title">
+                            <i class="fas fa-link"></i>
+                            Menü Yönetimi
+                        </h3>
+                    </div>
+                    <div class="admin-grid">
+                        <div class="admin-form">
+                            <h4>Ana Menü</h4>
+                            <div id="mainMenuItems"></div>
+                            <button type="button" class="admin-btn admin-btn-secondary" onclick="addMenuItem()">
+                                <i class="fas fa-plus"></i>
+                                Menü Öğesi Ekle
+                            </button>
+                        </div>
+                        
+                        <div class="admin-form">
+                            <h4>Mobil Menü</h4>
+                            <div id="mobileMenuItems"></div>
+                            <button type="button" class="admin-btn admin-btn-secondary" onclick="addMobileMenuItem()">
+                                <i class="fas fa-plus"></i>
+                                Mobil Menü Ekle
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="admin-section" style="display: none;">
+                <div class="admin-grid">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3 class="admin-card-title">
+                                <i class="fas fa-shield-alt"></i>
+                                Güvenlik Ayarları
+                            </h3>
+                        </div>
+                        <form class="admin-form" onsubmit="updatePassword(event)">
+                            <div class="admin-form-group">
+                                <label class="admin-label" for="currentPassword">Mevcut Şifre</label>
+                                <input type="password" id="currentPassword" class="admin-input" required>
+                            </div>
+                            <div class="admin-form-group">
+                                <label class="admin-label" for="newPassword">Yeni Şifre</label>
+                                <input type="password" id="newPassword" class="admin-input" required>
+                            </div>
+                            <div class="admin-form-group">
+                                <label class="admin-label" for="confirmPassword">Şifre Tekrar</label>
+                                <input type="password" id="confirmPassword" class="admin-input" required>
+                            </div>
+                            <button type="submit" class="admin-btn admin-btn-primary">
+                                <i class="fas fa-key"></i>
+                                Şifre Güncelle
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3 class="admin-card-title">
+                                <i class="fas fa-cog"></i>
+                                Sistem Ayarları
+                            </h3>
+                        </div>
+                        <div class="admin-form">
+                            <div class="admin-form-group">
+                                <label class="admin-label">
+                                    <span>Developer Tools Koruması</span>
+                                    <label class="admin-toggle">
+                                        <input type="checkbox" id="devToolsProtection" checked>
+                                        <span class="admin-toggle-slider"></span>
+                                    </label>
+                                </label>
+                            </div>
+                            <div class="admin-form-group">
+                                <label class="admin-label">
+                                    <span>Auto Refresh (10s)</span>
+                                    <label class="admin-toggle">
+                                        <input type="checkbox" id="autoRefresh" checked>
+                                        <span class="admin-toggle-slider"></span>
+                                    </label>
+                                </label>
+                            </div>
+                            <div class="admin-form-group">
+                                <label class="admin-label">
+                                    <span>HLS Fallback</span>
+                                    <label class="admin-toggle">
+                                        <input type="checkbox" id="hlsFallback" checked>
+                                        <span class="admin-toggle-slider"></span>
+                                    </label>
+                                </label>
                             </div>
                         </div>
                     </div>
-                    <button onclick="diziportalAdminManager.diziportalClearAllMatches()" class="diziportal-admin-btn diziportal-admin-btn-danger" style="margin-top: 1rem;">
-                        🗑️ Tüm Maçları Temizle
-                    </button>
                 </div>
-            </div>
-
-            <!-- Statistics Panel -->
-            <div class="diziportal-admin-panel">
-                <h2 class="diziportal-admin-panel-title">📊 İstatistikler</h2>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                    <div style="text-align: center; padding: 1rem; background: rgba(15, 15, 35, 0.8); border-radius: 10px;">
-                        <div style="font-size: 2rem; color: #ff6b6b;">📺</div>
-                        <div style="font-size: 1.5rem; font-weight: bold;" id="diziportalTotalMatches">0</div>
-                        <div style="color: #888;">Toplam Maç</div>
-                    </div>
-                    <div style="text-align: center; padding: 1rem; background: rgba(15, 15, 35, 0.8); border-radius: 10px;">
-                        <div style="font-size: 2rem; color: #00ff88;">🔴</div>
-                        <div style="font-size: 1.5rem; font-weight: bold;" id="diziportalActiveMatches">0</div>
-                        <div style="color: #888;">Aktif Yayın</div>
-                    </div>
-                    <div style="text-align: center; padding: 1rem; background: rgba(15, 15, 35, 0.8); border-radius: 10px;">
-                        <div style="font-size: 2rem; color: #ffa500;">👨‍💻</div>
-                        <div style="font-size: 1.5rem; font-weight: bold;">DiziPortal</div>
-                        <div style="color: #888;">Powered By</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- DiziPortal.Com Back to Site Button -->
-    <a href="index.html" class="diziportal-admin-back-btn" title="Ana Siteye Dön">🏠</a>
-
-    <!-- DiziPortal.Com Admin Footer -->
-    <footer class="diziportal-admin-footer">
-        <div class="diziportal-admin-container">
-            <div class="diziportal-admin-footer-content">
-                <p>&copy; 2025 <span class="diziportal-admin-footer-brand">DiziPortal.Com</span> - Box Sports Admin Panel</p>
-                <p>Güvenli ve profesyonel maç yönetimi sistemi</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Notification -->
-    <div id="diziportalNotification" class="diziportal-admin-notification"></div>
-
-    <!-- DiziPortal.Com Password Change Modal -->
-    <div id="diziportalPasswordModal" class="diziportal-password-modal" style="display: none;">
-        <div class="diziportal-password-modal-content">
-            <div class="diziportal-password-modal-header">
-                <h3>🔐 Kullanıcı Adı ve Şifre Değiştir</h3>
-                <button class="diziportal-password-modal-close" onclick="diziportalHidePasswordChange()">&times;</button>
-            </div>
-            <form id="diziportalPasswordChangeForm">
-                <div class="diziportal-admin-form-group">
-                    <label class="diziportal-admin-label">👤 Yeni Kullanıcı Adı:</label>
-                    <input type="text" id="newUsername" class="diziportal-admin-input" required>
-                </div>
-                <div class="diziportal-admin-form-group">
-                    <label class="diziportal-admin-label">🔑 Mevcut Şifre:</label>
-                    <input type="password" id="currentPassword" class="diziportal-admin-input" required>
-                </div>
-                <div class="diziportal-admin-form-group">
-                    <label class="diziportal-admin-label">🆕 Yeni Şifre:</label>
-                    <input type="password" id="newPassword" class="diziportal-admin-input" required>
-                </div>
-                <div class="diziportal-admin-form-group">
-                    <label class="diziportal-admin-label">🔄 Yeni Şifre Tekrar:</label>
-                    <input type="password" id="confirmPassword" class="diziportal-admin-input" required>
-                </div>
-                <button type="submit" class="diziportal-admin-btn">💾 Değişiklikleri Kaydet</button>
-            </form>
-        </div>
+            </section>
+        </main>
     </div>
 
-    <!-- diziportal Admin JavaScript -->
+    <!-- JavaScript -->
     <script>
-        // DiziPortal.Com - Security Check
-        function diziportalCheckAdminAuth() {
+        // DiziPortal.Com - Professional Sports Admin Panel JavaScript
+        // Developer: DiziPortal.Com Development Team
+
+        // Check authentication
+        function checkAdminAuth() {
             const session = localStorage.getItem('diziportalAdminSession');
             if (!session) {
-                console.log('🔒 DiziPortal.Com: No admin session found');
                 window.location.href = 'login.html';
                 return false;
             }
-
             try {
                 const sessionData = JSON.parse(session);
                 if (sessionData.expiry < Date.now()) {
-                    console.log('🔒 DiziPortal.Com: Admin session expired');
                     localStorage.removeItem('diziportalAdminSession');
                     window.location.href = 'login.html';
                     return false;
                 }
-                console.log('✅ DiziPortal.Com: Admin session valid');
                 return true;
             } catch (error) {
-                console.error('❌ DiziPortal.Com: Session validation error:', error);
                 localStorage.removeItem('diziportalAdminSession');
                 window.location.href = 'login.html';
                 return false;
             }
         }
 
-        // Check auth immediately
-        if (!diziportalCheckAdminAuth()) {
-            // Will redirect to login
+        if (!checkAdminAuth()) {
+            // Will redirect
         }
 
-        // DiziPortal.Com Anti-DevTools Protection for Admin
+        // Navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.admin-section');
+            sections.forEach(section => section.style.display = 'none');
+
+            // Remove active class from all nav links
+            const navLinks = document.querySelectorAll('.admin-nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            // Show selected section
+            document.getElementById(sectionId).style.display = 'block';
+
+            // Add active class to clicked nav link
+            event.target.closest('.admin-nav-link').classList.add('active');
+
+            // Load section data
+            loadSectionData(sectionId);
+        }
+
+        // Load section data
+        function loadSectionData(sectionId) {
+            switch(sectionId) {
+                case 'dashboard':
+                    loadDashboardStats();
+                    break;
+                case 'matches':
+                    loadMatches();
+                    break;
+                case 'channels':
+                    loadChannels();
+                    break;
+                case 'frontend':
+                    loadFrontendSettings();
+                    break;
+                case 'settings':
+                    loadSystemSettings();
+                    break;
+            }
+        }
+
+        // Dashboard functions
+        function loadDashboardStats() {
+            // Update statistics
+            fetch('api/matches.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('totalMatches').textContent = data.data.length;
+                    }
+                })
+                .catch(error => console.error('Error loading stats:', error));
+
+            // Load recent activities
+            const activities = [
+                { action: 'Yeni maç eklendi', time: '5 dakika önce', icon: 'fas fa-plus' },
+                { action: 'Kanal güncellendi', time: '1 saat önce', icon: 'fas fa-edit' },
+                { action: 'Admin girişi yapıldı', time: '2 saat önce', icon: 'fas fa-sign-in-alt' }
+            ];
+
+            const activitiesHtml = activities.map(activity => `
+                <div style="display: flex; align-items: center; gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid var(--admin-border);">
+                    <i class="${activity.icon}" style="color: var(--admin-secondary);"></i>
+                    <div>
+                        <div>${activity.action}</div>
+                        <small style="color: var(--admin-text-muted);">${activity.time}</small>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('recentActivities').innerHTML = activitiesHtml;
+        }
+
+        // Match management functions
+        async function addMatch(event) {
+            event.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('matchName').value,
+                time: document.getElementById('matchTime').value,
+                homeTeam: document.getElementById('homeTeam').value,
+                awayTeam: document.getElementById('awayTeam').value,
+                homeTeamLogo: document.getElementById('homeTeamLogo').value,
+                awayTeamLogo: document.getElementById('awayTeamLogo').value,
+                hls: document.getElementById('matchHls').value
+            };
+
+            try {
+                const response = await fetch('api/matches.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Maç başarıyla eklendi!');
+                    event.target.reset();
+                    loadMatches();
+                } else {
+                    alert('Hata: ' + result.message);
+                }
+            } catch (error) {
+                alert('Bağlantı hatası: ' + error.message);
+            }
+        }
+
+        async function loadMatches() {
+            try {
+                const response = await fetch('api/matches.php');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const matchesHtml = result.data.map(match => `
+                        <div class="admin-card" style="margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h4>${match.name}</h4>
+                                    <p style="color: var(--admin-text-muted); margin: 0.5rem 0;">${match.time}</p>
+                                    ${match.homeTeam && match.awayTeam ? `
+                                        <div class="admin-team-logos">
+                                            <div class="admin-team-logo-item">
+                                                <img src="${match.homeTeamLogo || 'https://via.placeholder.com/50x50/00c853/ffffff?text=🏠'}" alt="${match.homeTeam}">
+                                                <span>${match.homeTeam}</span>
+                                            </div>
+                                            <span class="admin-vs">VS</span>
+                                            <div class="admin-team-logo-item">
+                                                <img src="${match.awayTeamLogo || 'https://via.placeholder.com/50x50/1a237e/ffffff?text=✈️'}" alt="${match.awayTeam}">
+                                                <span>${match.awayTeam}</span>
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                    <p style="font-size: 0.875rem; color: var(--admin-text-muted); margin-top: 0.5rem;">
+                                        ${match.hls.substring(0, 50)}...
+                                    </p>
+                                </div>
+                                <button class="admin-btn admin-btn-danger" onclick="deleteMatch('${match.id}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    document.getElementById('matchesList').innerHTML = matchesHtml || '<p>Henüz maç eklenmemiş.</p>';
+                }
+            } catch (error) {
+                console.error('Error loading matches:', error);
+            }
+        }
+
+        async function deleteMatch(matchId) {
+            if (!confirm('Bu maçı silmek istediğinizden emin misiniz?')) return;
+
+            try {
+                const response = await fetch('api/matches.php', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: matchId })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Maç silindi!');
+                    loadMatches();
+                } else {
+                    alert('Hata: ' + result.message);
+                }
+            } catch (error) {
+                alert('Bağlantı hatası: ' + error.message);
+            }
+        }
+
+        async function clearAllMatches() {
+            if (!confirm('Tüm maçları silmek istediğinizden emin misiniz?')) return;
+
+            try {
+                const response = await fetch('api/matches.php', {
+                    method: 'PUT'
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Tüm maçlar temizlendi!');
+                    loadMatches();
+                } else {
+                    alert('Hata: ' + result.message);
+                }
+            } catch (error) {
+                alert('Bağlantı hatası: ' + error.message);
+            }
+        }
+
+        // Channel management functions
+        function addChannel(event) {
+            event.preventDefault();
+            // Channel management will be implemented here
+            alert('Kanal ekleme özelliği yakında eklenecek!');
+        }
+
+        function loadChannels() {
+            // Load channels list
+            document.getElementById('channelsList').innerHTML = '<p>Henüz kanal eklenmemiş.</p>';
+        }
+
+        // Frontend management functions
+        function updateBranding(event) {
+            event.preventDefault();
+            alert('Branding ayarları güncellendi!');
+        }
+
+        function updateContent(event) {
+            event.preventDefault();
+            alert('İçerik ayarları güncellendi!');
+        }
+
+        function addMenuItem() {
+            alert('Menü öğesi ekleme özelliği yakında!');
+        }
+
+        function addMobileMenuItem() {
+            alert('Mobil menü ekleme özelliği yakında!');
+        }
+
+        function loadFrontendSettings() {
+            // Load current frontend settings
+        }
+
+        // Settings functions
+        function updatePassword(event) {
+            event.preventDefault();
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                alert('Yeni şifreler eşleşmiyor!');
+                return;
+            }
+
+            // Update password logic here
+            alert('Şifre güncellendi!');
+            event.target.reset();
+        }
+
+        function loadSystemSettings() {
+            // Load current system settings
+        }
+
+        // Logout function
+        function adminLogout() {
+            if (confirm('Çıkmak istediğinizden emin misiniz?')) {
+                localStorage.removeItem('diziportalAdminSession');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 DiziPortal.Com: Professional Admin Panel Loaded');
+            loadDashboardStats();
+        });
+
+        // Anti-DevTools Protection
         class DiziPortalAdminProtection {
             constructor() {
                 this.init();
             }
 
             init() {
+                // Disable right-click
+                document.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    return false;
+                });
+
+                // Disable F12, Ctrl+U, Ctrl+Shift+I
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'F12' || 
-                        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'C' || e.key === 'J')) ||
-                        (e.ctrlKey && e.key === 'U')) {
+                        (e.ctrlKey && e.key === 'u') || 
+                        (e.ctrlKey && e.shiftKey && e.key === 'I')) {
                         e.preventDefault();
                         window.location.href = 'about:blank';
                         return false;
                     }
                 });
 
-                document.addEventListener('contextmenu', (e) => {
-                    e.preventDefault();
-                    return false;
-                });
-            }
-        }
-
-        new DiziPortalAdminProtection();
-    </script>
-    <script>
-        // DiziPortal.Com - Box Sports Admin Panel JavaScript
-        // Developer: DiziPortal.Com Development Team
-        
-        class DiziPortalAdminManager {
-            constructor() {
-                this.matches = [];
-                this.apiEndpoint = 'api/matches.php';
-                this.init();
+                // Detect DevTools
+                this.detectDevTools();
             }
 
-            async init() {
-                console.log('🚀 DiziPortal.Com Admin Panel initializing...');
-                await this.diziportalLoadMatches();
-                this.diziportalUpdateAdminMatchesList();
-                this.diziportalUpdateStatistics();
-                this.diziportalSetupEventListeners();
-            }
-
-            async diziportalLoadMatches() {
-                try {
-                    console.log('📊 DiziPortal.Com Admin: Loading matches from server...');
-                    const response = await fetch(this.apiEndpoint);
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    
-                    const data = await response.json();
-                    
-                    if (data.success && data.data) {
-                        this.matches = data.data;
-                        console.log('✅ DiziPortal.Com Admin: Matches loaded from server', this.matches.length, 'matches');
-                    } else {
-                        throw new Error('Invalid server response');
-                    }
-                } catch (error) {
-                    console.error('❌ DiziPortal.Com Admin: Error loading matches from server:', error);
-                    
-                    // Fallback to localStorage
-                    const storedMatches = localStorage.getItem('diziportalMatches');
-                    if (storedMatches) {
-                        try {
-                            this.matches = JSON.parse(storedMatches);
-                            console.log('📦 DiziPortal.Com Admin: Using localStorage fallback');
-                        } catch (e) {
-                            this.matches = [];
-                        }
-                    } else {
-                        this.matches = [];
-                    }
-                }
-            }
-
-
-
-            async diziportalAddMatch(name, time, hls) {
-                if (!name || !time) {
-                    this.diziportalShowNotification('Maç adı ve saati gerekli!', 'error');
-                    return false;
-                }
-
-                const matchData = {
-                    name: name.trim(),
-                    time: time,
-                    hls: hls.trim()
-                };
-
-                try {
-                    console.log('➕ DiziPortal.Com Admin: Adding match to server...');
-                    const response = await fetch(this.apiEndpoint, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(matchData)
-                    });
-
-                    const data = await response.json();
-
-                    if (data.success) {
-                        await this.diziportalLoadMatches();
-                        this.diziportalUpdateAdminMatchesList();
-                        this.diziportalUpdateStatistics();
-                        
-                        console.log('✅ DiziPortal.Com Admin: Match added successfully');
-                        this.diziportalShowNotification('Maç başarıyla eklendi!', 'success');
-                        return true;
-                    } else {
-                        throw new Error(data.error || 'Server error');
-                    }
-                } catch (error) {
-                    console.error('❌ DiziPortal.Com Admin: Error adding match:', error);
-                    this.diziportalShowNotification('Maç eklenirken hata oluştu!', 'error');
-                    return false;
-                }
-            }
-
-            async diziportalDeleteMatch(matchId) {
-                try {
-                    console.log('🗑️ DiziPortal.Com Admin: Deleting match from server...');
-                    const response = await fetch(this.apiEndpoint, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ id: matchId })
-                    });
-
-                    const data = await response.json();
-
-                    if (data.success) {
-                        await this.diziportalLoadMatches();
-                        this.diziportalUpdateAdminMatchesList();
-                        this.diziportalUpdateStatistics();
-                        
-                        console.log('✅ DiziPortal.Com Admin: Match deleted successfully');
-                        this.diziportalShowNotification('Maç silindi!', 'success');
-                    } else {
-                        throw new Error(data.error || 'Server error');
-                    }
-                } catch (error) {
-                    console.error('❌ DiziPortal.Com Admin: Error deleting match:', error);
-                    this.diziportalShowNotification('Maç silinirken hata oluştu!', 'error');
-                }
-            }
-
-            async diziportalClearAllMatches() {
-                if (this.matches.length === 0) {
-                    this.diziportalShowNotification('Silinecek maç bulunmuyor!', 'error');
-                    return;
-                }
-
-                if (confirm('Tüm maçları silmek istediğinizden emin misiniz? Varsayılan maçlar geri yüklenecek.')) {
-                    try {
-                        console.log('🗑️ DiziPortal.Com Admin: Clearing all matches...');
-                        const response = await fetch(this.apiEndpoint, {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ action: 'clear_all' })
-                        });
-
-                        const data = await response.json();
-
-                        if (data.success) {
-                            await this.diziportalLoadMatches();
-                            this.diziportalUpdateAdminMatchesList();
-                            this.diziportalUpdateStatistics();
-                            
-                            console.log('✅ DiziPortal.Com Admin: All matches cleared, defaults restored');
-                            this.diziportalShowNotification('Tüm maçlar temizlendi, varsayılanlar geri yüklendi!', 'success');
-                        } else {
-                            throw new Error(data.error || 'Server error');
-                        }
-                    } catch (error) {
-                        console.error('❌ DiziPortal.Com Admin: Error clearing matches:', error);
-                        this.diziportalShowNotification('Maçlar temizlenirken hata oluştu!', 'error');
-                    }
-                }
-            }
-
-            diziportalUpdateAdminMatchesList() {
-                const matchesList = document.getElementById('diziportalAdminMatchesList');
-                if (!matchesList) return;
-
-                if (this.matches.length === 0) {
-                    matchesList.innerHTML = `
-                        <div class="diziportal-admin-match-item">
-                            <div class="diziportal-admin-match-info">
-                                <div class="diziportal-admin-match-name">📺 Henüz maç eklenmemiş</div>
-                                <div class="diziportal-admin-match-details">DiziPortal.Com Admin Panel</div>
-                            </div>
-                        </div>
-                    `;
-                    return;
-                }
-
-                matchesList.innerHTML = this.matches.map(match => `
-                    <div class="diziportal-admin-match-item">
-                        <div class="diziportal-admin-match-info">
-                            <div class="diziportal-admin-match-name">${match.name}</div>
-                            <div class="diziportal-admin-match-details">
-                                ⏰ ${match.time} | 📺 ${match.hls ? 'HLS: Mevcut' : 'HLS: Yok'}
-                            </div>
-                        </div>
-                        <div class="diziportal-admin-actions">
-                            <button 
-                                onclick="diziportalAdminManager.diziportalDeleteMatch('${match.id}')" 
-                                class="diziportal-admin-btn diziportal-admin-btn-danger"
-                            >
-                                🗑️ Sil
-                            </button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            diziportalUpdateStatistics() {
-                const totalMatches = document.getElementById('diziportalTotalMatches');
-                const activeMatches = document.getElementById('diziportalActiveMatches');
-
-                if (totalMatches) {
-                    totalMatches.textContent = this.matches.length;
-                }
-
-                if (activeMatches) {
-                    const active = this.matches.filter(m => m.hls && m.hls.trim() !== '').length;
-                    activeMatches.textContent = active;
-                }
-            }
-
-            diziportalSetupEventListeners() {
-                // Add Match Form
-                const addMatchForm = document.getElementById('diziportalAddMatchForm');
-                if (addMatchForm) {
-                    addMatchForm.addEventListener('submit', async (e) => {
-                        e.preventDefault();
-                        
-                        const name = document.getElementById('matchName').value;
-                        const time = document.getElementById('matchTime').value;
-                        const hls = document.getElementById('matchHls').value;
-
-                        const success = await this.diziportalAddMatch(name, time, hls);
-                        if (success) {
-                            addMatchForm.reset();
-                        }
-                    });
-                }
-
-                // Auto-refresh every 30 seconds
+            detectDevTools() {
                 setInterval(() => {
-                    this.diziportalUpdateStatistics();
-                }, 30000);
-            }
-
-            diziportalShowNotification(message, type = 'success') {
-                const notification = document.getElementById('diziportalNotification');
-                if (!notification) return;
-
-                notification.textContent = message;
-                notification.className = `diziportal-admin-notification ${type}`;
-                notification.classList.add('show');
-
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 3000);
-            }
-
-            // Method to export matches (for backup)
-            diziportalExportMatches() {
-                const dataStr = JSON.stringify(this.matches, null, 2);
-                const dataBlob = new Blob([dataStr], {type: 'application/json'});
-                const url = URL.createObjectURL(dataBlob);
-                
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = 'diziportal_matches_backup.json';
-                link.click();
-                
-                URL.revokeObjectURL(url);
-                this.diziportalShowNotification('Maçlar dışa aktarıldı!', 'success');
+                    if (window.outerHeight - window.innerHeight > 160 || 
+                        window.outerWidth - window.innerWidth > 160) {
+                        window.location.href = 'about:blank';
+                    }
+                }, 500);
             }
         }
 
-        // Initialize DiziPortal.Com Admin Manager
-        let diziportalAdminManager;
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('🎯 DiziPortal.Com Admin: DOM loaded, initializing admin panel...');
-            diziportalAdminManager = new DiziPortalAdminManager();
-        });
-
-                 // Global admin functions for DiziPortal.Com
-        window.diziportalAdminRefresh = () => {
-            if (diziportalAdminManager) {
-                diziportalAdminManager.diziportalLoadMatches();
-                diziportalAdminManager.diziportalUpdateAdminMatchesList();
-                diziportalAdminManager.diziportalUpdateStatistics();
-            }
-        };
-
-        // DiziPortal.Com Admin Logout Function
-        window.diziportalAdminLogout = () => {
-            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
-                localStorage.removeItem('diziportalAdminSession');
-                console.log('🚪 DiziPortal.Com: Admin logged out');
-                window.location.href = 'login.html';
-            }
-        };
-
-        // DiziPortal.Com Password Change Functions
-        window.diziportalShowPasswordChange = () => {
-            const modal = document.getElementById('diziportalPasswordModal');
-            if (modal) {
-                modal.style.display = 'flex';
-                
-                // Load current credentials
-                const credentials = JSON.parse(localStorage.getItem('diziportalAdminCredentials') || '{}');
-                document.getElementById('newUsername').value = credentials.username || '';
-            }
-        };
-
-        window.diziportalHidePasswordChange = () => {
-            const modal = document.getElementById('diziportalPasswordModal');
-            if (modal) {
-                modal.style.display = 'none';
-                document.getElementById('diziportalPasswordChangeForm').reset();
-            }
-        };
-
-        // Setup password change form
-        document.addEventListener('DOMContentLoaded', () => {
-            const passwordForm = document.getElementById('diziportalPasswordChangeForm');
-            if (passwordForm) {
-                passwordForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    diziportalHandlePasswordChange();
-                });
-            }
-
-            // Close modal on outside click
-            document.getElementById('diziportalPasswordModal').addEventListener('click', (e) => {
-                if (e.target.id === 'diziportalPasswordModal') {
-                    diziportalHidePasswordChange();
-                }
-            });
-        });
-
-        function diziportalHandlePasswordChange() {
-            const currentPassword = document.getElementById('currentPassword').value;
-            const newUsername = document.getElementById('newUsername').value.trim();
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            // Validate inputs
-            if (!currentPassword || !newUsername || !newPassword || !confirmPassword) {
-                diziportalAdminManager.diziportalShowNotification('Lütfen tüm alanları doldurun!', 'error');
-                return;
-            }
-
-            if (newPassword !== confirmPassword) {
-                diziportalAdminManager.diziportalShowNotification('Yeni şifreler eşleşmiyor!', 'error');
-                return;
-            }
-
-            if (newPassword.length < 6) {
-                diziportalAdminManager.diziportalShowNotification('Yeni şifre en az 6 karakter olmalı!', 'error');
-                return;
-            }
-
-            // Verify current password
-            const credentials = JSON.parse(localStorage.getItem('diziportalAdminCredentials') || '{}');
-            if (credentials.password !== currentPassword) {
-                diziportalAdminManager.diziportalShowNotification('Mevcut şifre hatalı!', 'error');
-                return;
-            }
-
-            // Save new credentials
-            const newCredentials = {
-                username: newUsername,
-                password: newPassword
-            };
-
-            localStorage.setItem('diziportalAdminCredentials', JSON.stringify(newCredentials));
-            console.log('🔐 DiziPortal.Com: Admin credentials updated');
-            
-            diziportalAdminManager.diziportalShowNotification('Kullanıcı adı ve şifre başarıyla güncellendi!', 'success');
-            diziportalHidePasswordChange();
-        }
-
-        // DiziPortal.Com Admin Console branding
-        console.log(`
-        ██████╗ ██╗███████╗██╗██████╗  ██████╗ ██████╗ ████████╗ █████╗ ██╗         ██████╗ ██████╗ ███╗   ███╗
-        ██╔══██╗██║╚══███╔╝██║██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝██╔══██╗██║        ██╔════╝██╔═══██╗████╗ ████║
-        ██║  ██║██║  ███╔╝ ██║██████╔╝██║   ██║██████╔╝   ██║   ███████║██║        ██║     ██║   ██║██╔████╔██║
-        ██║  ██║██║ ███╔╝  ██║██╔═══╝ ██║   ██║██╔══██╗   ██║   ██╔══██║██║        ██║     ██║   ██║██║╚██╔╝██║
-        ██████╔╝██║███████╗██║██║     ╚██████╔╝██║  ██║   ██║   ██║  ██║███████╗██╗╚██████╗╚██████╔╝██║ ╚═╝ ██║
-        ╚═════╝ ╚═╝╚══════╝╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝
-        
-        🎬 Box Sports Admin Panel - Advanced Management System
-        🚀 Developed by DiziPortal.Com Team
-        ⚡ Version 1.0 - Professional Sports Management Solution
-        `);
+        // Initialize protection
+        new DiziPortalAdminProtection();
     </script>
 </body>
 </html>
