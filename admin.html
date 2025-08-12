@@ -1049,7 +1049,7 @@
 
         // Dashboard functions
         function loadDashboardStats() {
-            // Update statistics
+            // Update matches statistics
             fetch('api/matches.php')
                 .then(response => response.json())
                 .then(data => {
@@ -1057,7 +1057,17 @@
                         document.getElementById('totalMatches').textContent = data.data.length;
                     }
                 })
-                .catch(error => console.error('Error loading stats:', error));
+                .catch(error => console.error('Error loading matches stats:', error));
+
+            // Update channels statistics
+            fetch('api/channels.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('totalChannels').textContent = data.data.length;
+                    }
+                })
+                .catch(error => console.error('Error loading channels stats:', error));
 
             // Load recent activities
             const activities = [
@@ -1199,15 +1209,140 @@
         }
 
         // Channel management functions
-        function addChannel(event) {
+        async function addChannel(event) {
             event.preventDefault();
-            // Channel management will be implemented here
-            alert('Kanal ekleme özelliği yakında eklenecek!');
+            
+            const formData = {
+                name: document.getElementById('channelName').value,
+                category: document.getElementById('channelCategory').value,
+                logo: document.getElementById('channelLogo').value,
+                hls: document.getElementById('channelHls').value,
+                active: document.getElementById('channelActive').checked
+            };
+
+            try {
+                const response = await fetch('api/channels.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Kanal başarıyla eklendi!');
+                    event.target.reset();
+                    loadChannels();
+                } else {
+                    alert('Hata: ' + result.message);
+                }
+            } catch (error) {
+                alert('Bağlantı hatası: ' + error.message);
+            }
         }
 
-        function loadChannels() {
-            // Load channels list
-            document.getElementById('channelsList').innerHTML = '<p>Henüz kanal eklenmemiş.</p>';
+        async function loadChannels() {
+            try {
+                const response = await fetch('api/channels.php');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const channelsHtml = result.data.map(channel => `
+                        <div class="admin-card" style="margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <img src="${channel.logo || 'https://via.placeholder.com/50x50/dc2626/ffffff?text=TV'}" 
+                                         alt="${channel.name}" style="width: 50px; height: 50px; border-radius: 8px;">
+                                    <div>
+                                        <h4>${channel.name}</h4>
+                                        <p style="color: var(--admin-text-muted); margin: 0.5rem 0;">${channel.category}</p>
+                                        <p style="font-size: 0.875rem; color: var(--admin-text-muted);">
+                                            ${channel.hls.substring(0, 50)}...
+                                        </p>
+                                        <span style="padding: 2px 8px; background: ${channel.active ? 'var(--admin-success)' : 'var(--admin-accent)'}; 
+                                                     color: white; border-radius: 4px; font-size: 0.75rem;">
+                                            ${channel.active ? 'Aktif' : 'Pasif'}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <button class="admin-btn admin-btn-secondary" onclick="toggleChannelStatus('${channel.id}', ${!channel.active})">
+                                        <i class="fas fa-power-off"></i>
+                                        ${channel.active ? 'Pasifleştir' : 'Aktifleştir'}
+                                    </button>
+                                    <button class="admin-btn admin-btn-danger" onclick="deleteChannel('${channel.id}')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    document.getElementById('channelsList').innerHTML = channelsHtml || '<p>Henüz kanal eklenmemiş.</p>';
+                }
+            } catch (error) {
+                console.error('Error loading channels:', error);
+            }
+        }
+
+        async function deleteChannel(channelId) {
+            if (!confirm('Bu kanalı silmek istediğinizden emin misiniz?')) return;
+
+            try {
+                const response = await fetch('api/channels.php', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: channelId })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Kanal silindi!');
+                    loadChannels();
+                } else {
+                    alert('Hata: ' + result.message);
+                }
+            } catch (error) {
+                alert('Bağlantı hatası: ' + error.message);
+            }
+        }
+
+        async function toggleChannelStatus(channelId, newStatus) {
+            try {
+                // First get the channel data
+                const getResponse = await fetch('api/channels.php');
+                const getResult = await getResponse.json();
+                
+                if (!getResult.success) {
+                    throw new Error('Failed to load channel data');
+                }
+                
+                const channel = getResult.data.find(ch => ch.id === channelId);
+                if (!channel) {
+                    throw new Error('Channel not found');
+                }
+                
+                // Update the channel
+                const updateData = {
+                    ...channel,
+                    active: newStatus
+                };
+                
+                const response = await fetch('api/channels.php', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updateData)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert(`Kanal ${newStatus ? 'aktifleştirildi' : 'pasifleştirildi'}!`);
+                    loadChannels();
+                } else {
+                    alert('Hata: ' + result.message);
+                }
+            } catch (error) {
+                alert('Bağlantı hatası: ' + error.message);
+            }
         }
 
         // Frontend management functions
@@ -1267,6 +1402,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             console.log('🚀 DiziPortal.Com: Professional Admin Panel Loaded');
             loadDashboardStats();
+            loadChannels(); // Load channels on startup
         });
 
         // Anti-DevTools Protection

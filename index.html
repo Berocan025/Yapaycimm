@@ -31,1070 +31,612 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="apple-touch-icon" href="https://i.hizliresim.com/inetemu.png">
     
-    <!-- DiziPortal.Com Player.js Integration -->
-    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-    <script src="https://unpkg.com/hls.js@latest/dist/hls.min.js"></script>
+    <!-- Player.js Integration -->
     <script src="https://cdn.playerjs.com/latest/player.js"></script>
     
-    <!-- diziportal CSS Styles -->
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        /* DiziPortal.Com - Dizi Portal Sports Professional Platform - Developer: DiziPortal.Com Team */
+        /* DiziPortal.Com - Dizi Portal Sports Professional Platform */
         
         :root {
-            /* Primary Sports Theme Colors */
-            --diziportal-primary: #1a237e;          /* Deep Blue */
-            --diziportal-secondary: #00c853;        /* Sports Green */
-            --diziportal-accent: #ff6f00;           /* Orange Accent */
-            --diziportal-success: #2e7d32;          /* Success Green */
-            --diziportal-warning: #f57c00;          /* Warning Orange */
-            --diziportal-danger: #d32f2f;           /* Red Danger */
-            
-            /* Background Colors */
-            --diziportal-bg-primary: #0d1421;       /* Dark Navy */
-            --diziportal-bg-secondary: #1a1a2e;     /* Dark Purple */
-            --diziportal-bg-card: #16213e;          /* Card Background */
-            --diziportal-bg-overlay: rgba(13, 20, 33, 0.95);
-            
-            /* Text Colors */
-            --diziportal-text-primary: #ffffff;     /* Primary Text */
-            --diziportal-text-secondary: #b0bec5;   /* Secondary Text */
-            --diziportal-text-muted: #78909c;       /* Muted Text */
-            
-            /* Gradient Colors */
-            --diziportal-gradient-primary: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
-            --diziportal-gradient-secondary: linear-gradient(135deg, #00c853 0%, #43a047 50%, #66bb6a 100%);
-            --diziportal-gradient-accent: linear-gradient(135deg, #ff6f00 0%, #ff8f00 50%, #ffa000 100%);
-            
-            /* Shadow Colors */
-            --diziportal-shadow-primary: 0 8px 32px rgba(26, 35, 126, 0.3);
-            --diziportal-shadow-secondary: 0 4px 16px rgba(0, 200, 83, 0.2);
-            --diziportal-shadow-dark: 0 8px 32px rgba(0, 0, 0, 0.4);
+            /* Red-Black Theme Colors */
+            --primary-black: #0a0a0a;
+            --secondary-black: #1a1a1a;
+            --tertiary-black: #2a2a2a;
+            --primary-red: #dc2626;
+            --secondary-red: #ef4444;
+            --accent-red: #fee2e2;
+            --text-white: #ffffff;
+            --text-gray: #d1d5db;
+            --text-muted: #9ca3af;
+            --border-color: #374151;
+            --success-green: #10b981;
+            --warning-orange: #f59e0b;
         }
-        .diziportal-reset {
+
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        .diziportal-body {
+        body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0e1628 75%, #1a1a2e 100%);
-            color: #ffffff;
-            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-black) 0%, var(--secondary-black) 100%);
+            color: var(--text-white);
+            line-height: 1.6;
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* DiziPortal.Com Sports Themed Background */
-        .diziportal-body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 15% 85%, rgba(0, 255, 136, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 85% 15%, rgba(255, 107, 107, 0.06) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.04) 0%, transparent 50%);
-            z-index: -2;
-            animation: diziportalSportsFloat 15s ease-in-out infinite;
-        }
-
-        .diziportal-body::after {
-            content: '⚽ 🏀 🏈 ⚽ 🏀 🏈 ⚽ 🏀 🏈 ⚽ 🏀 🏈';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            font-size: 2rem;
-            opacity: 0.03;
-            z-index: -1;
-            white-space: pre;
-            line-height: 4rem;
-            animation: diziportalSportsScroll 30s linear infinite;
-            pointer-events: none;
-        }
-
-        @keyframes diziportalSportsFloat {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            33% { transform: translateY(-10px) rotate(0.5deg); }
-            66% { transform: translateY(5px) rotate(-0.5deg); }
-        }
-
-        @keyframes diziportalSportsScroll {
-            0% { transform: translateY(100vh); }
-            100% { transform: translateY(-100vh); }
-        }
-
-        .diziportal-header {
-            background: rgba(15, 15, 35, 0.95);
-            padding: 1rem 0;
-            border-bottom: 2px solid #00ff88;
-            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.2);
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-black) 0%, var(--tertiary-black) 100%);
+            border-bottom: 2px solid var(--primary-red);
+            box-shadow: 0 4px 20px rgba(220, 38, 38, 0.3);
             position: sticky;
             top: 0;
             z-index: 1000;
-            backdrop-filter: blur(10px);
         }
 
-        .diziportal-container {
+        .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 1rem;
         }
 
-        .diziportal-nav {
+        .nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            position: relative;
+            padding: 1rem 0;
         }
 
-        .diziportal-logo {
-            font-size: 2rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, #00ff88, #00d4ff);
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary-red), var(--secondary-red));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            text-shadow: 0 0 30px rgba(220, 38, 38, 0.5);
         }
 
-        .diziportal-nav-links {
+        .nav-links {
             display: flex;
-            gap: 2rem;
             list-style: none;
-            margin: 0;
-            padding: 0;
+            gap: 2rem;
         }
 
-        .diziportal-nav-link {
-            color: #ffffff;
+        .nav-link {
+            color: var(--text-gray);
             text-decoration: none;
             padding: 0.5rem 1rem;
-            border-radius: 25px;
+            border-radius: 8px;
             transition: all 0.3s ease;
-            border: 1px solid transparent;
+            font-weight: 500;
         }
 
-        .diziportal-nav-link:hover {
-            background: rgba(0, 255, 136, 0.1);
-            border-color: #00ff88;
+        .nav-link:hover {
+            color: var(--text-white);
+            background: rgba(220, 38, 38, 0.2);
             transform: translateY(-2px);
         }
 
-        .diziportal-main {
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-red);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        /* Main Content */
+        .main-content {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 2rem;
             padding: 2rem 0;
-            min-height: calc(100vh - 200px);
+            min-height: calc(100vh - 120px);
         }
 
-        .diziportal-player-section {
-            background: rgba(26, 26, 46, 0.8);
-            border-radius: 15px;
-            padding: 1.5rem;
-            border: 1px solid rgba(0, 255, 136, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        /* Player Section */
+        .player-section {
+            background: var(--secondary-black);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            height: fit-content;
         }
 
-        .diziportal-player-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #00ff88;
+        .player-header {
+            background: linear-gradient(90deg, var(--primary-red), var(--secondary-red));
+            padding: 1rem;
             text-align: center;
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
         }
 
-        .diziportal-video-container {
+        .player-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .player-container {
             position: relative;
             width: 100%;
             height: 500px;
-            background: var(--diziportal-bg-primary);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--diziportal-shadow-dark);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--primary-black);
         }
 
-        .diziportal-player-wrapper {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        /* Player.js Custom Styling */
-        .diziportal-playerjs-container {
+        .player-wrapper {
             width: 100%;
             height: 100%;
             position: relative;
         }
 
-        .diziportal-playerjs-container iframe {
+        #player {
             width: 100%;
             height: 100%;
-            border: none;
-            border-radius: 12px;
         }
 
-        /* Match Info Overlay */
-        .diziportal-match-info-overlay {
+        .player-overlay {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, var(--diziportal-bg-overlay), rgba(0, 0, 0, 0.8));
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.9), rgba(42, 42, 42, 0.8));
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: var(--diziportal-text-primary);
+            color: var(--text-white);
             z-index: 10;
-            border-radius: 12px;
         }
 
-        .diziportal-teams-container {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .diziportal-team {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.8rem;
-            min-width: 120px;
-        }
-
-        .diziportal-team-logo {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--diziportal-secondary);
-            box-shadow: var(--diziportal-shadow-secondary);
-            background: var(--diziportal-bg-card);
-            padding: 8px;
-        }
-
-        .diziportal-team-name {
-            font-size: 1.1rem;
-            font-weight: bold;
-            text-align: center;
-            color: var(--diziportal-text-primary);
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-        }
-
-        .diziportal-vs-separator {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--diziportal-gradient-accent);
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: white;
-            box-shadow: var(--diziportal-shadow-dark);
-            animation: pulse 2s infinite;
-        }
-
-        .diziportal-match-time {
-            font-size: 1rem;
-            color: var(--diziportal-text-secondary);
-            text-align: center;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-        }
-
-        /* Mobile adjustments for teams */
-        @media (max-width: 768px) {
-            .diziportal-teams-container {
-                gap: 1rem;
-            }
-
-            .diziportal-team-logo {
-                width: 60px;
-                height: 60px;
-            }
-
-            .diziportal-team-name {
-                font-size: 0.9rem;
-            }
-
-            .diziportal-vs-separator {
-                width: 50px;
-                height: 50px;
-                font-size: 1rem;
-            }
-        }
-
-        .diziportal-video-player {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: transparent;
-        }
-
-        /* Custom Video.js Styling */
-        .video-js {
-            width: 100%;
-            height: 100%;
-            border-radius: 10px;
-            background-color: #000;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .video-js .vjs-big-play-button {
-            background: linear-gradient(45deg, rgba(0, 255, 136, 0.95), rgba(0, 212, 255, 0.95));
-            border: 2px solid rgba(255, 255, 255, 0.9);
-            border-radius: 50%;
-            width: 70px;
-            height: 70px;
-            line-height: 66px;
-            font-size: 20px;
-            left: 50%;
-            top: 50%;
-            margin-left: -35px;
-            margin-top: -35px;
-            transition: all 0.4s ease;
-        }
-
-        .video-js .vjs-big-play-button:hover {
-            background: linear-gradient(45deg, #00ff88, #00d4ff);
-            transform: scale(1.15);
-            box-shadow: 0 0 25px rgba(0, 255, 136, 0.7);
-        }
-
-        .video-js .vjs-control-bar {
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.2));
-            backdrop-filter: blur(8px);
-            border-radius: 0 0 10px 10px;
-            height: 40px;
-            padding: 0 10px;
-        }
-
-        .video-js .vjs-button {
-            height: 40px;
-            width: 40px;
-        }
-
-        .video-js .vjs-button > .vjs-icon-placeholder:before {
-            color: #ffffff;
-            font-size: 16px;
-        }
-
-        .video-js .vjs-button:hover > .vjs-icon-placeholder:before {
-            color: #00ff88;
-        }
-
-        .video-js .vjs-progress-control {
-            height: 40px;
-        }
-
-        .video-js .vjs-progress-control .vjs-progress-holder {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 3px;
-            height: 4px;
-        }
-
-        .video-js .vjs-progress-control .vjs-play-progress {
-            background: linear-gradient(90deg, #00ff88, #00d4ff);
-            border-radius: 3px;
-        }
-
-        .video-js .vjs-progress-control .vjs-load-progress {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .video-js .vjs-volume-panel .vjs-volume-control {
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 5px;
-        }
-
-        .video-js .vjs-volume-level {
-            background: linear-gradient(90deg, #00ff88, #00d4ff);
-        }
-
-        .video-js .vjs-time-control {
-            color: #ffffff;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .video-js .vjs-poster {
-            background-size: cover;
-            background-position: center;
-            border-radius: 10px;
-        }
-
-        /* Fullscreen improvements */
-        .video-js.vjs-fullscreen {
-            border-radius: 0;
-        }
-
-        .video-js.vjs-fullscreen .vjs-control-bar {
-            border-radius: 0;
-        }
-
-        /* Custom Loading Animation */
-        .diziportal-loading-spinner {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(0, 255, 136, 0.3);
-            border-top: 4px solid #00ff88;
-            border-radius: 50%;
-            animation: diziportalSpin 1s linear infinite;
-            z-index: 100;
-        }
-
-        @keyframes diziportalSpin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        /* Quality Selector */
-        .diziportal-quality-selector {
-            position: absolute;
-            bottom: 60px;
-            right: 15px;
-            z-index: 1000;
-        }
-
-        .diziportal-quality-btn {
-            background: rgba(0, 0, 0, 0.8);
-            color: #00ff88;
-            border: 1px solid rgba(0, 255, 136, 0.6);
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .diziportal-quality-btn:hover {
-            background: rgba(0, 255, 136, 0.2);
-            transform: translateY(-1px);
-        }
-
-        /* Live Badge */
-        .diziportal-live-badge {
+        .player-logo {
             position: absolute;
             top: 15px;
-            left: 15px;
-            background: linear-gradient(45deg, #ff0000, #ff4444);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            z-index: 1001;
-            animation: pulse 2s infinite;
-            box-shadow: 0 2px 10px rgba(255, 0, 0, 0.3);
-        }
-
-        /* Error Display */
-        .diziportal-player-error {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, rgba(20, 20, 30, 0.95), rgba(30, 30, 40, 0.95));
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-align: center;
-            border-radius: 15px;
-            z-index: 200;
-        }
-
-        .diziportal-error-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: #ff6b6b;
-        }
-
-        .diziportal-error-title {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: #ff6b6b;
-        }
-
-        .diziportal-error-message {
-            font-size: 1rem;
-            margin-bottom: 1rem;
+            right: 15px;
+            z-index: 100;
             opacity: 0.8;
         }
 
-        .diziportal-retry-btn {
-            background: linear-gradient(45deg, #00ff88, #00d4ff);
-            color: #000;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 25px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .player-logo img {
+            height: 40px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
         }
 
-        .diziportal-retry-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
-        }
-
-        .diziportal-player-logo {
+        .live-badge {
             position: absolute;
             top: 15px;
-            right: 15px;
-            z-index: 999;
-            pointer-events: none;
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
-        }
-
-        .diziportal-player-logo img {
-            height: 35px;
-            width: auto;
-            border-radius: 5px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-            filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.8));
-        }
-
-        .diziportal-player-logo:hover {
-            opacity: 0.9;
-        }
-
-        /* Full Height Player Optimization */
-        .diziportal-player-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .diziportal-content {
-            display: flex;
-            flex-direction: column;
-            min-height: calc(100vh - 80px); /* Subtract header height */
-        }
-
-        .diziportal-main-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 2rem;
-            flex: 1;
-            align-items: start;
-        }
-
-        /* Mobile adjustments */
-        @media (max-width: 1024px) {
-            .diziportal-main-content {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .diziportal-video-container {
-                height: 60vh;
-                min-height: 350px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .diziportal-video-container {
-                height: 50vh;
-                min-height: 280px;
-            }
-
-            .diziportal-player-logo {
-                top: 10px;
-                right: 10px;
-            }
-            
-            .diziportal-player-logo img {
-                height: 28px;
-            }
-
-            .diziportal-live-badge {
-                top: 10px;
-                left: 10px;
-                padding: 6px 10px;
-                font-size: 10px;
-            }
-
-            .diziportal-teams-container {
-                gap: 1rem;
-            }
-
-            .diziportal-team-logo {
-                width: 60px;
-                height: 60px;
-            }
-
-            .diziportal-team-name {
-                font-size: 0.9rem;
-            }
-
-            .diziportal-vs-separator {
-                width: 50px;
-                height: 50px;
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .diziportal-video-container {
-                height: 45vh;
-                min-height: 250px;
-            }
-
-            .diziportal-main-content {
-                gap: 1rem;
-            }
-
-            .diziportal-content {
-                min-height: calc(100vh - 60px);
-            }
-        }
-
-        .diziportal-no-match {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            color: #888;
-            font-size: 1.2rem;
-            background: linear-gradient(45deg, #1a1a2e, #16213e);
-            text-align: center;
-            flex-direction: column;
-        }
-
-        .diziportal-no-match h3 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #00ff88, #00d4ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .diziportal-no-match p {
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .diziportal-no-match small {
-            opacity: 0.7;
-            font-size: 0.9rem;
-        }
-
-        /* DiziPortal.Com Video Player Controls */
-        .diziportal-video-controls {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-            padding: 1rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .diziportal-video-container:hover .diziportal-video-controls {
-            opacity: 1;
-        }
-
-        .diziportal-video-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            left: 15px;
+            background: linear-gradient(45deg, var(--primary-red), var(--secondary-red));
             color: white;
-            font-size: 0.9rem;
-        }
-
-        .diziportal-live-badge {
-            background: linear-gradient(45deg, #ff0000, #ff4444);
-            color: white;
-            padding: 0.3rem 0.8rem;
+            padding: 8px 12px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 12px;
             font-weight: bold;
+            z-index: 100;
             animation: pulse 2s infinite;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
+            display: none;
         }
 
-        .diziportal-quality-badge {
-            background: rgba(0, 255, 136, 0.2);
-            border: 1px solid rgba(0, 255, 136, 0.5);
-            color: #00ff88;
-            padding: 0.2rem 0.6rem;
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Matches Section */
+        .matches-section {
+            background: var(--secondary-black);
             border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: bold;
+            border: 1px solid var(--border-color);
         }
 
-        .diziportal-matches-section {
-            background: rgba(26, 26, 46, 0.8);
-            border-radius: 15px;
-            padding: 1.5rem;
-            border: 1px solid rgba(0, 255, 136, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            max-height: 600px;
+        .section-header {
+            background: linear-gradient(90deg, var(--primary-red), var(--secondary-red));
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .section-header h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .matches-list {
+            padding: 1rem;
+            max-height: 400px;
             overflow-y: auto;
         }
 
-        .diziportal-matches-title {
-            font-size: 1.5rem;
+        .match-item {
+            background: linear-gradient(135deg, var(--tertiary-black), var(--secondary-black));
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1rem;
             margin-bottom: 1rem;
-            color: #00ff88;
-            text-align: center;
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-        }
-
-        .diziportal-match-item {
-            background: linear-gradient(135deg, rgba(15, 15, 35, 0.9), rgba(26, 26, 46, 0.9));
-            margin-bottom: 1rem;
-            padding: 1.2rem;
-            border-radius: 12px;
-            border: 1px solid rgba(0, 255, 136, 0.2);
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .diziportal-match-item::before {
+        .match-item::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(220, 38, 38, 0.1), transparent);
             transition: left 0.5s ease;
         }
 
-        .diziportal-match-item:hover {
-            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 212, 255, 0.1));
-            border-color: #00ff88;
-            transform: translateX(8px) translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
-        }
-
-        .diziportal-match-item:hover::before {
+        .match-item:hover::before {
             left: 100%;
         }
 
-        .diziportal-match-item.active {
-            background: rgba(0, 255, 136, 0.2);
-            border-color: #00ff88;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+        .match-item:hover {
+            border-color: var(--primary-red);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.3);
         }
 
-        .diziportal-match-name {
-            font-weight: bold;
-            font-size: 1.1rem;
+        .match-teams {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 0.5rem;
-            color: #ffffff;
+        }
+
+        .team {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            position: relative;
-            z-index: 1;
+            flex: 1;
         }
 
-        .diziportal-match-time {
-            color: #00ff88;
+        .team-logo {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-red);
+        }
+
+        .team-name {
+            font-weight: 600;
+            color: var(--text-white);
             font-size: 0.9rem;
-            position: relative;
-            z-index: 1;
+        }
+
+        .vs-separator {
+            font-weight: bold;
+            color: var(--primary-red);
+            font-size: 1.1rem;
+            margin: 0 0.5rem;
+        }
+
+        .match-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .match-time {
+            font-weight: 500;
+        }
+
+        .match-status {
+            padding: 2px 6px;
+            background: var(--success-green);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.7rem;
+        }
+
+        /* Channels Section */
+        .channels-section {
+            background: var(--secondary-black);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .channels-list {
+            padding: 1rem;
+        }
+
+        .channel-item {
             display: flex;
             align-items: center;
-            gap: 0.3rem;
-        }
-
-
-
-        .diziportal-footer {
-            background: linear-gradient(135deg, rgba(15, 15, 35, 0.95), rgba(26, 26, 46, 0.95));
-            padding: 2rem 0;
-            text-align: center;
-            border-top: 2px solid #00ff88;
-            margin-top: 2rem;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .diziportal-footer-content {
-            color: #888;
-        }
-
-        .diziportal-footer-brand {
-            color: #00ff88;
-            font-weight: bold;
-        }
-
-        /* DiziPortal.Com Hamburger Menu */
-        .diziportal-hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            padding: 0.5rem;
-            background: rgba(0, 255, 136, 0.1);
+            gap: 1rem;
+            padding: 0.75rem;
+            background: var(--tertiary-black);
             border-radius: 8px;
-            border: 1px solid rgba(0, 255, 136, 0.3);
+            margin-bottom: 0.5rem;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .diziportal-hamburger:hover {
-            background: rgba(0, 255, 136, 0.2);
-            transform: scale(1.05);
+        .channel-item:hover {
+            background: var(--border-color);
+            transform: translateX(5px);
         }
 
-        .diziportal-hamburger span {
-            width: 25px;
-            height: 3px;
-            background: linear-gradient(45deg, #00ff88, #00d4ff);
-            margin: 3px 0;
-            transition: 0.3s;
-            border-radius: 2px;
+        .channel-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
         }
 
-        .diziportal-hamburger.active span:nth-child(1) {
-            transform: rotate(-45deg) translate(-5px, 6px);
+        .channel-info {
+            flex: 1;
         }
 
-        .diziportal-hamburger.active span:nth-child(2) {
-            opacity: 0;
+        .channel-name {
+            font-weight: 600;
+            color: var(--text-white);
+            margin-bottom: 0.2rem;
         }
 
-        .diziportal-hamburger.active span:nth-child(3) {
-            transform: rotate(45deg) translate(-5px, -6px);
+        .channel-category {
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
 
-        /* DiziPortal.Com Mobile Menu */
-        .diziportal-mobile-menu {
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
             position: fixed;
             top: 0;
-            right: -100%;
+            left: -100%;
             width: 80%;
-            max-width: 300px;
             height: 100vh;
-            background: linear-gradient(135deg, rgba(15, 15, 35, 0.98) 0%, rgba(26, 26, 46, 0.98) 100%);
-            backdrop-filter: blur(20px);
-            border-left: 2px solid rgba(0, 255, 136, 0.3);
-            transition: right 0.3s ease;
+            background: linear-gradient(135deg, var(--primary-black), var(--secondary-black));
             z-index: 2000;
+            transition: left 0.3s ease;
+            border-right: 2px solid var(--primary-red);
+        }
+
+        .mobile-menu.active {
+            left: 0;
+        }
+
+        .mobile-menu-header {
+            padding: 2rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .mobile-menu-links {
             padding: 2rem 0;
-            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
         }
 
-        .diziportal-mobile-menu.active {
-            right: 0;
-        }
-
-        .diziportal-mobile-menu-header {
-            padding: 0 2rem 2rem 2rem;
-            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
-            margin-bottom: 2rem;
-        }
-
-        .diziportal-mobile-menu-logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, #00ff88, #00d4ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .diziportal-mobile-menu-links {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .diziportal-mobile-menu-link {
+        .mobile-menu-link {
             display: block;
-            color: #ffffff;
-            text-decoration: none;
             padding: 1rem 2rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-gray);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-color);
             transition: all 0.3s ease;
-            font-size: 1.1rem;
         }
 
-        .diziportal-mobile-menu-link:hover {
-            background: rgba(0, 255, 136, 0.1);
-            padding-left: 2.5rem;
-            color: #00ff88;
+        .mobile-menu-link:hover {
+            background: rgba(220, 38, 38, 0.2);
+            color: var(--text-white);
         }
 
-        .diziportal-mobile-overlay {
+        .mobile-overlay {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.7);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
             z-index: 1999;
         }
 
-        .diziportal-mobile-overlay.active {
-            opacity: 1;
-            visibility: visible;
+        .mobile-overlay.active {
+            display: block;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary-black);
+            border-top: 2px solid var(--primary-red);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            color: var(--text-muted);
+        }
+
+        .footer-brand {
+            color: var(--primary-red);
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-top: 2px solid var(--primary-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* Responsive Design */
-        @media (max-width: 768px) {
-            .diziportal-main {
+        @media (max-width: 1024px) {
+            .main-content {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
-                padding: 1.5rem 0;
             }
-            
-            .diziportal-nav-links {
+
+            .player-container {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
                 display: none;
             }
-            
-            .diziportal-hamburger {
+
+            .hamburger {
                 display: flex;
             }
 
-            .diziportal-logo {
-                font-size: 1.8rem;
+            .main-content {
+                padding: 1rem 0;
+                gap: 1rem;
             }
 
-            .diziportal-container {
-                padding: 0 15px;
+            .player-container {
+                height: 300px;
             }
 
-            .diziportal-player-section,
-            .diziportal-matches-section {
-                padding: 1rem;
+            .mobile-menu {
+                display: block;
             }
 
-            .diziportal-footer {
-                padding: 1.5rem 0;
+            .team {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 0.3rem;
+            }
+
+            .team-name {
+                font-size: 0.8rem;
+            }
+
+            .vs-separator {
+                margin: 0.5rem 0;
             }
         }
 
         @media (max-width: 480px) {
-            .diziportal-logo {
-                font-size: 1.5rem;
+            .container {
+                padding: 0 0.5rem;
             }
 
-            .diziportal-mobile-menu {
-                width: 90%;
+            .player-container {
+                height: 250px;
+            }
+
+            .logo {
+                font-size: 1.5rem;
             }
         }
 
         /* Custom Scrollbar */
-        .diziportal-matches-section::-webkit-scrollbar {
-            width: 8px;
+        .matches-list::-webkit-scrollbar {
+            width: 6px;
         }
 
-        .diziportal-matches-section::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 4px;
+        .matches-list::-webkit-scrollbar-track {
+            background: var(--tertiary-black);
+            border-radius: 3px;
         }
 
-        .diziportal-matches-section::-webkit-scrollbar-thumb {
-            background: linear-gradient(45deg, #00ff88, #00d4ff);
-            border-radius: 4px;
+        .matches-list::-webkit-scrollbar-thumb {
+            background: var(--primary-red);
+            border-radius: 3px;
         }
 
-        /* DiziPortal.Com Animations */
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
-            }
+        .matches-list::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-red);
         }
 
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-            }
-            to {
-                text-shadow: 0 0 20px rgba(0, 255, 136, 0.8), 0 0 30px rgba(0, 255, 136, 0.6);
-            }
-        }
-
-        /* Video Error Overlay Styles */
-        .diziportal-video-error {
-            border-radius: 10px;
-            backdrop-filter: blur(5px);
-        }
-
-        .diziportal-error-content {
-            text-align: center;
+        /* Page Sections */
+        .page-section {
+            display: none;
+            background: var(--secondary-black);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin: 2rem 0;
             padding: 2rem;
         }
 
-        .diziportal-error-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+        .page-section.active {
+            display: block;
         }
 
-        .diziportal-error-message {
-            font-size: 1.2rem;
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
             margin-bottom: 1rem;
-            color: #ff6b6b;
+            background: linear-gradient(45deg, var(--primary-red), var(--secondary-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .diziportal-error-footer {
-            font-size: 0.9rem;
-            color: #888;
+        .page-content {
+            color: var(--text-gray);
+            line-height: 1.8;
         }
     </style>
 </head>
-<body class="diziportal-reset diziportal-body">
-    <!-- DiziPortal.Com Header Section -->
-    <header class="diziportal-header">
-        <div class="diziportal-container">
-            <nav class="diziportal-nav">
-                <div class="diziportal-logo">🏆 Dizi Portal Sports</div>
-                <ul class="diziportal-nav-links">
-                    <li><a href="#" class="diziportal-nav-link">Ana Sayfa</a></li>
-                    <li><a href="#" class="diziportal-nav-link">Canlı Maçlar</a></li>
-                    <li><a href="#" class="diziportal-nav-link">Program</a></li>
-                    <li><a href="#" class="diziportal-nav-link">İletişim</a></li>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">
+                    <i class="fas fa-trophy"></i>
+                    Dizi Portal Sports
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-link" onclick="showPage('home')">Ana Sayfa</a></li>
+                    <li><a href="#" class="nav-link" onclick="showPage('matches')">Canlı Maçlar</a></li>
+                    <li><a href="#" class="nav-link" onclick="showPage('channels')">7/24 Kanallar</a></li>
+                    <li><a href="#" class="nav-link" onclick="showPage('schedule')">Maç Programı</a></li>
+                    <li><a href="#" class="nav-link" onclick="showPage('contact')">İletişim</a></li>
                 </ul>
-                
-                <!-- DiziPortal.Com Hamburger Menu -->
-                <div class="diziportal-hamburger" onclick="diziportalToggleMobileMenu()">
+                <div class="hamburger" onclick="toggleMobileMenu()">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -1103,970 +645,542 @@
         </div>
     </header>
 
-    <!-- DiziPortal.Com Main Content -->
-    <main class="diziportal-content">
-        <div class="diziportal-container">
-            <div class="diziportal-main-content">
-                <!-- Video Player Section -->
-                <section class="diziportal-player-section">
-                    <h2 class="diziportal-player-title">🔴 Canlı Yayın</h2>
-                    <div class="diziportal-video-container">
-                        <div id="diziportalVideoPlayer" class="diziportal-no-match">
-                            <div>
-                                <h3>🏆 Dizi Portal Sports</h3>
-                                <p>Bir maç seçerek izlemeye başlayın</p>
-                                <small>Powered by DiziPortal.Com</small>
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Home Page -->
+        <div id="home" class="page-section active">
+            <div class="main-content">
+                <!-- Player Section -->
+                <div class="player-section">
+                    <div class="player-header">
+                        <h2><i class="fas fa-play-circle"></i> Canlı Yayın</h2>
+                    </div>
+                    <div class="player-container">
+                        <div class="player-wrapper">
+                            <div id="player"></div>
+                            <div class="player-overlay" id="playerOverlay">
+                                <div style="text-align: center;">
+                                    <h3><i class="fas fa-play-circle"></i> Dizi Portal Sports</h3>
+                                    <p>Bir maç veya kanal seçerek izlemeye başlayın</p>
+                                    <small>Powered by DiziPortal.Com</small>
+                                </div>
+                            </div>
+                            <div class="player-logo">
+                                <img src="https://i.hizliresim.com/inetemu.png" alt="DiziPortal.Com" />
+                            </div>
+                            <div class="live-badge" id="liveBadge">
+                                <i class="fas fa-circle"></i> CANLI
                             </div>
                         </div>
                     </div>
-                    <div id="diziportalMatchInfo" style="margin-top: 1rem; text-align: center; color: var(--diziportal-text-secondary);">
-                        <p>Maç bilgisi görüntülenecek</p>
-                    </div>
-                </section>
+                </div>
 
-                <!-- Matches List Section -->
-                <section class="diziportal-matches-section">
-                    <h2 class="diziportal-matches-title">⚽ Canlı Maçlar</h2>
-                    <div id="diziportalMatchesList">
-                        <div class="diziportal-match-item">
-                            <div class="diziportal-match-name">🔄 Maçlar yükleniyor...</div>
-                            <div class="diziportal-match-time">DiziPortal.Com</div>
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <!-- Matches List -->
+                    <div class="matches-section">
+                        <div class="section-header">
+                            <h3><i class="fas fa-futbol"></i> Canlı Maçlar</h3>
+                        </div>
+                        <div class="matches-list" id="matchesList">
+                            <div class="loading">
+                                <div class="loading-spinner"></div>
+                                <span>Maçlar yükleniyor...</span>
+                            </div>
                         </div>
                     </div>
-                </section>
+
+                    <!-- Channels List -->
+                    <div class="channels-section">
+                        <div class="section-header">
+                            <h3><i class="fas fa-tv"></i> 7/24 Kanallar</h3>
+                        </div>
+                        <div class="channels-list" id="channelsList">
+                            <div class="loading">
+                                <div class="loading-spinner"></div>
+                                <span>Kanallar yükleniyor...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other Pages -->
+        <div id="matches" class="page-section">
+            <h1 class="page-title"><i class="fas fa-futbol"></i> Canlı Maçlar</h1>
+            <div class="page-content">
+                <p>Bugünkü tüm canlı maçları burada bulabilirsiniz. HD kalitede kesintisiz yayın için Dizi Portal Sports'u tercih edin.</p>
+                <div id="allMatchesList" class="matches-list" style="max-height: none;"></div>
+            </div>
+        </div>
+
+        <div id="channels" class="page-section">
+            <h1 class="page-title"><i class="fas fa-tv"></i> 7/24 Kanallar</h1>
+            <div class="page-content">
+                <p>Kesintisiz 7/24 yayın yapan spor kanallarımız.</p>
+                <div id="allChannelsList" class="channels-list"></div>
+            </div>
+        </div>
+
+        <div id="schedule" class="page-section">
+            <h1 class="page-title"><i class="fas fa-calendar-alt"></i> Maç Programı</h1>
+            <div class="page-content">
+                <p>Önümüzdeki günlerin maç programını burada bulabilirsiniz.</p>
+                <div style="background: var(--tertiary-black); padding: 2rem; border-radius: 10px; margin-top: 2rem;">
+                    <h3 style="color: var(--primary-red); margin-bottom: 1rem;">Bu Hafta</h3>
+                    <div style="display: grid; gap: 1rem;">
+                        <div style="display: flex; justify-content: space-between; padding: 1rem; background: var(--secondary-black); border-radius: 8px;">
+                            <span>Bugün 21:00</span>
+                            <span style="color: var(--text-gray);">Barcelona vs Real Madrid</span>
+                            <span style="color: var(--primary-red);">La Liga</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 1rem; background: var(--secondary-black); border-radius: 8px;">
+                            <span>Yarın 19:00</span>
+                            <span style="color: var(--text-gray);">Manchester United vs Liverpool</span>
+                            <span style="color: var(--primary-red);">Premier League</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="contact" class="page-section">
+            <h1 class="page-title"><i class="fas fa-envelope"></i> İletişim</h1>
+            <div class="page-content">
+                <p>Bizimle iletişime geçin, öneri ve şikayetlerinizi paylaşın.</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                    <div style="background: var(--tertiary-black); padding: 2rem; border-radius: 10px;">
+                        <h3 style="color: var(--primary-red); margin-bottom: 1rem;"><i class="fas fa-envelope"></i> E-posta</h3>
+                        <p>info@diziportal.com</p>
+                    </div>
+                    <div style="background: var(--tertiary-black); padding: 2rem; border-radius: 10px;">
+                        <h3 style="color: var(--primary-red); margin-bottom: 1rem;"><i class="fas fa-globe"></i> Website</h3>
+                        <p>www.diziportal.com</p>
+                    </div>
+                    <div style="background: var(--tertiary-black); padding: 2rem; border-radius: 10px;">
+                        <h3 style="color: var(--primary-red); margin-bottom: 1rem;"><i class="fas fa-clock"></i> Destek Saatleri</h3>
+                        <p>7/24 Online Destek</p>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
-    <!-- DiziPortal.Com Mobile Menu -->
-    <div class="diziportal-mobile-overlay" onclick="diziportalCloseMobileMenu()"></div>
-    <div class="diziportal-mobile-menu" id="diziportalMobileMenu">
-        <div class="diziportal-mobile-menu-header">
-            <div class="diziportal-mobile-menu-logo">🏆 Dizi Portal Sports</div>
+    <!-- Mobile Menu -->
+    <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <div class="logo">
+                <i class="fas fa-trophy"></i>
+                Dizi Portal Sports
+            </div>
         </div>
-        <ul class="diziportal-mobile-menu-links">
-            <li><a href="#" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">🏠 Ana Sayfa</a></li>
-            <li><a href="#" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">📺 Canlı Maçlar</a></li>
-            <li><a href="#" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">📅 Program</a></li>
-            <li><a href="#" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">📞 İletişim</a></li>
-            <li><a href="#" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">ℹ️ Hakkında</a></li>
-            <li><a href="#" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">🌟 Premium</a></li>
-        </ul>
+        <div class="mobile-menu-links">
+            <a href="#" class="mobile-menu-link" onclick="showPage('home'); toggleMobileMenu();">
+                <i class="fas fa-home"></i> Ana Sayfa
+            </a>
+            <a href="#" class="mobile-menu-link" onclick="showPage('matches'); toggleMobileMenu();">
+                <i class="fas fa-futbol"></i> Canlı Maçlar
+            </a>
+            <a href="#" class="mobile-menu-link" onclick="showPage('channels'); toggleMobileMenu();">
+                <i class="fas fa-tv"></i> 7/24 Kanallar
+            </a>
+            <a href="#" class="mobile-menu-link" onclick="showPage('schedule'); toggleMobileMenu();">
+                <i class="fas fa-calendar-alt"></i> Maç Programı
+            </a>
+            <a href="#" class="mobile-menu-link" onclick="showPage('contact'); toggleMobileMenu();">
+                <i class="fas fa-envelope"></i> İletişim
+            </a>
+        </div>
     </div>
 
-
-
-    <!-- DiziPortal.Com Footer -->
-    <footer class="diziportal-footer">
-        <div class="diziportal-container">
-                    <div class="diziportal-footer-content">
-            <p>&copy; 2025 <span class="diziportal-footer-brand" onclick="diziportalSecretAdminAccess()" style="cursor: pointer;">DiziPortal.Com</span> - Box Sports | Tüm hakları saklıdır</p>
-            <p>En kaliteli canlı maç yayınları ve spor içerikleri</p>
-        </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 <span class="footer-brand" onclick="secretAdminAccess()">DiziPortal.Com</span> - Dizi Portal Sports | Tüm hakları saklıdır</p>
+                <p>En kaliteli canlı maç yayınları ve spor içerikleri</p>
+            </div>
         </div>
     </footer>
 
-    <!-- DiziPortal.Com Advanced HLS Player -->
-    <script src="hls-player.js"></script>
-    
-    <!-- diziportal JavaScript -->
     <script>
-        // DiziPortal.Com - Box Sports JavaScript Functions
+        // DiziPortal.Com - Professional Sports Platform JavaScript
         // Developer: DiziPortal.Com Development Team
-        
-        class DiziPortalSportsManager {
+
+        class DiziPortalSports {
             constructor() {
-                this.currentMatch = null;
+                this.currentPlayer = null;
                 this.matches = [];
-                this.playerElement = null;
-                this.hlsPlayer = null;
-                this.player = null; // Video.js player
+                this.channels = [];
                 this.apiEndpoint = 'api/matches.php';
-                this.refreshInterval = 10000; // 10 seconds
+                this.secretClickCount = 0;
                 this.init();
             }
 
             async init() {
-                console.log('🚀 DiziPortal.Com Box Sports initializing...');
-                await this.diziportalLoadMatches();
-                this.diziportalSetupEventListeners();
-                this.diziportalUpdateMatchesList();
-                
-                // Auto-play BeIN Sports 1 if available
-                setTimeout(() => {
-                    this.diziportalAutoPlayDefaultStream();
-                }, 1000);
-
-                // Setup auto-refresh
-                this.diziportalSetupAutoRefresh();
+                console.log('🏆 DiziPortal Sports initializing...');
+                await this.loadMatches();
+                await this.loadChannels();
+                this.setupEventListeners();
+                this.autoRefreshData();
             }
 
-            async diziportalLoadMatches() {
+            // Data Loading
+            async loadMatches() {
                 try {
-                    console.log('📊 DiziPortal.Com: Loading matches from server...');
                     const response = await fetch(this.apiEndpoint);
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    
                     const data = await response.json();
                     
-                    if (data.success && data.data) {
+                    if (data.success) {
                         this.matches = data.data;
-                        console.log('✅ DiziPortal.Com: Matches loaded from server', this.matches.length, 'matches');
-                    } else {
-                        throw new Error('Invalid server response');
+                        this.renderMatches();
+                        console.log('✅ Matches loaded:', this.matches.length);
                     }
                 } catch (error) {
-                    console.error('❌ DiziPortal.Com: Error loading matches from server:', error);
-                    
-                    // Fallback to localStorage
-                    const storedMatches = localStorage.getItem('diziportalMatches');
-                    if (storedMatches) {
-                        try {
-                            this.matches = JSON.parse(storedMatches);
-                            console.log('📦 DiziPortal.Com: Using localStorage fallback');
-                        } catch (e) {
-                            this.diziportalUseDefaultMatches();
-                        }
-                    } else {
-                        this.diziportalUseDefaultMatches();
-                    }
+                    console.error('❌ Error loading matches:', error);
+                    this.loadFallbackMatches();
                 }
             }
 
-            diziportalUseDefaultMatches() {
+            async loadChannels() {
+                try {
+                    const response = await fetch('api/channels.php');
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        this.channels = data.data;
+                        this.renderChannels();
+                        console.log('✅ Channels loaded:', this.channels.length);
+                    }
+                } catch (error) {
+                    console.error('❌ Error loading channels:', error);
+                    this.loadFallbackChannels();
+                }
+            }
+
+            loadFallbackMatches() {
                 this.matches = [
                     {
-                        id: 'beinsports1',
-                        name: '📺 beIN Sports 1 HD - Canlı Yayın',
-                        time: 'Canlı',
+                        id: '1',
+                        name: 'Barcelona vs Real Madrid',
+                        homeTeam: 'Barcelona',
+                        awayTeam: 'Real Madrid',
+                        homeTeamLogo: 'https://via.placeholder.com/30x30/dc2626/ffffff?text=B',
+                        awayTeamLogo: 'https://via.placeholder.com/30x30/dc2626/ffffff?text=R',
+                        time: '21:00',
                         hls: 'https://andro.yangin1yerihep2sayende.cfd/checklist/androstreamlivebs1.m3u8'
                     },
                     {
-                        id: 'demo1',
-                        name: '⚽ Galatasaray vs Fenerbahçe - Süper Lig',
-                        time: '20:00',
-                        hls: ''
-                    },
-                    {
-                        id: 'demo2',
-                        name: '🏀 Lakers vs Warriors - NBA Playoffs',
-                        time: '22:00',
-                        hls: ''
+                        id: '2', 
+                        name: 'Manchester United vs Liverpool',
+                        homeTeam: 'Manchester United',
+                        awayTeam: 'Liverpool',
+                        homeTeamLogo: 'https://via.placeholder.com/30x30/dc2626/ffffff?text=M',
+                        awayTeamLogo: 'https://via.placeholder.com/30x30/dc2626/ffffff?text=L',
+                        time: '19:00',
+                        hls: 'https://andro.yangin1yerihep2sayende.cfd/checklist/androstreamlivebs1.m3u8'
                     }
                 ];
-                console.log('🔄 DiziPortal.Com: Using default matches');
+                this.renderMatches();
             }
 
-            diziportalUpdateMatchesList() {
-                const matchesList = document.getElementById('diziportalMatchesList');
-                if (!matchesList) return;
+            loadFallbackChannels() {
+                this.channels = [
+                    {
+                        id: '1',
+                        name: 'BeIN Sports 1',
+                        category: 'Spor',
+                        logo: 'https://via.placeholder.com/40x40/dc2626/ffffff?text=BS1',
+                        hls: 'https://andro.yangin1yerihep2sayende.cfd/checklist/androstreamlivebs1.m3u8',
+                        active: true
+                    },
+                    {
+                        id: '2',
+                        name: 'BeIN Sports 2',
+                        category: 'Spor',
+                        logo: 'https://via.placeholder.com/40x40/dc2626/ffffff?text=BS2',
+                        hls: 'https://andro.yangin1yerihep2sayende.cfd/checklist/androstreamlivebs1.m3u8',
+                        active: true
+                    }
+                ];
+                this.renderChannels();
+            }
 
+            // Rendering
+            renderMatches() {
+                const matchesList = document.getElementById('matchesList');
+                const allMatchesList = document.getElementById('allMatchesList');
+                
                 if (this.matches.length === 0) {
-                    matchesList.innerHTML = `
-                        <div class="diziportal-match-item">
-                            <div class="diziportal-match-name">📺 Henüz canlı maç bulunmuyor</div>
-                            <div class="diziportal-match-time">DiziPortal.Com Admin panelinden maç ekleyebilirsiniz</div>
+                    const emptyHtml = `
+                        <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                            <i class="fas fa-futbol" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                            <p>Henüz maç eklenmemiş</p>
                         </div>
                     `;
+                    matchesList.innerHTML = emptyHtml;
+                    if (allMatchesList) allMatchesList.innerHTML = emptyHtml;
                     return;
                 }
 
-                matchesList.innerHTML = this.matches.map(match => `
-                    <div class="diziportal-match-item" onclick="diziportalManager.diziportalPlayMatch('${match.id}')">
-                        <div class="diziportal-match-name">${match.name}</div>
-                        <div class="diziportal-match-time">⏰ ${match.time}</div>
+                const matchesHtml = this.matches.map(match => `
+                    <div class="match-item" onclick="playStream('${match.hls}', '${match.name}')">
+                        <div class="match-teams">
+                            <div class="team">
+                                <img src="${match.homeTeamLogo || 'https://via.placeholder.com/30x30/dc2626/ffffff?text=H'}" 
+                                     alt="${match.homeTeam}" class="team-logo">
+                                <span class="team-name">${match.homeTeam || 'Ev Sahibi'}</span>
+                            </div>
+                            <div class="vs-separator">VS</div>
+                            <div class="team">
+                                <img src="${match.awayTeamLogo || 'https://via.placeholder.com/30x30/dc2626/ffffff?text=A'}" 
+                                     alt="${match.awayTeam}" class="team-logo">
+                                <span class="team-name">${match.awayTeam || 'Misafir'}</span>
+                            </div>
+                        </div>
+                        <div class="match-info">
+                            <span class="match-time"><i class="fas fa-clock"></i> ${match.time}</span>
+                            <span class="match-status">CANLI</span>
+                        </div>
                     </div>
                 `).join('');
+
+                matchesList.innerHTML = matchesHtml;
+                if (allMatchesList) allMatchesList.innerHTML = matchesHtml;
             }
 
-            diziportalPlayMatch(matchId) {
-                const match = this.matches.find(m => m.id === matchId);
-                if (!match) {
-                    console.error('❌ DiziPortal.Com: Match not found');
+            renderChannels() {
+                const channelsList = document.getElementById('channelsList');
+                const allChannelsList = document.getElementById('allChannelsList');
+                
+                if (this.channels.length === 0) {
+                    const emptyHtml = `
+                        <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                            <i class="fas fa-tv" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                            <p>Henüz kanal eklenmemiş</p>
+                        </div>
+                    `;
+                    channelsList.innerHTML = emptyHtml;
+                    if (allChannelsList) allChannelsList.innerHTML = emptyHtml;
                     return;
                 }
 
-                console.log('▶️ DiziPortal.Com: Playing match', match.name);
-                this.currentMatch = match;
-
-                // Update active match styling
-                document.querySelectorAll('.diziportal-match-item').forEach(item => {
-                    item.classList.remove('active');
-                });
-                event.currentTarget.classList.add('active');
-
-                // Update match info
-                const matchInfo = document.getElementById('diziportalMatchInfo');
-                if (matchInfo) {
-                    matchInfo.innerHTML = `
-                        <h4 style="color: #00ff88;">🔴 ${match.name}</h4>
-                        <p>⏰ Maç Saati: ${match.time}</p>
-                        <small>Powered by DiziPortal.Com</small>
-                    `;
-                }
-
-                // Play the stream
-                this.diziportalPlayStream(match.hls);
-            }
-
-            diziportalPlayStream(hlsUrl) {
-                const playerContainer = document.getElementById('diziportalVideoPlayer');
-                if (!playerContainer) return;
-
-                if (!hlsUrl || hlsUrl.trim() === '') {
-                    playerContainer.innerHTML = `
-                        <div class="diziportal-no-match">
-                            <div>
-                                <h3>⚠️ Yayın Başlamadı</h3>
-                                <p>Bu maç için henüz yayın linki eklenmemiş</p>
-                                <small>DiziPortal.Com - Box Sports</small>
-                            </div>
-                        </div>
-                    `;
-                    return;
-                }
-
-                // Dispose existing players
-                this.diziportalDisposePlayer();
-
-                // Create Professional Player.js Video Player
-                const videoHtml = `
-                    <div class="diziportal-player-wrapper">
-                        <div class="diziportal-playerjs-container">
-                            <div id="diziportalMainPlayer"></div>
-                        </div>
-                        
-                        <div class="diziportal-live-badge" id="diziportalLiveBadge" style="display: none;">
-                            🔴 CANLI
-                        </div>
-                        
-                        <div class="diziportal-player-logo">
-                            <img src="https://i.hizliresim.com/inetemu.png" alt="DiziPortal.Com" />
-                        </div>
-                        
-                        <div class="diziportal-loading-spinner" id="diziportalLoadingSpinner" style="display: none;"></div>
-                        
-                        <div class="diziportal-match-info-overlay" id="diziportalMatchOverlay" style="display: none;">
-                            <div class="diziportal-teams-container">
-                                <div class="diziportal-team diziportal-team-home">
-                                    <img src="" alt="Home Team" class="diziportal-team-logo" id="diziportalHomeTeamLogo">
-                                    <span class="diziportal-team-name" id="diziportalHomeTeamName">Takım 1</span>
-                                </div>
-                                <div class="diziportal-vs-separator">
-                                    <span>VS</span>
-                                </div>
-                                <div class="diziportal-team diziportal-team-away">
-                                    <img src="" alt="Away Team" class="diziportal-team-logo" id="diziportalAwayTeamLogo">
-                                    <span class="diziportal-team-name" id="diziportalAwayTeamName">Takım 2</span>
-                                </div>
-                            </div>
-                            <div class="diziportal-match-time" id="diziportalMatchTime">Maç Zamanı</div>
+                const channelsHtml = this.channels.map(channel => `
+                    <div class="channel-item" onclick="playStream('${channel.hls}', '${channel.name}')">
+                        <img src="${channel.logo || 'https://via.placeholder.com/40x40/dc2626/ffffff?text=TV'}" 
+                             alt="${channel.name}" class="channel-logo">
+                        <div class="channel-info">
+                            <div class="channel-name">${channel.name}</div>
+                            <div class="channel-category">${channel.category}</div>
                         </div>
                     </div>
-                `;
+                `).join('');
 
-                playerContainer.innerHTML = videoHtml;
-
-                // Show match info overlay
-                this.diziportalShowMatchOverlay(this.currentMatch);
-
-                // Setup advanced video player
-                setTimeout(() => {
-                    this.diziportalSetupAdvancedPlayer(hlsUrl);
-                }, 100);
+                channelsList.innerHTML = channelsHtml;
+                if (allChannelsList) allChannelsList.innerHTML = channelsHtml;
             }
 
-            diziportalSetupAdvancedPlayer(hlsUrl) {
-                console.log('🎬 DiziPortal.Com: Setting up Player.js Professional Video Player...');
-                
-                // Show loading spinner
-                this.diziportalShowLoading(true);
-                
+            // Player Management
+            initPlayer(streamUrl, title) {
                 try {
-                    // Setup Player.js configuration
-                    const playerConfig = {
-                        id: 'diziportalMainPlayer',
-                        file: hlsUrl,
+                    // Dispose existing player
+                    if (this.currentPlayer) {
+                        try {
+                            this.currentPlayer.api('destroy');
+                        } catch (e) {
+                            console.log('Player dispose error:', e);
+                        }
+                    }
+
+                    // Hide overlay
+                    const overlay = document.getElementById('playerOverlay');
+                    if (overlay) overlay.style.display = 'none';
+
+                    // Show live badge
+                    const liveBadge = document.getElementById('liveBadge');
+                    if (liveBadge) liveBadge.style.display = 'block';
+
+                    // Initialize Player.js
+                    this.currentPlayer = new Playerjs({
+                        id: 'player',
+                        file: streamUrl,
                         poster: 'https://i.hizliresim.com/inetemu.png',
-                        default_quality: 'auto',
+                        title: title,
+                        autoplay: true,
+                        muted: true,
+                        playsinline: true,
+                        preload: 'metadata',
                         controls: true,
                         fluid: true,
                         responsive: true,
-                        autoplay: true,
-                        muted: true,
-                        preload: 'metadata',
-                        playsinline: true,
-                        skin: 'diziportal-custom',
+                        skin: 'dark',
                         colors: {
-                            primary: '#00c853',
-                            secondary: '#1a237e',
-                            accent: '#ff6f00'
+                            primary: '#dc2626',
+                            secondary: '#ef4444',
+                            accent: '#fee2e2'
                         },
                         lang: 'tr',
                         i18n: {
                             'Play': 'Oynat',
                             'Pause': 'Duraklat',
-                            'Mute': 'Ses Kapat',
-                            'Unmute': 'Ses Aç',
+                            'Mute': 'Sessiz',
+                            'Unmute': 'Sesli',
                             'Fullscreen': 'Tam Ekran',
                             'Exit Fullscreen': 'Tam Ekrandan Çık'
                         }
-                    };
-
-                    // Initialize Player.js
-                    this.player = new Playerjs(playerConfig);
-
-                    // Player events
-                    this.player.api('time', (time) => {
-                        // Update time display if needed
                     });
 
-                    this.player.api('play', () => {
-                        console.log('▶️ DiziPortal.Com: Playback started');
-                        this.diziportalShowLoading(false);
-                        this.diziportalShowLiveBadge(true);
-                        this.diziportalHideMatchOverlay();
-                    });
-
-                    this.player.api('pause', () => {
-                        console.log('⏸️ DiziPortal.Com: Playback paused');
-                    });
-
-                    this.player.api('error', (error) => {
-                        console.error('❌ DiziPortal.Com: Player error:', error);
-                        this.diziportalShowLoading(false);
-                        this.diziportalTryFallbackStream(hlsUrl);
-                    });
-
-                    console.log('✅ DiziPortal.Com: Player.js Professional Player initialized');
+                    console.log('✅ Player.js initialized for:', title);
 
                 } catch (error) {
-                    console.error('❌ DiziPortal.Com: Error initializing Player.js:', error);
-                    this.diziportalShowLoading(false);
-                    this.diziportalFallbackToHLSPlayer(hlsUrl);
+                    console.error('❌ Error initializing player:', error);
+                    this.showPlayerError();
                 }
             }
 
-            diziportalHideMatchOverlay() {
-                const overlay = document.getElementById('diziportalMatchOverlay');
+            showPlayerError() {
+                const overlay = document.getElementById('playerOverlay');
                 if (overlay) {
-                    overlay.style.display = 'none';
-                }
-            }
-
-            diziportalShowMatchOverlay(match) {
-                const overlay = document.getElementById('diziportalMatchOverlay');
-                if (!overlay || !match) return;
-
-                // Update team information
-                const homeTeamName = document.getElementById('diziportalHomeTeamName');
-                const awayTeamName = document.getElementById('diziportalAwayTeamName');
-                const homeTeamLogo = document.getElementById('diziportalHomeTeamLogo');
-                const awayTeamLogo = document.getElementById('diziportalAwayTeamLogo');
-                const matchTime = document.getElementById('diziportalMatchTime');
-
-                if (homeTeamName) homeTeamName.textContent = match.homeTeam || 'Ev Sahibi';
-                if (awayTeamName) awayTeamName.textContent = match.awayTeam || 'Misafir';
-                if (homeTeamLogo) homeTeamLogo.src = match.homeTeamLogo || 'https://via.placeholder.com/80x80/00c853/ffffff?text=🏠';
-                if (awayTeamLogo) awayTeamLogo.src = match.awayTeamLogo || 'https://via.placeholder.com/80x80/1a237e/ffffff?text=✈️';
-                if (matchTime) matchTime.textContent = match.time || 'Canlı';
-
-                overlay.style.display = 'flex';
-
-                // Auto hide after 5 seconds
-                setTimeout(() => {
-                    this.diziportalHideMatchOverlay();
-                }, 5000);
-            }
-
-            diziportalTryFallbackStream(originalUrl) {
-                console.log('🔄 DiziPortal.Com: Trying fallback HLS player...');
-                this.diziportalFallbackToHLSPlayer(originalUrl);
-            }
-
-            diziportalFallbackToHLSPlayer(hlsUrl) {
-                console.log('🔄 DiziPortal.Com: Falling back to HLS.js player...');
-                
-                try {
-                    const playerContainer = document.getElementById('diziportalMainPlayer');
-                    if (!playerContainer) return;
-
-                    // Create video element
-                    playerContainer.innerHTML = `
-                        <video id="diziportalFallbackVideo" 
-                               class="diziportal-video-player" 
-                               controls 
-                               autoplay 
-                               muted
-                               playsinline
-                               crossorigin="anonymous"
-                               style="width: 100%; height: 100%; background: #000;">
-                            Your browser does not support video playback.
-                        </video>
-                    `;
-
-                    const video = document.getElementById('diziportalFallbackVideo');
-                    
-                    if (Hls.isSupported()) {
-                        const hls = new Hls({
-                            enableWorker: true,
-                            lowLatencyMode: true,
-                            backBufferLength: 90
-                        });
-                        
-                        hls.loadSource(hlsUrl);
-                        hls.attachMedia(video);
-                        
-                        hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                            console.log('✅ DiziPortal.Com: HLS fallback ready');
-                            this.diziportalShowLoading(false);
-                            this.diziportalShowLiveBadge(true);
-                        });
-
-                        hls.on(Hls.Events.ERROR, (event, data) => {
-                            console.error('❌ DiziPortal.Com: HLS fallback error:', data);
-                            this.diziportalShowError('Yayın yüklenemedi', 'URL kontrol edilecek');
-                        });
-
-                        this.hlsPlayer = hls;
-                    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                        video.src = hlsUrl;
-                        console.log('✅ DiziPortal.Com: Using native HLS support');
-                        this.diziportalShowLoading(false);
-                        this.diziportalShowLiveBadge(true);
-                    } else {
-                        this.diziportalShowError('Video Format Desteklenmiyor', 'Tarayıcınız bu video formatını desteklemiyor');
-                    }
-
-                } catch (error) {
-                    console.error('❌ DiziPortal.Com: Fallback player error:', error);
-                    this.diziportalShowError('Player Hatası', 'Video oynatıcı başlatılamadı');
-                }
-            }
-
-            async diziportalLoadStreamWithFallbacks(originalUrl) {
-                const corsProxies = [
-                    '', // Direct first
-                    'https://cors-anywhere.herokuapp.com/',
-                    'https://api.allorigins.win/raw?url=',
-                    'https://corsproxy.io/?',
-                    'https://thingproxy.freeboard.io/fetch/'
-                ];
-
-                console.log('🔄 DiziPortal.Com: Attempting to load stream with fallbacks...');
-
-                for (let i = 0; i < corsProxies.length; i++) {
-                    const proxy = corsProxies[i];
-                    const url = proxy ? proxy + encodeURIComponent(originalUrl) : originalUrl;
-                    
-                    console.log(`🌐 DiziPortal.Com: Trying ${proxy ? 'proxy ' + (i) : 'direct'}: ${url.substring(0, 100)}...`);
-                    
-                    try {
-                        // Set source
-                        this.player.src({
-                            src: url,
-                            type: 'application/x-mpegURL'
-                        });
-
-                        // Wait for load attempt
-                        await new Promise((resolve, reject) => {
-                            const timeout = setTimeout(() => {
-                                reject(new Error('Timeout'));
-                            }, 10000);
-
-                            const onCanPlay = () => {
-                                clearTimeout(timeout);
-                                this.player.off('error', onError);
-                                console.log(`✅ DiziPortal.Com: Stream loaded successfully with ${proxy ? 'proxy' : 'direct connection'}`);
-                                resolve();
-                            };
-
-                            const onError = () => {
-                                clearTimeout(timeout);
-                                this.player.off('canplay', onCanPlay);
-                                reject(new Error('Player error'));
-                            };
-
-                            this.player.one('canplay', onCanPlay);
-                            this.player.one('error', onError);
-                        });
-
-                        // Success - stop trying other proxies
-                        this.diziportalShowLoading(false);
-                        this.diziportalShowLiveBadge(true);
-                        return;
-
-                    } catch (error) {
-                        console.log(`❌ DiziPortal.Com: Failed with ${proxy ? 'proxy ' + i : 'direct'}: ${error.message}`);
-                        
-                        if (i === corsProxies.length - 1) {
-                            // All attempts failed
-                            console.error('💥 DiziPortal.Com: All streaming attempts failed');
-                            this.diziportalShowLoading(false);
-                            this.diziportalShowError(
-                                'Yayın yüklenemedi', 
-                                'URL geçersiz olabilir veya yayın aktif olmayabilir',
-                                originalUrl
-                            );
-                        }
-                    }
-                }
-            }
-
-            diziportalShowLoading(show) {
-                const spinner = document.getElementById('diziportalLoadingSpinner');
-                if (spinner) {
-                    spinner.style.display = show ? 'block' : 'none';
-                }
-            }
-
-            diziportalShowLiveBadge(show) {
-                const badge = document.getElementById('diziportalLiveBadge');
-                if (badge) {
-                    badge.style.display = show ? 'block' : 'none';
-                }
-            }
-
-            diziportalShowError(title, message, url = '') {
-                const playerContainer = document.getElementById('diziportalVideoPlayer');
-                if (!playerContainer) return;
-
-                const errorHtml = `
-                    <div class="diziportal-player-error">
-                        <div class="diziportal-error-icon">⚠️</div>
-                        <div class="diziportal-error-title">${title}</div>
-                        <div class="diziportal-error-message">${message}</div>
-                        ${url ? `<div style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 1rem;">${url.substring(0, 50)}...</div>` : ''}
-                        <button class="diziportal-retry-btn" onclick="diziportalManager.diziportalRetryStream()">
-                            🔄 Tekrar Dene
-                        </button>
-                        <div style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">
-                            Powered by DiziPortal.Com
+                    overlay.innerHTML = `
+                        <div style="text-align: center;">
+                            <h3><i class="fas fa-exclamation-triangle"></i> Yayın Hatası</h3>
+                            <p>Video yüklenirken bir hata oluştu</p>
+                            <small>Farklı bir maç deneyin</small>
                         </div>
-                    </div>
-                `;
-
-                // Find player wrapper and add error
-                const wrapper = playerContainer.querySelector('.diziportal-player-wrapper');
-                if (wrapper) {
-                    // Remove existing error if any
-                    const existingError = wrapper.querySelector('.diziportal-player-error');
-                    if (existingError) {
-                        existingError.remove();
-                    }
-                    wrapper.insertAdjacentHTML('beforeend', errorHtml);
-                }
-            }
-
-            diziportalRetryStream() {
-                if (this.currentMatch && this.currentMatch.hls) {
-                    console.log('🔄 DiziPortal.Com: Retrying stream...');
-                    
-                    // Remove error display
-                    const error = document.querySelector('.diziportal-player-error');
-                    if (error) {
-                        error.remove();
-                    }
-                    
-                    // Dispose current player and recreate
-                    if (this.player) {
-                        try {
-                            this.player.dispose();
-                        } catch (e) {
-                            console.log('Player dispose error:', e);
-                        }
-                    }
-                    
-                    // Restart stream
-                    setTimeout(() => {
-                        this.diziportalPlayStream(this.currentMatch.hls);
-                    }, 500);
-                }
-            }
-
-            diziportalAddLiveIndicator() {
-                const matchInfo = document.getElementById('diziportalMatchInfo');
-                if (matchInfo && !document.querySelector('.diziportal-live-indicator')) {
-                    const liveIndicator = document.createElement('div');
-                    liveIndicator.className = 'diziportal-live-indicator';
-                    liveIndicator.innerHTML = `
-                        <span style="
-                            background: linear-gradient(45deg, #ff0000, #ff4444);
-                            color: white;
-                            padding: 0.3rem 0.8rem;
-                            border-radius: 20px;
-                            font-size: 0.8rem;
-                            font-weight: bold;
-                            animation: pulse 2s infinite;
-                            display: inline-block;
-                            margin-top: 0.5rem;
-                        ">🔴 CANLI YAYIN</span>
                     `;
-                    matchInfo.appendChild(liveIndicator);
+                    overlay.style.display = 'flex';
                 }
             }
 
-            diziportalAutoPlayDefaultStream() {
-                // Auto-play BeIN Sports 1 if available
-                const beinSportsMatch = this.matches.find(m => m.id === 'beinsports1');
-                if (beinSportsMatch && beinSportsMatch.hls) {
-                    console.log('📺 DiziPortal.Com: Auto-playing BeIN Sports 1');
-                    this.currentMatch = beinSportsMatch;
-                    
-                    // Update match info
-                    const matchInfo = document.getElementById('diziportalMatchInfo');
-                    if (matchInfo) {
-                        matchInfo.innerHTML = `
-                            <h4 style="color: #00ff88;">📺 ${beinSportsMatch.name}</h4>
-                            <p>🔴 ${beinSportsMatch.time}</p>
-                            <small>Powered by DiziPortal.Com</small>
-                        `;
-                    }
+            // Event Listeners
+            setupEventListeners() {
+                // Auto refresh every 30 seconds
+                setInterval(() => {
+                    this.loadMatches();
+                    this.loadChannels();
+                }, 30000);
 
-                    // Highlight the BeIN Sports match
-                    setTimeout(() => {
-                        const matchItems = document.querySelectorAll('.diziportal-match-item');
-                        matchItems.forEach(item => {
-                            if (item.onclick && item.onclick.toString().includes('beinsports1')) {
-                                item.classList.add('active');
-                            }
-                        });
-                    }, 500);
-
-                    // Play the stream
-                    this.diziportalPlayStream(beinSportsMatch.hls);
-                }
-            }
-
-            diziportalDisposePlayer() {
-                // Dispose Player.js
-                if (this.player) {
-                    try {
-                        if (typeof this.player.api === 'function') {
-                            this.player.api('destroy');
-                        }
-                        console.log('🗑️ DiziPortal.Com: Player.js player disposed');
-                    } catch (error) {
-                        console.log('Player.js dispose error:', error);
-                    }
-                    this.player = null;
-                }
-
-                // Dispose HLS.js fallback player if exists
-                if (this.hlsPlayer) {
-                    try {
-                        if (typeof this.hlsPlayer.destroy === 'function') {
-                            this.hlsPlayer.destroy();
-                        }
-                        console.log('🗑️ DiziPortal.Com: HLS.js player disposed');
-                    } catch (error) {
-                        console.log('HLS player dispose error:', error);
-                    }
-                    this.hlsPlayer = null;
-                }
-
-                // Clear player container
-                const playerContainer = document.getElementById('diziportalMainPlayer');
-                if (playerContainer) {
-                    playerContainer.innerHTML = '';
-                }
-            }
-
-            diziportalHandleStreamError() {
-                this.diziportalShowError(
-                    'Yayın Hatası',
-                    'Yayın bağlantısında sorun oluştu. Lütfen farklı bir maç deneyin.'
-                );
-            }
-
-            diziportalSetupEventListeners() {
-                // Listen for storage changes (for localStorage fallback)
-                window.addEventListener('storage', (e) => {
-                    if (e.key === 'diziportalMatches') {
-                        console.log('🔄 DiziPortal.Com: Storage updated');
-                    }
-                });
-
-                // Focus event to refresh when user returns to tab
-                window.addEventListener('focus', () => {
-                    this.diziportalRefreshMatches();
-                });
-
-                // Visibility change to refresh when tab becomes visible
+                // Page visibility change refresh
                 document.addEventListener('visibilitychange', () => {
                     if (!document.hidden) {
-                        this.diziportalRefreshMatches();
+                        this.loadMatches();
+                        this.loadChannels();
                     }
                 });
             }
 
-            diziportalSetupAutoRefresh() {
-                // Auto-refresh matches from server every 10 seconds
-                setInterval(async () => {
-                    await this.diziportalRefreshMatches();
-                }, this.refreshInterval);
-
-                console.log(`🔄 DiziPortal.Com: Auto-refresh setup (${this.refreshInterval/1000}s intervals)`);
-            }
-
-            async diziportalRefreshMatches() {
-                try {
-                    const response = await fetch(this.apiEndpoint);
-                    if (response.ok) {
-                        const data = await response.json();
-                        if (data.success && data.data) {
-                            // Compare with current matches to avoid unnecessary updates
-                            const newMatchesJson = JSON.stringify(data.data);
-                            const currentMatchesJson = JSON.stringify(this.matches);
-                            
-                            if (newMatchesJson !== currentMatchesJson) {
-                                this.matches = data.data;
-                                this.diziportalUpdateMatchesList();
-                                console.log('🔄 DiziPortal.Com: Matches refreshed from server');
-                                
-                                // Backup to localStorage
-                                localStorage.setItem('diziportalMatches', newMatchesJson);
-                            }
-                        }
-                    }
-                } catch (error) {
-                    console.error('❌ DiziPortal.Com: Error refreshing matches:', error);
-                }
-            }
-
-            // Method to handle CORS issues
-            diziportalProxyUrl(url) {
-                // In production, you might want to use a CORS proxy
-                // For now, return the original URL
-                return url;
+            autoRefreshData() {
+                setInterval(() => {
+                    this.loadMatches();
+                    this.loadChannels();
+                }, 60000); // Refresh every minute
             }
         }
 
-        // Initialize DiziPortal.Com Sports Manager
-        let diziportalManager;
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('🎯 DiziPortal.Com: DOM loaded, initializing Box Sports...');
-            diziportalManager = new DiziPortalSportsManager();
-        });
-
-        // Global functions for DiziPortal.Com
-        window.diziportalRefreshMatches = () => {
-            if (diziportalManager) {
-                diziportalManager.diziportalLoadMatches();
-                diziportalManager.diziportalUpdateMatchesList();
+        // Global Functions
+        function playStream(streamUrl, title) {
+            console.log('🎬 Playing:', title);
+            if (window.sportsManager) {
+                window.sportsManager.initPlayer(streamUrl, title);
             }
-        };
+        }
 
-        // DiziPortal.Com Mobile Menu Functions
-        window.diziportalToggleMobileMenu = () => {
-            const menu = document.getElementById('diziportalMobileMenu');
-            const overlay = document.querySelector('.diziportal-mobile-overlay');
-            const hamburger = document.querySelector('.diziportal-hamburger');
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => page.classList.remove('active'));
+
+            // Show selected page
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+
+            // Update navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const overlay = document.getElementById('mobileOverlay');
             
-            if (menu && overlay && hamburger) {
-                const isActive = menu.classList.contains('active');
-                
-                if (isActive) {
-                    menu.classList.remove('active');
-                    overlay.classList.remove('active');
-                    hamburger.classList.remove('active');
-                    document.body.style.overflow = '';
-                    console.log('📱 DiziPortal.Com: Mobile menu closed');
-                } else {
-                    menu.classList.add('active');
-                    overlay.classList.add('active');
-                    hamburger.classList.add('active');
-                    document.body.style.overflow = 'hidden';
-                    console.log('📱 DiziPortal.Com: Mobile menu opened');
-                }
-            }
-        };
+            menu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
 
-        window.diziportalCloseMobileMenu = () => {
-            const menu = document.getElementById('diziportalMobileMenu');
-            const overlay = document.querySelector('.diziportal-mobile-overlay');
-            const hamburger = document.querySelector('.diziportal-hamburger');
-            
-            if (menu && overlay && hamburger) {
-                menu.classList.remove('active');
-                overlay.classList.remove('active');
-                hamburger.classList.remove('active');
-                document.body.style.overflow = '';
-                console.log('📱 DiziPortal.Com: Mobile menu closed');
-            }
-        };
-
-        // Close mobile menu on escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                diziportalCloseMobileMenu();
-            }
-        });
-
-        // Close mobile menu on window resize to desktop
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) {
-                diziportalCloseMobileMenu();
-            }
-        });
-
-        // DiziPortal.Com Secret Admin Access
-        let diziportalClickCount = 0;
-        window.diziportalSecretAdminAccess = () => {
-            diziportalClickCount++;
-            if (diziportalClickCount === 5) {
-                console.log('🔐 DiziPortal.Com: Secret admin access activated');
+        function secretAdminAccess() {
+            window.sportsManager.secretClickCount++;
+            if (window.sportsManager.secretClickCount >= 5) {
                 window.location.href = 'login.html';
             }
-            
-            // Reset click count after 3 seconds
-            setTimeout(() => {
-                diziportalClickCount = 0;
-            }, 3000);
-        };
+        }
 
-        // DiziPortal.Com Anti-DevTools Protection System
-        class DiziPortalDevToolsProtection {
+        // Anti-DevTools Protection
+        class DevToolsProtection {
             constructor() {
-                this.devToolsOpen = false;
-                this.threshold = 160;
                 this.init();
             }
 
             init() {
-                this.diziportalDetectDevTools();
-                this.diziportalPreventRightClick();
-                this.diziportalPreventKeyShortcuts();
-                this.diziportalObfuscateConsole();
-                
-                // Continuous monitoring
-                setInterval(() => {
-                    this.diziportalDetectDevTools();
-                }, 500);
-            }
-
-            diziportalDetectDevTools() {
-                const widthThreshold = window.outerWidth - window.innerWidth > this.threshold;
-                const heightThreshold = window.outerHeight - window.innerHeight > this.threshold;
-                
-                if (widthThreshold || heightThreshold) {
-                    if (!this.devToolsOpen) {
-                        this.devToolsOpen = true;
-                        this.diziportalRedirectUser();
-                    }
-                }
-            }
-
-            diziportalPreventRightClick() {
+                // Disable right-click
                 document.addEventListener('contextmenu', (e) => {
                     e.preventDefault();
-                    this.diziportalShowWarning();
                     return false;
                 });
-            }
 
-            diziportalPreventKeyShortcuts() {
+                // Disable F12, Ctrl+U, Ctrl+Shift+I
                 document.addEventListener('keydown', (e) => {
-                    // F12, Ctrl+Shift+I, Ctrl+U, Ctrl+Shift+C, Ctrl+Shift+J
                     if (e.key === 'F12' || 
-                        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'C' || e.key === 'J')) ||
-                        (e.ctrlKey && e.key === 'U')) {
+                        (e.ctrlKey && e.key === 'u') || 
+                        (e.ctrlKey && e.shiftKey && e.key === 'I')) {
                         e.preventDefault();
-                        this.diziportalRedirectUser();
+                        window.location.href = 'about:blank';
                         return false;
                     }
                 });
+
+                // Detect DevTools
+                this.detectDevTools();
             }
 
-            diziportalObfuscateConsole() {
-                // Override console methods
-                const originalLog = console.log;
-                console.log = function() {
-                    if (arguments.length > 0 && typeof arguments[0] === 'string' && arguments[0].includes('██')) {
-                        originalLog.apply(console, arguments);
+            detectDevTools() {
+                setInterval(() => {
+                    if (window.outerHeight - window.innerHeight > 160 || 
+                        window.outerWidth - window.innerWidth > 160) {
+                        window.location.href = 'about:blank';
                     }
-                };
-                
-                // Add fake console messages
-                setTimeout(() => {
-                    originalLog(`%c🚫 UYARI! Bu özellik web geliştiricileri içindir.`, 'color: red; font-size: 20px; font-weight: bold;');
-                    originalLog(`%c⚠️ Bu konsolu açarak DiziPortal.Com güvenlik kurallarını ihlal ediyorsunuz!`, 'color: orange; font-size: 16px;');
-                    originalLog(`%c🔒 Hesabınız güvenlik nedeniyle askıya alınabilir.`, 'color: red; font-size: 14px;');
                 }, 1000);
-            }
-
-            diziportalShowWarning() {
-                const warningDiv = document.createElement('div');
-                warningDiv.style.cssText = `
-                    position: fixed;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    background: rgba(255, 0, 0, 0.9);
-                    color: white;
-                    padding: 20px;
-                    border-radius: 10px;
-                    z-index: 10000;
-                    font-size: 16px;
-                    text-align: center;
-                `;
-                warningDiv.innerHTML = '🚫 Sağ tık engellendi! DiziPortal.Com güvenlik sistemi aktif.';
-                document.body.appendChild(warningDiv);
-                
-                setTimeout(() => {
-                    document.body.removeChild(warningDiv);
-                }, 2000);
-            }
-
-            diziportalRedirectUser() {
-                const redirectDiv = document.createElement('div');
-                redirectDiv.style.cssText = `
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: linear-gradient(45deg, #ff0000, #ff4444);
-                    color: white;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    z-index: 99999;
-                    font-family: Arial, sans-serif;
-                `;
-                redirectDiv.innerHTML = `
-                    <h1>🚫 ERİŞİM ENGELLENDİ</h1>
-                    <p>Geliştirici araçları tespit edildi!</p>
-                    <p>DiziPortal.Com güvenlik sistemi tarafından engellendiniz.</p>
-                    <p>3 saniye içinde yönlendirileceksiniz...</p>
-                `;
-                document.body.appendChild(redirectDiv);
-                
-                setTimeout(() => {
-                    window.location.href = 'about:blank';
-                }, 3000);
             }
         }
 
-        // Initialize protection system
-        const diziportalProtection = new DiziPortalDevToolsProtection();
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 DiziPortal Sports Loading...');
+            
+            // Initialize main manager
+            window.sportsManager = new DiziPortalSports();
+            
+            // Initialize protection
+            new DevToolsProtection();
+            
+            console.log('✅ DiziPortal Sports Ready!');
+        });
 
-        // DiziPortal.Com Console branding
+        // Console branding
         console.log(`
-        ██████╗ ██╗███████╗██╗██████╗  ██████╗ ██████╗ ████████╗ █████╗ ██╗         ██████╗ ██████╗ ███╗   ███╗
-        ██╔══██╗██║╚══███╔╝██║██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝██╔══██╗██║        ██╔════╝██╔═══██╗████╗ ████║
-        ██║  ██║██║  ███╔╝ ██║██████╔╝██║   ██║██████╔╝   ██║   ███████║██║        ██║     ██║   ██║██╔████╔██║
-        ██║  ██║██║ ███╔╝  ██║██╔═══╝ ██║   ██║██╔══██╗   ██║   ██╔══██║██║        ██║     ██║   ██║██║╚██╔╝██║
-        ██████╔╝██║███████╗██║██║     ╚██████╔╝██║  ██║   ██║   ██║  ██║███████╗██╗╚██████╗╚██████╔╝██║ ╚═╝ ██║
-        ╚═════╝ ╚═╝╚══════╝╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝
+        ██████╗ ██╗███████╗██╗██████╗  ██████╗ ██████╗ ████████╗ █████╗ ██╗    
+        ██╔══██╗██║╚══███╔╝██║██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝██╔══██╗██║    
+        ██║  ██║██║  ███╔╝ ██║██████╔╝██║   ██║██████╔╝   ██║   ███████║██║    
+        ██║  ██║██║ ███╔╝  ██║██╔═══╝ ██║   ██║██╔══██╗   ██║   ██╔══██║██║    
+        ██████╔╝██║███████╗██║██║     ╚██████╔╝██║  ██║   ██║   ██║  ██║███████╗
+        ╚═════╝ ╚═╝╚══════╝╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝
         
-        🎬 Box Sports - Premium Live Sports Streaming Platform
+        🏆 Dizi Portal Sports - Professional Sports Streaming Platform
         🚀 Developed by DiziPortal.Com Team
-        ⚡ Version 2.0 - Advanced Sports Streaming Solution with Security
+        ⚡ Version 3.0 - Player.js Integration & Red-Black Theme
         `);
     </script>
 </body>
