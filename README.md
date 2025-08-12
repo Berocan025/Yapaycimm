@@ -17,18 +17,21 @@
 - **CORS Handling**: Built-in cross-origin request management
 
 ### 🎨 Modern User Interface
-- **Dark Theme**: Sleek, eye-friendly dark mode design
+- **Sports Theme**: Dynamic sports-themed dark design with floating elements
 - **Responsive Design**: Perfect viewing on desktop, tablet, and mobile
+- **Hamburger Menu**: Mobile-optimized navigation with smooth animations
 - **Gradient Aesthetics**: Beautiful color gradients throughout the interface
 - **Smooth Animations**: Polished transitions and hover effects
 - **Professional Layout**: Clean, intuitive user experience
 
 ### ⚙️ Admin Management System
+- **Secure Authentication**: Login system with session management
 - **Match Management**: Add, edit, and delete live matches
 - **HLS Link Management**: Easy integration of streaming URLs
 - **Real-time Updates**: Instant synchronization between admin and public views
 - **Statistics Dashboard**: Track matches and streaming status
-- **User-friendly Interface**: Intuitive admin panel design
+- **User Management**: Change username and password
+- **Mobile Optimized**: Responsive admin interface
 
 ### 🔧 Technical Excellence
 - **DiziPortal Branding**: Consistent DiziPortal.Com branding throughout
@@ -42,6 +45,7 @@
 ```
 box-sports/
 ├── index.html              # Main streaming interface
+├── login.html              # Secure admin login page
 ├── admin.html              # Administrative panel
 ├── hls-player.js           # Advanced HLS player module
 └── README.md              # This documentation
@@ -57,16 +61,28 @@ Ensure you have a web server running (Apache, Nginx, or local development server
 
 ### 3. Access the Platform
 - **Main Site**: Open `index.html` in your browser
-- **Admin Panel**: Open `admin.html` for match management
+- **Admin Panel**: Click "Admin" button or navigate to `login.html`
 
-### 4. Add Your First Match
-1. Navigate to the admin panel
+### 4. Admin Login
+**Default Credentials:**
+- **Username**: `admin`
+- **Password**: `diziportal2025`
+
+⚠️ **Important**: Change these credentials immediately after first login!
+
+### 5. Add Your First Match
+1. Log into the admin panel
 2. Fill in match details:
-   - **Match Name**: e.g., "Real Madrid vs Barcelona"
+   - **Match Name**: e.g., "⚽ Real Madrid vs Barcelona - Champions League"
    - **Match Time**: Set the scheduled time
    - **HLS Link**: Add your streaming URL (e.g., `https://example.com/stream.m3u8`)
 3. Click "Maç Ekle" to add the match
 4. Return to the main site to see your match listed
+
+### 6. Security Setup
+1. **Change Admin Credentials**: Click "Şifre Değiştir" in admin panel
+2. **Set Strong Password**: Use at least 6 characters
+3. **Regular Updates**: Change credentials periodically for security
 
 ## 🎯 Usage Guide
 

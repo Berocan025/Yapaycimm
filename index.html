@@ -22,10 +22,54 @@
 
         .diziportal-body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0e1628 75%, #1a1a2e 100%);
             color: #ffffff;
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* DiziPortal.Com Sports Themed Background */
+        .diziportal-body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 15% 85%, rgba(0, 255, 136, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 15%, rgba(255, 107, 107, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.04) 0%, transparent 50%);
+            z-index: -2;
+            animation: diziportalSportsFloat 15s ease-in-out infinite;
+        }
+
+        .diziportal-body::after {
+            content: '⚽ 🏀 🏈 ⚽ 🏀 🏈 ⚽ 🏀 🏈 ⚽ 🏀 🏈';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 2rem;
+            opacity: 0.03;
+            z-index: -1;
+            white-space: pre;
+            line-height: 4rem;
+            animation: diziportalSportsScroll 30s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes diziportalSportsFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-10px) rotate(0.5deg); }
+            66% { transform: translateY(5px) rotate(-0.5deg); }
+        }
+
+        @keyframes diziportalSportsScroll {
+            0% { transform: translateY(100vh); }
+            100% { transform: translateY(-100vh); }
         }
 
         .diziportal-header {
@@ -50,6 +94,7 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            position: relative;
         }
 
         .diziportal-logo {
@@ -66,6 +111,8 @@
             display: flex;
             gap: 2rem;
             list-style: none;
+            margin: 0;
+            padding: 0;
         }
 
         .diziportal-nav-link {
@@ -111,10 +158,23 @@
             position: relative;
             width: 100%;
             height: 400px;
-            background: #000;
-            border-radius: 10px;
+            background: linear-gradient(45deg, #000000, #0d0d0d);
+            border-radius: 15px;
             overflow: hidden;
             border: 2px solid rgba(0, 255, 136, 0.5);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 0 40px rgba(0, 255, 136, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .diziportal-video-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.7),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 0 60px rgba(0, 255, 136, 0.3);
         }
 
         .diziportal-video-player {
@@ -131,6 +191,74 @@
             color: #888;
             font-size: 1.2rem;
             background: linear-gradient(45deg, #1a1a2e, #16213e);
+            text-align: center;
+            flex-direction: column;
+        }
+
+        .diziportal-no-match h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .diziportal-no-match p {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .diziportal-no-match small {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* DiziPortal.Com Video Player Controls */
+        .diziportal-video-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .diziportal-video-container:hover .diziportal-video-controls {
+            opacity: 1;
+        }
+
+        .diziportal-video-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .diziportal-live-badge {
+            background: linear-gradient(45deg, #ff0000, #ff4444);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .diziportal-quality-badge {
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid rgba(0, 255, 136, 0.5);
+            color: #00ff88;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
         }
 
         .diziportal-matches-section {
@@ -152,20 +280,37 @@
         }
 
         .diziportal-match-item {
-            background: rgba(15, 15, 35, 0.9);
+            background: linear-gradient(135deg, rgba(15, 15, 35, 0.9), rgba(26, 26, 46, 0.9));
             margin-bottom: 1rem;
-            padding: 1rem;
-            border-radius: 10px;
+            padding: 1.2rem;
+            border-radius: 12px;
             border: 1px solid rgba(0, 255, 136, 0.2);
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .diziportal-match-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transition: left 0.5s ease;
         }
 
         .diziportal-match-item:hover {
-            background: rgba(0, 255, 136, 0.1);
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 212, 255, 0.1));
             border-color: #00ff88;
-            transform: translateX(5px);
-            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+            transform: translateX(8px) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        .diziportal-match-item:hover::before {
+            left: 100%;
         }
 
         .diziportal-match-item.active {
@@ -179,11 +324,21 @@
             font-size: 1.1rem;
             margin-bottom: 0.5rem;
             color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 1;
         }
 
         .diziportal-match-time {
             color: #00ff88;
             font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
         }
 
         .diziportal-admin-btn {
@@ -207,11 +362,13 @@
         }
 
         .diziportal-footer {
-            background: rgba(15, 15, 35, 0.95);
+            background: linear-gradient(135deg, rgba(15, 15, 35, 0.95), rgba(26, 26, 46, 0.95));
             padding: 2rem 0;
             text-align: center;
             border-top: 2px solid #00ff88;
             margin-top: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .diziportal-footer-content {
@@ -223,19 +380,175 @@
             font-weight: bold;
         }
 
+        /* DiziPortal.Com Hamburger Menu */
+        .diziportal-hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .diziportal-hamburger:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: scale(1.05);
+        }
+
+        .diziportal-hamburger span {
+            width: 25px;
+            height: 3px;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .diziportal-hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .diziportal-hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .diziportal-hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        /* DiziPortal.Com Mobile Menu */
+        .diziportal-mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(15, 15, 35, 0.98) 0%, rgba(26, 26, 46, 0.98) 100%);
+            backdrop-filter: blur(20px);
+            border-left: 2px solid rgba(0, 255, 136, 0.3);
+            transition: right 0.3s ease;
+            z-index: 2000;
+            padding: 2rem 0;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .diziportal-mobile-menu.active {
+            right: 0;
+        }
+
+        .diziportal-mobile-menu-header {
+            padding: 0 2rem 2rem 2rem;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+            margin-bottom: 2rem;
+        }
+
+        .diziportal-mobile-menu-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .diziportal-mobile-menu-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .diziportal-mobile-menu-link {
+            display: block;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .diziportal-mobile-menu-link:hover {
+            background: rgba(0, 255, 136, 0.1);
+            padding-left: 2.5rem;
+            color: #00ff88;
+        }
+
+        .diziportal-mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1999;
+        }
+
+        .diziportal-mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .diziportal-main {
                 grid-template-columns: 1fr;
-            }
-            
-            .diziportal-nav {
-                flex-direction: column;
-                gap: 1rem;
+                gap: 1.5rem;
+                padding: 1.5rem 0;
             }
             
             .diziportal-nav-links {
-                gap: 1rem;
+                display: none;
+            }
+            
+            .diziportal-hamburger {
+                display: flex;
+            }
+
+            .diziportal-logo {
+                font-size: 1.8rem;
+            }
+
+            .diziportal-container {
+                padding: 0 15px;
+            }
+
+            .diziportal-video-container {
+                height: 250px;
+            }
+
+            .diziportal-player-section,
+            .diziportal-matches-section {
+                padding: 1rem;
+            }
+
+            .diziportal-admin-btn {
+                bottom: 15px;
+                right: 15px;
+                padding: 0.8rem;
+            }
+
+            .diziportal-footer {
+                padding: 1.5rem 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .diziportal-logo {
+                font-size: 1.5rem;
+            }
+
+            .diziportal-video-container {
+                height: 200px;
+            }
+
+            .diziportal-mobile-menu {
+                width: 90%;
             }
         }
 
@@ -314,8 +627,15 @@
                     <li><a href="#" class="diziportal-nav-link">Ana Sayfa</a></li>
                     <li><a href="#" class="diziportal-nav-link">Canlı Maçlar</a></li>
                     <li><a href="#" class="diziportal-nav-link">Program</a></li>
-                    <li><a href="admin.html" class="diziportal-nav-link">Admin</a></li>
+                    <li><a href="login.html" class="diziportal-nav-link">Admin</a></li>
                 </ul>
+                
+                <!-- DiziPortal.Com Hamburger Menu -->
+                <div class="diziportal-hamburger" onclick="diziportalToggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </nav>
         </div>
     </header>
@@ -353,8 +673,24 @@
         </div>
     </main>
 
+    <!-- DiziPortal.Com Mobile Menu -->
+    <div class="diziportal-mobile-overlay" onclick="diziportalCloseMobileMenu()"></div>
+    <div class="diziportal-mobile-menu" id="diziportalMobileMenu">
+        <div class="diziportal-mobile-menu-header">
+            <div class="diziportal-mobile-menu-logo">📺 Box Sports</div>
+        </div>
+        <ul class="diziportal-mobile-menu-links">
+            <li><a href="#" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">🏠 Ana Sayfa</a></li>
+            <li><a href="#" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">📺 Canlı Maçlar</a></li>
+            <li><a href="#" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">📅 Program</a></li>
+            <li><a href="login.html" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">⚙️ Admin Panel</a></li>
+            <li><a href="#" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">📞 İletişim</a></li>
+            <li><a href="#" class="diziportal-mobile-menu-link" onclick="diziportalCloseMobileMenu()">ℹ️ Hakkında</a></li>
+        </ul>
+    </div>
+
     <!-- DiziPortal.Com Admin Button -->
-    <a href="admin.html" class="diziportal-admin-btn" title="Admin Panel">⚙️</a>
+    <a href="login.html" class="diziportal-admin-btn" title="Admin Panel">⚙️</a>
 
     <!-- DiziPortal.Com Footer -->
     <footer class="diziportal-footer">
@@ -406,14 +742,20 @@
                     this.matches = [
                         {
                             id: 'demo1',
-                            name: '🔴 Demo Maç 1 - Galatasaray vs Fenerbahçe',
+                            name: '⚽ Galatasaray vs Fenerbahçe - Süper Lig',
                             time: '20:00',
                             hls: ''
                         },
                         {
                             id: 'demo2',
-                            name: '🔴 Demo Maç 2 - Barcelona vs Real Madrid',
+                            name: '🏀 Lakers vs Warriors - NBA Playoffs',
                             time: '22:00',
+                            hls: ''
+                        },
+                        {
+                            id: 'demo3',
+                            name: '🏈 Real Madrid vs Barcelona - El Clasico',
+                            time: '19:30',
                             hls: ''
                         }
                     ];
@@ -645,6 +987,59 @@
                 diziportalManager.diziportalUpdateMatchesList();
             }
         };
+
+        // DiziPortal.Com Mobile Menu Functions
+        window.diziportalToggleMobileMenu = () => {
+            const menu = document.getElementById('diziportalMobileMenu');
+            const overlay = document.querySelector('.diziportal-mobile-overlay');
+            const hamburger = document.querySelector('.diziportal-hamburger');
+            
+            if (menu && overlay && hamburger) {
+                const isActive = menu.classList.contains('active');
+                
+                if (isActive) {
+                    menu.classList.remove('active');
+                    overlay.classList.remove('active');
+                    hamburger.classList.remove('active');
+                    document.body.style.overflow = '';
+                    console.log('📱 DiziPortal.Com: Mobile menu closed');
+                } else {
+                    menu.classList.add('active');
+                    overlay.classList.add('active');
+                    hamburger.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                    console.log('📱 DiziPortal.Com: Mobile menu opened');
+                }
+            }
+        };
+
+        window.diziportalCloseMobileMenu = () => {
+            const menu = document.getElementById('diziportalMobileMenu');
+            const overlay = document.querySelector('.diziportal-mobile-overlay');
+            const hamburger = document.querySelector('.diziportal-hamburger');
+            
+            if (menu && overlay && hamburger) {
+                menu.classList.remove('active');
+                overlay.classList.remove('active');
+                hamburger.classList.remove('active');
+                document.body.style.overflow = '';
+                console.log('📱 DiziPortal.Com: Mobile menu closed');
+            }
+        };
+
+        // Close mobile menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                diziportalCloseMobileMenu();
+            }
+        });
+
+        // Close mobile menu on window resize to desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                diziportalCloseMobileMenu();
+            }
+        });
 
         // DiziPortal.Com Console branding
         console.log(`

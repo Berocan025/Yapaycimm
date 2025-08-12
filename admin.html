@@ -322,6 +322,79 @@
             background: linear-gradient(45deg, #ff6b6b, #ffa500);
             border-radius: 4px;
         }
+
+        /* DiziPortal.Com Password Change Modal */
+        .diziportal-password-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .diziportal-password-modal-content {
+            background: rgba(26, 26, 46, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            width: 90%;
+            max-width: 500px;
+            animation: diziportalModalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes diziportalModalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .diziportal-password-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .diziportal-password-modal-header h3 {
+            color: #ff6b6b;
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .diziportal-password-modal-close {
+            background: none;
+            border: none;
+            color: #ff6b6b;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .diziportal-password-modal-close:hover {
+            background: rgba(255, 107, 107, 0.1);
+        }
     </style>
 </head>
 <body class="diziportal-admin-reset diziportal-admin-body">
@@ -333,8 +406,8 @@
                 <ul class="diziportal-admin-nav-links">
                     <li><a href="index.html" class="diziportal-admin-nav-link">Ana Sayfa</a></li>
                     <li><a href="#" class="diziportal-admin-nav-link">Maç Yönetimi</a></li>
-                    <li><a href="#" class="diziportal-admin-nav-link">İstatistikler</a></li>
-                    <li><a href="#" class="diziportal-admin-nav-link">Ayarlar</a></li>
+                    <li><a href="#" onclick="diziportalShowPasswordChange()" class="diziportal-admin-nav-link">Şifre Değiştir</a></li>
+                    <li><a href="#" onclick="diziportalAdminLogout()" class="diziportal-admin-nav-link" style="color: #ff6b6b;">🚪 Çıkış</a></li>
                 </ul>
             </nav>
         </div>
@@ -444,7 +517,69 @@
     <!-- Notification -->
     <div id="diziportalNotification" class="diziportal-admin-notification"></div>
 
+    <!-- DiziPortal.Com Password Change Modal -->
+    <div id="diziportalPasswordModal" class="diziportal-password-modal" style="display: none;">
+        <div class="diziportal-password-modal-content">
+            <div class="diziportal-password-modal-header">
+                <h3>🔐 Kullanıcı Adı ve Şifre Değiştir</h3>
+                <button class="diziportal-password-modal-close" onclick="diziportalHidePasswordChange()">&times;</button>
+            </div>
+            <form id="diziportalPasswordChangeForm">
+                <div class="diziportal-admin-form-group">
+                    <label class="diziportal-admin-label">👤 Yeni Kullanıcı Adı:</label>
+                    <input type="text" id="newUsername" class="diziportal-admin-input" required>
+                </div>
+                <div class="diziportal-admin-form-group">
+                    <label class="diziportal-admin-label">🔑 Mevcut Şifre:</label>
+                    <input type="password" id="currentPassword" class="diziportal-admin-input" required>
+                </div>
+                <div class="diziportal-admin-form-group">
+                    <label class="diziportal-admin-label">🆕 Yeni Şifre:</label>
+                    <input type="password" id="newPassword" class="diziportal-admin-input" required>
+                </div>
+                <div class="diziportal-admin-form-group">
+                    <label class="diziportal-admin-label">🔄 Yeni Şifre Tekrar:</label>
+                    <input type="password" id="confirmPassword" class="diziportal-admin-input" required>
+                </div>
+                <button type="submit" class="diziportal-admin-btn">💾 Değişiklikleri Kaydet</button>
+            </form>
+        </div>
+    </div>
+
     <!-- diziportal Admin JavaScript -->
+    <script>
+        // DiziPortal.Com - Security Check
+        function diziportalCheckAdminAuth() {
+            const session = localStorage.getItem('diziportalAdminSession');
+            if (!session) {
+                console.log('🔒 DiziPortal.Com: No admin session found');
+                window.location.href = 'login.html';
+                return false;
+            }
+
+            try {
+                const sessionData = JSON.parse(session);
+                if (sessionData.expiry < Date.now()) {
+                    console.log('🔒 DiziPortal.Com: Admin session expired');
+                    localStorage.removeItem('diziportalAdminSession');
+                    window.location.href = 'login.html';
+                    return false;
+                }
+                console.log('✅ DiziPortal.Com: Admin session valid');
+                return true;
+            } catch (error) {
+                console.error('❌ DiziPortal.Com: Session validation error:', error);
+                localStorage.removeItem('diziportalAdminSession');
+                window.location.href = 'login.html';
+                return false;
+            }
+        }
+
+        // Check auth immediately
+        if (!diziportalCheckAdminAuth()) {
+            // Will redirect to login
+        }
+    </script>
     <script>
         // DiziPortal.Com - Box Sports Admin Panel JavaScript
         // Developer: DiziPortal.Com Development Team
@@ -662,7 +797,7 @@
             diziportalAdminManager = new DiziPortalAdminManager();
         });
 
-        // Global admin functions for DiziPortal.Com
+                 // Global admin functions for DiziPortal.Com
         window.diziportalAdminRefresh = () => {
             if (diziportalAdminManager) {
                 diziportalAdminManager.diziportalLoadMatches();
@@ -670,6 +805,95 @@
                 diziportalAdminManager.diziportalUpdateStatistics();
             }
         };
+
+        // DiziPortal.Com Admin Logout Function
+        window.diziportalAdminLogout = () => {
+            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                localStorage.removeItem('diziportalAdminSession');
+                console.log('🚪 DiziPortal.Com: Admin logged out');
+                window.location.href = 'login.html';
+            }
+        };
+
+        // DiziPortal.Com Password Change Functions
+        window.diziportalShowPasswordChange = () => {
+            const modal = document.getElementById('diziportalPasswordModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                
+                // Load current credentials
+                const credentials = JSON.parse(localStorage.getItem('diziportalAdminCredentials') || '{}');
+                document.getElementById('newUsername').value = credentials.username || '';
+            }
+        };
+
+        window.diziportalHidePasswordChange = () => {
+            const modal = document.getElementById('diziportalPasswordModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.getElementById('diziportalPasswordChangeForm').reset();
+            }
+        };
+
+        // Setup password change form
+        document.addEventListener('DOMContentLoaded', () => {
+            const passwordForm = document.getElementById('diziportalPasswordChangeForm');
+            if (passwordForm) {
+                passwordForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    diziportalHandlePasswordChange();
+                });
+            }
+
+            // Close modal on outside click
+            document.getElementById('diziportalPasswordModal').addEventListener('click', (e) => {
+                if (e.target.id === 'diziportalPasswordModal') {
+                    diziportalHidePasswordChange();
+                }
+            });
+        });
+
+        function diziportalHandlePasswordChange() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newUsername = document.getElementById('newUsername').value.trim();
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Validate inputs
+            if (!currentPassword || !newUsername || !newPassword || !confirmPassword) {
+                diziportalAdminManager.diziportalShowNotification('Lütfen tüm alanları doldurun!', 'error');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                diziportalAdminManager.diziportalShowNotification('Yeni şifreler eşleşmiyor!', 'error');
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                diziportalAdminManager.diziportalShowNotification('Yeni şifre en az 6 karakter olmalı!', 'error');
+                return;
+            }
+
+            // Verify current password
+            const credentials = JSON.parse(localStorage.getItem('diziportalAdminCredentials') || '{}');
+            if (credentials.password !== currentPassword) {
+                diziportalAdminManager.diziportalShowNotification('Mevcut şifre hatalı!', 'error');
+                return;
+            }
+
+            // Save new credentials
+            const newCredentials = {
+                username: newUsername,
+                password: newPassword
+            };
+
+            localStorage.setItem('diziportalAdminCredentials', JSON.stringify(newCredentials));
+            console.log('🔐 DiziPortal.Com: Admin credentials updated');
+            
+            diziportalAdminManager.diziportalShowNotification('Kullanıcı adı ve şifre başarıyla güncellendi!', 'success');
+            diziportalHidePasswordChange();
+        }
 
         // DiziPortal.Com Admin Console branding
         console.log(`
