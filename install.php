@@ -468,20 +468,43 @@ window.addEventListener("load", function() {
             
             debug_log("Admin credentials updated in SQL");
             
-            // SQL komutlarını çalıştır
-            $statements = array_filter(array_map('trim', explode(';', $sql)));
-            $executed = 0;
+            // SQL komutlarını çalıştır - Transaction kullan
+            $pdo->beginTransaction();
             
-            foreach ($statements as $statement) {
-                if (!empty($statement) && !preg_match('/^\s*--/', $statement)) {
-                    try {
-                        $pdo->exec($statement);
-                        $executed++;
-                    } catch (PDOException $e) {
-                        debug_log("SQL Error in statement: " . substr($statement, 0, 100) . "... Error: " . $e->getMessage());
-                        // Bazı hataları görmezden gel (IF NOT EXISTS vs.)
+            try {
+                // SQL'i temizle ve parçala
+                $sql = preg_replace('/^--.*$/m', '', $sql); // Yorumları kaldır
+                $sql = preg_replace('/^\s*$/m', '', $sql); // Boş satırları kaldır
+                
+                $statements = array_filter(array_map('trim', explode(';', $sql)));
+                $executed = 0;
+                $failed = 0;
+                
+                foreach ($statements as $statement) {
+                    if (!empty($statement) && strlen(trim($statement)) > 5) {
+                        try {
+                            $result = $pdo->exec($statement);
+                            debug_log("SQL Success: " . substr($statement, 0, 50) . "... (Affected: $result)");
+                            $executed++;
+                        } catch (PDOException $e) {
+                            debug_log("SQL Error: " . $e->getMessage() . " in: " . substr($statement, 0, 100));
+                            $failed++;
+                            
+                            // Critical errors should stop the process
+                            if (strpos($e->getMessage(), 'syntax error') !== false) {
+                                throw $e;
+                            }
+                        }
                     }
                 }
+                
+                $pdo->commit();
+                debug_log("Transaction committed. Executed: $executed, Failed: $failed");
+                
+            } catch (Exception $e) {
+                $pdo->rollback();
+                debug_log("Transaction rolled back: " . $e->getMessage());
+                throw $e;
             }
             
             $this->success[] = "✅ Veritabanı tabloları oluşturuldu ($executed komut çalıştırıldı)";

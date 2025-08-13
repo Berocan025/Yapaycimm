@@ -92,10 +92,17 @@ try {
     // Initialize security
     Security::initialize();
     
+    // Initialize Admin class
+    Admin::init();
+    
     // Check maintenance mode
     if (($config['app']['features']['maintenance_mode'] ?? false) && !Admin::isLoggedIn()) {
         http_response_code(503);
-        include ROOT_PATH . DS . 'maintenance.php';
+        if (file_exists(ROOT_PATH . DS . 'maintenance.php')) {
+            include ROOT_PATH . DS . 'maintenance.php';
+        } else {
+            echo '<h1>Site Bakımda</h1><p>Kısa süre sonra geri döneceğiz.</p>';
+        }
         exit;
     }
     
@@ -105,10 +112,14 @@ try {
     
     // Show friendly error page
     if ($_ENV['APP_DEBUG'] ?? false) {
-        die('Bootstrap Error: ' . $e->getMessage());
+        die('Bootstrap Error: ' . $e->getMessage() . '<br>File: ' . $e->getFile() . '<br>Line: ' . $e->getLine());
     } else {
         http_response_code(500);
-        include ROOT_PATH . DS . 'error.php';
+        if (file_exists(ROOT_PATH . DS . 'error.php')) {
+            include ROOT_PATH . DS . 'error.php';
+        } else {
+            echo '<h1>500 - Sistem Hatası</h1><p>Lütfen daha sonra tekrar deneyin.</p>';
+        }
         exit;
     }
 }

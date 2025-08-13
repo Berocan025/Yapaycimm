@@ -46,8 +46,8 @@ class Database {
             );
             
         } catch (PDOException $e) {
-            log_activity('Database connection failed', 'error', ['error' => $e->getMessage()]);
-            throw new Exception('Database connection failed');
+            error_log('Database connection failed: ' . $e->getMessage());
+            throw new Exception('Database connection failed: ' . $e->getMessage());
         }
     }
     
@@ -61,12 +61,8 @@ class Database {
             $stmt->execute($params);
             return $stmt;
         } catch (PDOException $e) {
-            log_activity('Database query failed', 'error', [
-                'sql' => $sql,
-                'params' => $params,
-                'error' => $e->getMessage()
-            ]);
-            throw new Exception('Database query failed');
+            error_log('Database query failed: ' . $e->getMessage() . ' SQL: ' . $sql);
+            throw new Exception('Database query failed: ' . $e->getMessage());
         }
     }
     

@@ -3,13 +3,7 @@
 -- MySQL Database Structure
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
-
--- Database: dg_sports
-CREATE DATABASE IF NOT EXISTS `dg_sports` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `dg_sports`;
 
 -- --------------------------------------------------------
 
