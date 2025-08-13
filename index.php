@@ -5,6 +5,12 @@
  * Professional sports streaming platform
  */
 
+// Check if installation is completed
+if (!file_exists(__DIR__ . '/install.lock') && !file_exists(__DIR__ . '/.env')) {
+    header('Location: install.php');
+    exit('Kurulum gerekli. <a href="install.php">Kurulum sayfasına git</a>');
+}
+
 require_once 'includes/bootstrap.php';
 
 // Get page data

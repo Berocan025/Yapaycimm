@@ -16,7 +16,7 @@ define('INCLUDES_PATH', ROOT_PATH . DS . 'includes');
 define('UPLOADS_PATH', ROOT_PATH . DS . 'uploads');
 define('LOGS_PATH', ROOT_PATH . DS . 'logs');
 
-// Set error reporting
+// Load .env file if exists
 if (file_exists(ROOT_PATH . DS . '.env')) {
     $env_content = file_get_contents(ROOT_PATH . DS . '.env');
     $env_lines = explode("\n", $env_content);
@@ -26,6 +26,10 @@ if (file_exists(ROOT_PATH . DS . '.env')) {
             $_ENV[trim($key)] = trim($value, '"\'');
         }
     }
+} else {
+    // Default values if .env doesn't exist (for install process)
+    $_ENV['APP_DEBUG'] = '0';
+    $_ENV['APP_ENV'] = 'production';
 }
 
 // Set timezone

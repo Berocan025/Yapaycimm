@@ -4,6 +4,16 @@
 > **Version:** 2.0.0 PHP  
 > **License:** Proprietary  
 
+## 🚀 SUPER EASY INSTALLATION
+
+**One-Click Installation:** Upload files to your server and open `install.php` in your browser. Automatic setup in minutes!
+
+```bash
+1. Upload files to server
+2. Open: yoursite.com/install.php
+3. Follow 4 simple steps - Done! 🎉
+```
+
 Professional sports streaming platform built with **PHP**, **MySQL**, and modern web technologies. Features live match streaming, 24/7 channels, comprehensive admin panel, and mobile-responsive design.
 
 ## 🚀 Features
