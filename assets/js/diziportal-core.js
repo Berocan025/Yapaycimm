@@ -116,6 +116,104 @@ const DiziPortalApp = {
         
         // Initialize social links
         this.updateSocialLinks();
+        
+        // Setup logo fallbacks
+        this.setupLogoFallbacks();
+    },
+
+    // Enhanced logo fallback system with comprehensive error handling
+    setupLogoFallbacks() {
+        // Find all logo images
+        const logoElements = document.querySelectorAll('img[src*="logo"], .team-logo, .channel-logo, .team-logo-small, .channel-logo-small');
+        
+        logoElements.forEach(img => {
+            // Skip if already processed
+            if (img.hasAttribute('data-fallback-set')) return;
+            
+            img.setAttribute('data-fallback-set', 'true');
+            
+            // Apply consistent styling
+            img.style.objectFit = 'cover';
+            img.style.backgroundColor = 'rgba(26, 26, 26, 0.8)';
+            
+            // Store original source
+            const originalSrc = img.src;
+            
+            // Define fallback handler
+            const handleImageError = () => {
+                let fallbackSrc = '';
+                
+                // Determine appropriate fallback based on context
+                if (img.classList.contains('team-logo') || img.classList.contains('team-logo-small') || 
+                    img.alt.toLowerCase().includes('team') || img.alt.toLowerCase().includes('takım')) {
+                    // Team logo fallback (circular)
+                    fallbackSrc = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMzAiIGZpbGw9IiNkYzI2MjYiLz4KPHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZmZmZmZiIgeD0iMTgiIHk9IjE4Ij4KPHBhdGggZD0iTTEyIDJMMTUgOS41TDIyIDEwTDE1IDE1LjVMMTIgMjJMOSAxNS41TDIgMTBMOSA5LjVMMTIgMloiLz4KPC9zdmc+Cjwvc3ZnPgo=';
+                } else if (img.classList.contains('channel-logo') || img.classList.contains('channel-logo-small') || 
+                           img.alt.toLowerCase().includes('channel') || img.alt.toLowerCase().includes('kanal')) {
+                    // Channel logo fallback (rectangular with play icon)
+                    fallbackSrc = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiByeD0iOCIgZmlsbD0iI2RjMjYyNiIvPgo8cGF0aCBkPSJNMzAgMjRMNTAgNDBMMzAgNTZWMjRaIiBmaWxsPSIjZmZmZmZmIi8+Cjwvc3ZnPgo=';
+                } else {
+                    // Generic logo fallback
+                    fallbackSrc = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzZiNzI4MCIvPgo8dGV4dCB4PSIzMCIgeT0iMzgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmZmZmYiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiI+TE9HTzwvdGV4dD4KPC9zdmc+';
+                }
+                
+                // Apply fallback
+                img.src = fallbackSrc;
+                img.onerror = null; // Prevent infinite loop
+                
+                // Apply styling based on type
+                if (img.classList.contains('team-logo') || img.classList.contains('team-logo-small')) {
+                    img.style.borderRadius = '50%';
+                } else {
+                    img.style.borderRadius = '8px';
+                }
+                
+                img.style.border = '2px solid rgba(220, 38, 38, 0.3)';
+            };
+            
+            // Set error handler
+            img.onerror = handleImageError;
+            
+            // Test existing images
+            if (originalSrc && originalSrc.startsWith('http') && !img.complete) {
+                const testImg = new Image();
+                testImg.onerror = handleImageError;
+                testImg.src = originalSrc;
+            }
+        });
+        
+        // Setup mutation observer for dynamically added images
+        if (!this.logoObserver) {
+            this.logoObserver = new MutationObserver((mutations) => {
+                let hasNewImages = false;
+                
+                mutations.forEach((mutation) => {
+                    mutation.addedNodes.forEach((node) => {
+                        if (node.nodeType === 1) {
+                            const images = node.tagName === 'IMG' ? [node] : 
+                                          node.querySelectorAll ? node.querySelectorAll('img') : [];
+                            
+                            if (images.length > 0) {
+                                hasNewImages = true;
+                            }
+                        }
+                    });
+                });
+                
+                // Debounce the setup call
+                if (hasNewImages) {
+                    clearTimeout(this.logoSetupTimeout);
+                    this.logoSetupTimeout = setTimeout(() => {
+                        this.setupLogoFallbacks();
+                    }, 100);
+                }
+            });
+            
+            this.logoObserver.observe(document.body, { 
+                childList: true, 
+                subtree: true 
+            });
+        }
     },
 
     // Hide loading screen
