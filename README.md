@@ -28,9 +28,23 @@ DG SPORTS, modern ve kullanıcı dostu arayüzü ile canlı spor maçlarını ve
 
 ### 👑 Gelişmiş Admin Panel
 - **Ayrı Admin Dashboard**: Ana siteden tamamen bağımsız
-- **Real-time Analytics**: Gerçek zamanlı istatistikler
+- **Real-time Analytics**: Chart.js ile profesyonel grafikler
 - **Comprehensive Management**: Tam CRUD işlemleri
 - **Security First**: IP bazlı erişim kontrolü
+- **Modern UI**: Responsive ve mobile-friendly
+
+### 🎬 Inline Player Sistemi
+- **Ana Sayfa Entegrasyonu**: Player direkt ana sayfada açılır
+- **Sorunsuz Geçiş**: Modal'sız, akıcı izleme deneyimi
+- **Tam Ekran Desteği**: İsteğe bağlı fullscreen modu
+- **Responsive Design**: Mobil ve masaüstünde mükemmel
+- **Logo Optimizasyonu**: Otomatik resim yükleme ve fallback
+
+### 🛠️ Kolay Kurulum Sistemi
+- **3 Adımlı Setup**: Wizard ile hızlı kurulum
+- **Otomatik Konfigürasyon**: Elle ayar gerektirmez
+- **Örnek İçerik**: Varsayılan maç ve kanallar
+- **Admin Hesap Setup**: Kurulum sırasında admin oluşturma
 
 ### 📊 İzleyici Sayacı
 - **Gerçek Zamanlı**: Anlık izleyici sayısı
@@ -64,28 +78,45 @@ DG SPORTS, modern ve kullanıcı dostu arayüzü ile canlı spor maçlarını ve
 
 ## 🚀 Kurulum
 
+### 🎯 Kolay Kurulum Sihirbazı
+
+DG SPORTS artık **3 adımda kolay kurulum** sistemi ile geliyor!
+
+1. **Dosyaları Yükleyin**: Tüm dosyaları web sunucunuza yükleyin
+2. **Setup Wizard'ı Açın**: `https://yoursite.com/setup.html` adresine gidin
+3. **3 Adımda Tamamlayın**: Site ayarları → İçerik seçimi → Tamamla
+
 ### 1. Dosya Yükleme
 
 Tüm dosyaları web sunucunuzun ana dizinine yükleyin:
 
 ```
 /public_html/
-├── index.html
+├── index.html               # Ana site
+├── setup.html              # 🆕 Kolay kurulum sihirbazı
 ├── admin/
-│   ├── index.html
-│   ├── admin-dashboard.css
-│   └── admin-dashboard.js
+│   ├── index.html          # Admin dashboard
+│   ├── admin-dashboard.css # Admin stilleri
+│   └── admin-dashboard.js  # Admin işlevleri
 ├── assets/
 │   ├── css/
 │   │   └── diziportal-styles.css
 │   ├── js/
-│   │   ├── diziportal-core.js
+│   │   ├── diziportal-core.js    # 🆕 Inline player desteği
 │   │   ├── diziportal-player.js
 │   │   └── diziportal-data.js
 │   └── images/
 │       └── dg-sports-logo.png
-└── .htaccess
+└── .htaccess               # 🆕 Güvenlik optimizasyonlu
 ```
+
+### 2. Kolay Kurulum (Önerilen)
+
+1. **Setup Wizard'ı Açın**: `https://yoursite.com/setup.html`
+2. **Site Bilgilerini Girin**: Başlık, açıklama, admin bilgileri
+3. **Sosyal Medya**: Telegram, Instagram, Twitter, TikTok (opsiyonel)
+4. **Örnek İçerik**: Varsayılan maç ve kanallar eklensin mi?
+5. **Tamamla**: Site otomatik olarak hazır!
 
 ### 2. .htaccess Yapılandırması
 

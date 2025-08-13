@@ -111,6 +111,68 @@
                     <h2>Canlı Maçlar</h2>
                     <p>Şu anda yayında olan maçları izleyin</p>
                 </div>
+                
+                <!-- Inline Player Area -->
+                <div class="inline-player-container" id="inline-player-container" style="display: none;">
+                    <div class="inline-player-header">
+                        <div class="playing-info">
+                            <div class="playing-icon">
+                                <i class="fas fa-play-circle"></i>
+                            </div>
+                            <div class="playing-details">
+                                <h3 id="playing-title">Şu anda İzleniyor</h3>
+                                <p id="playing-subtitle">Maç detayları</p>
+                            </div>
+                        </div>
+                        <div class="player-controls-header">
+                            <div class="viewer-count-header">
+                                <i class="fas fa-eye"></i>
+                                <span id="inline-viewer-count">0</span>
+                            </div>
+                            <button class="player-control-btn fullscreen-btn" onclick="openFullscreen()">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                            <button class="player-control-btn close-btn" onclick="closeInlinePlayer()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="inline-player-wrapper">
+                        <div id="inline-diziportal-player"></div>
+                        <div class="player-overlay" id="player-overlay">
+                            <div class="overlay-content">
+                                <div class="loading-spinner">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </div>
+                                <p>Yayın yükleniyor...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="match-info-inline" id="match-info-inline" style="display: none;">
+                        <div class="teams-inline">
+                            <div class="team-inline">
+                                <img id="home-team-logo-inline" src="" alt="" onerror="this.style.display='none'">
+                                <span id="home-team-name-inline"></span>
+                            </div>
+                            <div class="vs-inline">VS</div>
+                            <div class="team-inline">
+                                <img id="away-team-logo-inline" src="" alt="" onerror="this.style.display='none'">
+                                <span id="away-team-name-inline"></span>
+                            </div>
+                        </div>
+                        <div class="match-details-inline">
+                            <div class="match-time-inline">
+                                <i class="fas fa-clock"></i>
+                                <span id="match-time-inline"></span>
+                            </div>
+                            <div class="match-location-inline">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span id="match-location-inline"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="matches-grid" id="matches-container">
                     <!-- Matches will be loaded here by JavaScript -->
                 </div>

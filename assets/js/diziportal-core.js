@@ -271,25 +271,37 @@ const DiziPortalApp = {
                     id: 'match1',
                     homeTeam: 'Galatasaray',
                     awayTeam: 'Fenerbahçe',
-                    homeLogo: 'https://upload.wikimedia.org/wikipedia/commons/4/4a/Galatasaray_Sports_Club_Logo.png',
-                    awayLogo: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Fenerbahçe_SK_Logo.png',
+                    homeLogo: 'https://logoeps.com/wp-content/uploads/2013/03/galatasaray-vector-logo.png',
+                    awayLogo: 'https://logoeps.com/wp-content/uploads/2013/03/fenerbahce-vector-logo.png',
                     matchTime: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
                     location: 'Türk Telekom Stadyumu',
-                    streamUrl: 'https://example.com/stream1.m3u8',
+                    streamUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
                     isLive: true,
-                    viewers: Math.floor(Math.random() * 50000) + 10000
+                    viewers: Math.floor(Math.random() * 50000) + 15000
                 },
                 {
                     id: 'match2',
-                    homeTeam: 'Beşiktaş',
-                    awayTeam: 'Trabzonspor',
-                    homeLogo: 'https://upload.wikimedia.org/wikipedia/commons/1/14/Beşiktaş_JK_logo.png',
-                    awayLogo: 'https://upload.wikimedia.org/wikipedia/commons/7/7b/Trabzonspor_logo.png',
+                    homeTeam: 'Real Madrid',
+                    awayTeam: 'Barcelona',
+                    homeLogo: 'https://logoeps.com/wp-content/uploads/2013/03/real-madrid-vector-logo.png',
+                    awayLogo: 'https://logoeps.com/wp-content/uploads/2013/03/barcelona-vector-logo.png',
                     matchTime: new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString(),
-                    location: 'Vodafone Park',
-                    streamUrl: 'https://example.com/stream2.m3u8',
+                    location: 'Santiago Bernabéu',
+                    streamUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+                    isLive: true,
+                    viewers: Math.floor(Math.random() * 80000) + 25000
+                },
+                {
+                    id: 'match3',
+                    homeTeam: 'Manchester United',
+                    awayTeam: 'Liverpool',
+                    homeLogo: 'https://logoeps.com/wp-content/uploads/2013/03/manchester-united-vector-logo.png',
+                    awayLogo: 'https://logoeps.com/wp-content/uploads/2013/03/liverpool-vector-logo.png',
+                    matchTime: new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString(),
+                    location: 'Old Trafford',
+                    streamUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
                     isLive: false,
-                    viewers: Math.floor(Math.random() * 30000) + 5000
+                    viewers: 0
                 }
             ];
         }
@@ -308,30 +320,39 @@ const DiziPortalApp = {
             this.state.channels = [
                 {
                     id: 'channel1',
-                    name: 'TRT Spor',
-                    logo: 'https://upload.wikimedia.org/wikipedia/commons/c/c0/TRT_Spor_logo.png',
-                    category: 'genel',
-                    streamUrl: 'https://example.com/trt-spor.m3u8',
+                    name: 'beIN SPORTS 1 HD',
+                    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Bein_sports_1.png/512px-Bein_sports_1.png',
+                    category: 'futbol',
+                    streamUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
                     isLive: true,
-                    viewers: Math.floor(Math.random() * 20000) + 5000
+                    viewers: Math.floor(Math.random() * 35000) + 12000
                 },
                 {
                     id: 'channel2',
-                    name: 'beIN Sports 1',
-                    logo: 'https://upload.wikimedia.org/wikipedia/commons/3/35/BeIN_Sports_logo.png',
-                    category: 'futbol',
-                    streamUrl: 'https://example.com/bein-sports-1.m3u8',
+                    name: 'TRT SPOR',
+                    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/TRT_Spor_logo.png/512px-TRT_Spor_logo.png',
+                    category: 'genel',
+                    streamUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
                     isLive: true,
-                    viewers: Math.floor(Math.random() * 35000) + 10000
+                    viewers: Math.floor(Math.random() * 20000) + 8000
                 },
                 {
                     id: 'channel3',
-                    name: 'S Sport',
-                    logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a1/S_Sport_logo.png',
+                    name: 'S SPORT',
+                    logo: 'https://upload.wikimedia.org/wikipedia/tr/thumb/7/7f/S_Sport_logo.png/512px-S_Sport_logo.png',
                     category: 'futbol',
-                    streamUrl: 'https://example.com/s-sport.m3u8',
+                    streamUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
                     isLive: true,
-                    viewers: Math.floor(Math.random() * 25000) + 8000
+                    viewers: Math.floor(Math.random() * 25000) + 10000
+                },
+                {
+                    id: 'channel4',
+                    name: 'ESPN HD',
+                    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/ESPN_wordmark.svg/512px-ESPN_wordmark.svg.png',
+                    category: 'basketbol',
+                    streamUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+                    isLive: true,
+                    viewers: Math.floor(Math.random() * 40000) + 15000
                 },
                 {
                     id: 'channel4',
@@ -414,7 +435,7 @@ const DiziPortalApp = {
         }
         
         container.innerHTML = this.state.channels.map(channel => `
-            <div class="channel-card" data-category="${channel.category}" onclick="diziportalPlayStream('${channel.streamUrl}', '${channel.name}', 'channel', '${channel.id}')">
+            <div class="channel-card" data-category="${channel.category}" onclick="playInlineChannel('${channel.id}')">
                 <img src="${channel.logo}" alt="${channel.name}" class="channel-logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiByeD0iMTIiIGZpbGw9IiNkYzI2MjYiLz4KPHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4PSIyMCIgeT0iMjAiPgo8cGF0aCBkPSJNMjAgNEMxMS4xNiA0IDQgMTEuMTYgNCAyMHM3LjE2IDE2IDE2IDE2IDE2LTcuMTYgMTYtMTZTMjguODQgNCAyMCA0eiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+'" />
                 <div class="channel-name">${channel.name}</div>
                 <div class="channel-category">${this.getCategoryName(channel.category)}</div>
@@ -582,6 +603,43 @@ const DiziPortalApp = {
     // Load local data
     loadLocalData() {
         try {
+            // Check if setup wizard was completed
+            const setupCompleted = localStorage.getItem('setup_completed');
+            if (setupCompleted === 'true') {
+                const setupData = localStorage.getItem('dg_sports_setup');
+                if (setupData) {
+                    try {
+                        const setup = JSON.parse(setupData);
+                        
+                        // Apply setup data
+                        if (setup.siteSettings) {
+                            this.state.settings = {
+                                ...this.state.settings,
+                                siteTitle: setup.siteSettings.siteTitle,
+                                siteDescription: setup.siteSettings.siteDescription,
+                                socialLinks: {
+                                    telegram: setup.siteSettings.telegram || '',
+                                    instagram: setup.siteSettings.instagram || '',
+                                    twitter: setup.siteSettings.twitter || '',
+                                    tiktok: setup.siteSettings.tiktok || ''
+                                }
+                            };
+                            
+                            // Update page title
+                            document.title = setup.siteSettings.siteTitle;
+                            
+                            console.log('🚀 Setup data loaded successfully');
+                        }
+                        
+                        // Clear setup data after use
+                        localStorage.removeItem('dg_sports_setup');
+                        
+                    } catch (error) {
+                        console.warn('Setup data parse error:', error);
+                    }
+                }
+            }
+            
             const savedSettings = localStorage.getItem('diziportal_settings');
             if (savedSettings) {
                 this.state.settings = { ...this.state.settings, ...JSON.parse(savedSettings) };
@@ -662,6 +720,189 @@ DiziPortalApp.showMessage = function(message, type = 'info') {
         }, 300);
     }, 3000);
 };
+
+// Inline Player Functions
+function playInlineMatch(matchId) {
+    const match = DiziPortalApp.state.matches.find(m => m.id === matchId);
+    if (!match) return;
+    
+    // Show inline player
+    const inlinePlayerContainer = document.getElementById('inline-player-container');
+    if (inlinePlayerContainer) {
+        inlinePlayerContainer.style.display = 'block';
+        
+        // Scroll to player
+        inlinePlayerContainer.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+        });
+        
+        // Update player info
+        document.getElementById('playing-title').textContent = `${match.homeTeam} vs ${match.awayTeam}`;
+        document.getElementById('playing-subtitle').textContent = `${match.location} - ${new Date(match.matchTime).toLocaleString('tr-TR')}`;
+        document.getElementById('inline-viewer-count').textContent = DiziPortalApp.formatNumber(match.viewers);
+        
+        // Show match info
+        const matchInfo = document.getElementById('match-info-inline');
+        if (matchInfo) {
+            matchInfo.style.display = 'block';
+            document.getElementById('home-team-logo-inline').src = match.homeLogo;
+            document.getElementById('home-team-name-inline').textContent = match.homeTeam;
+            document.getElementById('away-team-logo-inline').src = match.awayLogo;
+            document.getElementById('away-team-name-inline').textContent = match.awayTeam;
+            document.getElementById('match-time-inline').textContent = new Date(match.matchTime).toLocaleString('tr-TR');
+            document.getElementById('match-location-inline').textContent = match.location;
+        }
+        
+        // Initialize player
+        setTimeout(() => {
+            initInlinePlayer(match.streamUrl, match.homeTeam + ' vs ' + match.awayTeam);
+        }, 500);
+    }
+}
+
+function playInlineChannel(channelId) {
+    const channel = DiziPortalApp.state.channels.find(c => c.id === channelId);
+    if (!channel) return;
+    
+    // Show inline player
+    const inlinePlayerContainer = document.getElementById('inline-player-container');
+    if (inlinePlayerContainer) {
+        inlinePlayerContainer.style.display = 'block';
+        
+        // Scroll to player
+        inlinePlayerContainer.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+        });
+        
+        // Update player info
+        document.getElementById('playing-title').textContent = channel.name;
+        document.getElementById('playing-subtitle').textContent = `${DiziPortalApp.getCategoryName(channel.category)} - 7/24 Canlı Yayın`;
+        document.getElementById('inline-viewer-count').textContent = DiziPortalApp.formatNumber(channel.viewers);
+        
+        // Hide match info for channels
+        const matchInfo = document.getElementById('match-info-inline');
+        if (matchInfo) {
+            matchInfo.style.display = 'none';
+        }
+        
+        // Initialize player
+        setTimeout(() => {
+            initInlinePlayer(channel.streamUrl, channel.name);
+        }, 500);
+    }
+}
+
+function initInlinePlayer(streamUrl, title) {
+    const playerContainer = document.getElementById('inline-diziportal-player');
+    const overlay = document.getElementById('player-overlay');
+    
+    if (!playerContainer) return;
+    
+    // Show loading overlay
+    overlay.classList.remove('hidden');
+    
+    try {
+        // Process stream URL (same as in player.js)
+        const processedUrl = processStreamUrlForPlayer(streamUrl);
+        
+        // Initialize PlayerJS
+        if (typeof Playerjs !== 'undefined') {
+            const player = new Playerjs({
+                id: 'inline-diziportal-player',
+                file: processedUrl,
+                poster: '',
+                default_quality: 'HD',
+                auto: true,
+                flashplayer: 'https://cdn.playerjs.com/latest/playerjs.swf',
+                hlsplayer: 'https://cdn.playerjs.com/latest/playerjs.hls.min.js'
+            });
+            
+            // Hide overlay after player loads
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+            }, 2000);
+            
+            console.log('🎬 Inline PlayerJS initialized:', title);
+        } else {
+            // Fallback to HTML5 video
+            playerContainer.innerHTML = `
+                <video controls autoplay style="width: 100%; height: 100%;">
+                    <source src="${processedUrl}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            `;
+            
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+            }, 1000);
+            
+            console.log('📺 Inline HTML5 video initialized:', title);
+        }
+        
+    } catch (error) {
+        console.error('❌ Inline player error:', error);
+        overlay.classList.add('hidden');
+        DiziPortalApp.showMessage('Yayın başlatılamadı', 'error');
+    }
+}
+
+function processStreamUrlForPlayer(url) {
+    if (!url) return '';
+    
+    // If it's already a processed URL, return as is
+    if (url.includes('commondatastorage.googleapis.com')) {
+        return url;
+    }
+    
+    // Add CORS proxy if needed
+    const corsProxies = [
+        'https://api.allorigins.win/raw?url=',
+        'https://cors-anywhere.herokuapp.com/',
+        'https://thingproxy.freeboard.io/fetch/'
+    ];
+    
+    // Try first proxy
+    return corsProxies[0] + encodeURIComponent(url);
+}
+
+function closeInlinePlayer() {
+    const inlinePlayerContainer = document.getElementById('inline-player-container');
+    if (inlinePlayerContainer) {
+        inlinePlayerContainer.style.display = 'none';
+        
+        // Clear player content
+        const playerContainer = document.getElementById('inline-diziportal-player');
+        if (playerContainer) {
+            playerContainer.innerHTML = '';
+        }
+        
+        console.log('❌ Inline player closed');
+    }
+}
+
+function openFullscreen() {
+    const playerWrapper = document.querySelector('.inline-player-wrapper');
+    if (playerWrapper) {
+        if (playerWrapper.requestFullscreen) {
+            playerWrapper.requestFullscreen();
+        } else if (playerWrapper.webkitRequestFullscreen) {
+            playerWrapper.webkitRequestFullscreen();
+        } else if (playerWrapper.msRequestFullscreen) {
+            playerWrapper.msRequestFullscreen();
+        }
+    }
+}
+
+// Make functions globally available
+window.playInlineMatch = playInlineMatch;
+window.playInlineChannel = playInlineChannel;
+window.closeInlinePlayer = closeInlinePlayer;
+window.openFullscreen = openFullscreen;
+
+// Make DiziPortalApp globally available
+window.DiziPortalApp = DiziPortalApp;
 
 // Export for module systems
 if (typeof module !== 'undefined' && module.exports) {
