@@ -1,419 +1,440 @@
-# DG SPORTS - Canlı Maç İzleme Platformu
+# DG SPORTS - Professional Sports Streaming Platform (PHP Version)
 
-![DG SPORTS](https://img.shields.io/badge/DG%20SPORTS-Live%20Streaming-dc2626)
-![DiziPortal.Com](https://img.shields.io/badge/Developer-DiziPortal.Com-dc2626)
-![Version](https://img.shields.io/badge/Version-1.0.0-green)
+> **Developer:** DiziPortal.Com  
+> **Version:** 2.0.0 PHP  
+> **License:** Proprietary  
 
-## 🏈 Proje Hakkında
+Professional sports streaming platform built with **PHP**, **MySQL**, and modern web technologies. Features live match streaming, 24/7 channels, comprehensive admin panel, and mobile-responsive design.
 
-DG SPORTS, modern ve kullanıcı dostu arayüzü ile canlı spor maçlarını ve 7/24 spor kanallarını izleyebileceğiniz profesyonel bir web platformudur. Siyah ve kırmızı tonlarında göz yormayan degrade tasarımı ile geliştirilmiştir.
+## 🚀 Features
 
-## ✨ Özellikler
+### 🎯 Core Features
+- **Live Match Streaming** - Real-time sports matches with HD quality
+- **24/7 Sport Channels** - Continuous streaming channels
+- **Professional Admin Panel** - Complete content management system
+- **Mobile Responsive** - Perfect experience on all devices
+- **PlayerJS Integration** - Advanced video player with HLS support
+- **Real-time Analytics** - Live viewer counts and statistics
 
-### 🎯 PlayerJS Entegrasyonu
-- **Profesyonel Video Player**: `playerjs.com` entegrasyonu
-- **Format Desteği**: HLS, TS, MP4, MKV, AVI, WebM
-- **CORS Çözümü**: Otomatik proxy sistemi
-- **Cihaz Uyumluluğu**: Mobil, tablet, masaüstü tam uyumluluk
+### 👑 Advanced Features
+- **Database-Driven** - MySQL database with professional schema
+- **Secure Authentication** - PHP session management with security
+- **Caching System** - File-based caching for optimal performance
+- **Logo Management** - Automatic fallback system for broken images
+- **CSRF Protection** - Cross-site request forgery protection
+- **Rate Limiting** - API and login attempt protection
+- **Activity Logging** - Comprehensive activity tracking
 
-### 📱 Responsive Tasarım
-- **Mobile-First**: Öncelikle mobil cihazlar için optimize
-- **Adaptive Layout**: Tüm ekran boyutlarına uyum
-- **Touch Optimized**: Dokunmatik cihazlar için optimize
+### 🛡️ Security Features
+- **Admin Authentication** - Secure login with remember me
+- **Session Management** - Secure PHP sessions with timeout
+- **Input Validation** - Server-side validation and sanitization
+- **SQL Injection Protection** - PDO prepared statements
+- **XSS Protection** - HTML entity escaping
+- **Brute Force Protection** - Login attempt limiting
 
-### 🚫 CORS Koruması
-- **Otomatik Proxy**: Gerektiğinde otomatik proxy kullanımı
-- **Fallback Sistemi**: Çoklu proxy desteği
-- **Error Handling**: Akıllı hata yönetimi
-
-### 👑 Gelişmiş Admin Panel
-- **Ayrı Admin Dashboard**: Ana siteden tamamen bağımsız
-- **Real-time Analytics**: Chart.js ile profesyonel grafikler
-- **Comprehensive Management**: Tam CRUD işlemleri
-- **Security First**: IP bazlı erişim kontrolü
-- **Modern UI**: Responsive ve mobile-friendly
-
-### 🎬 Inline Player Sistemi
-- **Ana Sayfa Entegrasyonu**: Player direkt ana sayfada açılır
-- **Sorunsuz Geçiş**: Modal'sız, akıcı izleme deneyimi
-- **Tam Ekran Desteği**: İsteğe bağlı fullscreen modu
-- **Responsive Design**: Mobil ve masaüstünde mükemmel
-- **Logo Optimizasyonu**: Otomatik resim yükleme ve fallback
-
-### 🛠️ Kolay Kurulum Sistemi
-- **3 Adımlı Setup**: Wizard ile hızlı kurulum
-- **Otomatik Konfigürasyon**: Elle ayar gerektirmez
-- **Örnek İçerik**: Varsayılan maç ve kanallar
-- **Admin Hesap Setup**: Kurulum sırasında admin oluşturma
-
-### 📊 İzleyici Sayacı
-- **Gerçek Zamanlı**: Anlık izleyici sayısı
-- **Otomatik Güncelleme**: Düzenli veri yenileme
-- **Visual Feedback**: Görsel izleyici gösterimi
-
-### 🎨 Karanlık Tema
-- **Göz Dostu**: Siyah-kırmızı renk paleti
-- **Soft Gradients**: Yumuşak geçişler
-- **Premium Look**: Profesyonel görünüm
-
-### 🚀 Shared Hosting Optimizasyonu
-- **cPanel Uyumlu**: Paylaşımlı hosting desteği
-- **Performance Tuned**: Hız optimizasyonu
-- **Resource Efficient**: Kaynak verimli kod
-
-### 📢 Sosyal Medya Entegrasyonu
-- **Telegram**: Anlık duyurular
-- **Instagram**: Görsel içerik
-- **Twitter**: Hızlı güncellemeler
-- **TikTok**: Video içerik
-
-## 📂 Proje Yapısı
-
-### 🏠 Ana Site Bölümleri
-
-- **Ana Sayfa**: Hero section ve genel istatistikler
-- **Canlı Maçlar**: Şu anda yayında olan maçlar
-- **7/24 Kanallar**: Kesintisiz spor kanalları
-- **İletişim**: Sosyal medya bağlantıları
-
-## 🚀 Kurulum
-
-### 🎯 Kolay Kurulum Sihirbazı
-
-DG SPORTS artık **3 adımda kolay kurulum** sistemi ile geliyor!
-
-1. **Dosyaları Yükleyin**: Tüm dosyaları web sunucunuza yükleyin
-2. **Setup Wizard'ı Açın**: `https://yoursite.com/setup.html` adresine gidin
-3. **3 Adımda Tamamlayın**: Site ayarları → İçerik seçimi → Tamamla
-
-### 1. Dosya Yükleme
-
-Tüm dosyaları web sunucunuzun ana dizinine yükleyin:
+## 📁 Project Structure
 
 ```
-/public_html/
-├── index.html               # Ana site
-├── setup.html              # 🆕 Kolay kurulum sihirbazı
-├── admin/
-│   ├── index.html          # Admin dashboard
-│   ├── admin-dashboard.css # Admin stilleri
-│   └── admin-dashboard.js  # Admin işlevleri
-├── assets/
-│   ├── css/
-│   │   └── diziportal-styles.css
-│   ├── js/
-│   │   ├── diziportal-core.js    # 🆕 Inline player desteği
-│   │   ├── diziportal-player.js
-│   │   └── diziportal-data.js
-│   └── images/
-│       └── dg-sports-logo.png
-└── .htaccess               # 🆕 Güvenlik optimizasyonlu
+DG-SPORTS-PHP/
+├── 📂 admin/                     # Admin Panel
+│   ├── index.php                 # Main admin dashboard
+│   ├── login.php                 # Admin login page
+│   ├── admin-dashboard.css       # Admin panel styles
+│   └── admin-dashboard.js        # Admin panel JavaScript
+├── 📂 api/                       # API Endpoints (Future)
+├── 📂 assets/                    # Frontend Assets
+│   ├── 📂 css/
+│   │   └── diziportal-styles.css # Main stylesheet
+│   ├── 📂 js/
+│   │   ├── diziportal-app.js     # Main application
+│   │   └── diziportal-player.js  # Player management
+│   └── 📂 images/                # Images and logos
+├── 📂 cache/                     # Cache directory (auto-created)
+├── 📂 classes/                   # PHP Classes
+│   ├── Admin.php                 # Admin model
+│   ├── Cache.php                 # Caching system
+│   ├── Database.php              # Database wrapper
+│   └── Security.php              # Security utilities
+├── 📂 config/                    # Configuration
+│   ├── app.php                   # Application config
+│   └── database.php              # Database config
+├── 📂 includes/                  # Core includes
+│   ├── bootstrap.php             # Application bootstrap
+│   └── functions.php             # Helper functions
+├── 📂 logs/                      # Log files (auto-created)
+├── 📂 uploads/                   # Uploaded files (auto-created)
+├── 📄 .env                       # Environment variables
+├── 📄 .htaccess                  # Apache configuration
+├── 📄 database.sql               # Database schema
+├── 📄 index.php                  # Main entry point
+└── 📄 README.md                  # This file
 ```
 
-### 2. Kolay Kurulum (Önerilen)
+## 🛠️ Installation
 
-1. **Setup Wizard'ı Açın**: `https://yoursite.com/setup.html`
-2. **Site Bilgilerini Girin**: Başlık, açıklama, admin bilgileri
-3. **Sosyal Medya**: Telegram, Instagram, Twitter, TikTok (opsiyonel)
-4. **Örnek İçerik**: Varsayılan maç ve kanallar eklensin mi?
-5. **Tamamla**: Site otomatik olarak hazır!
+### Prerequisites
+- **PHP 7.4+** with extensions:
+  - PDO MySQL
+  - OpenSSL
+  - mbstring
+  - fileinfo
+  - GD or Imagick (for image processing)
+- **MySQL 5.7+** or **MariaDB 10.3+**
+- **Apache/Nginx** web server
+- **mod_rewrite** enabled (Apache)
 
-### 2. .htaccess Yapılandırması
+### Step 1: Database Setup
+```sql
+-- Import database schema
+mysql -u username -p < database.sql
 
-`.htaccess` dosyası otomatik olarak yapılandırılmıştır:
+-- Or create database manually:
+CREATE DATABASE dg_sports CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
 
+### Step 2: Environment Configuration
+```bash
+# Copy and configure environment file
+cp .env.example .env
+
+# Edit configuration
+nano .env
+```
+
+**Example .env file:**
+```env
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=3306
+DB_DATABASE=dg_sports
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+
+# Application Configuration
+APP_NAME="DG SPORTS"
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://yoursite.com
+APP_KEY=your-secret-key-here
+
+# Cache Configuration
+CACHE_DRIVER=file
+
+# Mail Configuration (Optional)
+MAIL_DRIVER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=your-email@gmail.com
+MAIL_PASSWORD=your-app-password
+```
+
+### Step 3: File Permissions
+```bash
+# Set proper permissions
+chmod 755 -R .
+chmod 777 cache/ logs/ uploads/
+chmod 644 .env
+```
+
+### Step 4: Web Server Configuration
+
+**Apache (.htaccess already included):**
 ```apache
-# Gzip compression
-<IfModule mod_deflate.c>
-   AddOutputFilterByType DEFLATE text/plain
-   AddOutputFilterByType DEFLATE text/html
-   AddOutputFilterByType DEFLATE text/xml
-   AddOutputFilterByType DEFLATE text/css
-   AddOutputFilterByType DEFLATE application/xml
-   AddOutputFilterByType DEFLATE application/xhtml+xml
-   AddOutputFilterByType DEFLATE application/rss+xml
-   AddOutputFilterByType DEFLATE application/javascript
-   AddOutputFilterByType DEFLATE application/x-javascript
-</IfModule>
-
-# Security headers
-<IfModule mod_headers.c>
-   Header always set X-Content-Type-Options nosniff
-   Header always set X-Frame-Options DENY
-   Header always set X-XSS-Protection "1; mode=block"
-</IfModule>
-
-# Error pages
-ErrorDocument 404 /index.html
-ErrorDocument 403 /index.html
+# Already configured in .htaccess
+# Ensure mod_rewrite is enabled
 ```
 
-## 🔧 Admin Panel Kullanımı
+**Nginx:**
+```nginx
+server {
+    listen 80;
+    server_name yoursite.com;
+    root /path/to/dg-sports;
+    index index.php;
 
-### Admin Paneline Erişim
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
 
-Admin paneli ana siteden tamamen ayrı olarak geliştirilmiştir:
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
 
-- **URL**: `https://yoursite.com/admin/`
-- **Kullanıcı Adı**: `admin`
-- **Şifre**: `dgsports2024`
-
-> ⚠️ **Güvenlik Uyarısı**: Kurulum sonrası `admin/admin-dashboard.js` dosyasında şifreyi değiştirin!
-
-### Admin Dashboard Özellikleri
-
-#### 🎯 Dashboard Ana Sayfa
-
-- **Gerçek Zamanlı İstatistikler**: Toplam izleyici, canlı maç, aktif kanal sayıları
-- **Grafik Analizleri**: Chart.js ile gelişmiş viewer analitikleri
-- **Son Aktiviteler**: Sistem olayları ve kullanıcı etkileşimleri
-- **Hızlı Erişim**: Tüm yönetim araçlarına tek tıkla erişim
-
-#### 🏈 Canlı Maç Yönetimi
-
-- **Gelişmiş Maç Ekleme**: Takım bilgileri, logoları, tarih, konum ve stream URL
-- **Tablo Görünümü**: Filtrelenebilir ve aranabilir maç listesi
-- **Durum Yönetimi**: Live, upcoming maç durumları
-- **Viewer Tracking**: Gerçek zamanlı izleyici sayısı takibi
-- **Bulk Operations**: Toplu maç işlemleri
-
-#### 📺 Kanal Yönetimi
-
-- **Kategorili Sistem**: Futbol, basketbol, genel spor ayrımı
-- **Kanal Kalite Takibi**: Stream kalitesi ve uptime monitoring
-- **Logo & Branding**: Kanal görsellerinin yönetimi
-- **24/7 Stream Control**: Kesintisiz yayın kontrolü
-
-#### 📊 Gelişmiş Analytics
-
-- **Viewer Analytics**: Saatlik, günlük, aylık izleyici raporları
-- **Content Performance**: En popüler maç ve kanallar
-- **Geographic Data**: İzleyici coğrafi dağılımı
-- **Device Analytics**: Mobil/desktop kullanım oranları
-
-#### 👥 Kullanıcı Yönetimi
-
-- **Admin Accounts**: Yönetici hesap kontrolü
-- **Session Management**: Oturum güvenliği ve timeout
-- **Access Control**: IP bazlı erişim kontrolü
-- **Activity Logs**: Kullanıcı aktivite logları
-
-#### 🎨 İçerik Yöneticisi
-
-- **Site Content**: Tüm site metinlerini düzenleme
-- **Media Management**: Görsel içerik yönetimi
-- **SEO Settings**: Meta etiketler ve açıklamalar
-- **Social Links**: Sosyal medya bağlantıları
-
-#### 🔧 Sistem Ayarları
-
-- **Site Configuration**: Genel site ayarları
-- **Backup & Restore**: Veri yedekleme ve geri yükleme
-- **System Logs**: Detaylı sistem logları
-- **Security Settings**: Güvenlik konfigürasyonu
-
-### Güvenlik Özellikleri
-
-#### 🔒 Erişim Kontrolü
-
-- **Separate Admin Interface**: Ana siteden tamamen ayrı admin paneli
-- **IP Restriction**: Belirli IP adreslerinden erişim
-- **Session Security**: Güvenli oturum yönetimi
-- **Remember Me**: 30 günlük güvenli oturum seçeneği
-
-#### 🛡️ Sistem Güvenliği
-
-- **Authentication**: Güçlü kimlik doğrulama
-- **CSRF Protection**: Cross-site request forgery koruması
-- **XSS Prevention**: Cross-site scripting engelleme
-- **Brute Force Protection**: Kaba kuvvet saldırısı koruması
-
-## 🎬 PlayerJS Entegrasyonu
-
-### Desteklenen Formatlar
-
-- **HLS**: `.m3u8` playlist dosyaları
-- **TS**: Transport Stream dosyaları
-- **MP4**: MPEG-4 video dosyaları
-- **MKV**: Matroska video dosyaları
-- **AVI**: Audio Video Interleave dosyaları
-- **WebM**: Web optimized video dosyaları
-
-### CORS Desteği
-
-Platform otomatik CORS proxy sistemi ile tüm yayın kaynaklarını destekler:
-
-- Otomatik proxy algılama
-- Çoklu proxy fallback sistemi
-- Cihaz uyumluluğu garantisi
-
-### Örnek Yayın URL'leri
-
-```
-# HLS Stream
-https://example.com/stream/playlist.m3u8
-
-# MP4 Direct
-https://example.com/video.mp4
-
-# Transport Stream
-https://example.com/stream.ts
-```
-
-## 📱 Responsive Tasarım
-
-### Breakpoint'ler
-
-- **Mobile**: 320px - 768px
-- **Tablet**: 768px - 1024px  
-- **Desktop**: 1024px+
-
-### Responsive Özellikler
-
-- **Fluid Grid**: Esnek grid sistemi
-- **Adaptive Images**: Otomatik görsel optimizasyonu
-- **Touch-Friendly**: Dokunmatik kontroller
-- **Mobile Navigation**: Hamburger menü
-
-## 🎨 Özelleştirme
-
-### Renk Teması
-
-CSS değişkenleri ile kolay özelleştirme:
-
-```css
-:root {
-    --primary-black: #0a0a0a;
-    --secondary-black: #1a1a1a;
-    --accent-red: #dc2626;
-    --accent-red-dark: #991b1b;
-    --accent-red-light: #ef4444;
+    location /admin {
+        # Add IP restrictions here if needed
+        # allow 192.168.1.100;
+        # deny all;
+    }
 }
 ```
 
-### Logo ve Branding
+## 🔐 Admin Panel
 
-`assets/images/` klasöründe logonuzu değiştirerek sitenizi kişiselleştirin.
+### Access Information
+- **URL:** `https://yoursite.com/admin/`
+- **Default Username:** `admin`
+- **Default Password:** `secret` (Change immediately!)
 
-## 🚀 Hosting Optimizasyonları
+### Features
+- **Dashboard** - Real-time statistics and quick actions
+- **Live Matches** - Add, edit, delete matches with CRUD operations
+- **24/7 Channels** - Manage streaming channels
+- **Settings** - Site configuration and social media links
+- **Activity Logs** - Monitor system activities
 
-### Shared Hosting İçin
+### Security Features
+- IP-based access control (configure in .htaccess)
+- Session timeout protection
+- Brute force protection
+- CSRF token validation
+- Remember me functionality
 
-- **Gzip Compression**: Otomatik dosya sıkıştırma
-- **Browser Caching**: Tarayıcı önbellekleme
-- **Minified Assets**: Optimize edilmiş dosyalar
-- **CDN Ready**: CDN entegrasyonu için hazır
+## 🎮 Usage
 
-### Performans İpuçları
+### Adding Live Matches
+1. Access admin panel at `/admin/`
+2. Navigate to "Canlı Maçlar" section
+3. Click "Maç Ekle" button
+4. Fill in match details:
+   - Home and away teams
+   - Team logos (URLs)
+   - Match date and time
+   - Location
+   - Stream URL
+   - Status (upcoming/live/ended)
 
-- **Image Optimization**: Görselleri WebP formatında kullanın
-- **Lazy Loading**: Görseller için lazy loading
-- **Code Splitting**: JS kodunu parçalara bölün
-- **Service Worker**: Offline support için
+### Adding 24/7 Channels
+1. Go to "7/24 Kanallar" section
+2. Click "Kanal Ekle" button
+3. Enter channel information:
+   - Channel name
+   - Logo URL
+   - Stream URL
+   - Category
+   - Description
+   - Status (active/inactive)
 
-## 📊 Analytics
+### Site Configuration
+1. Navigate to "Ayarlar" section
+2. Update site settings:
+   - Site title and description
+   - SEO keywords
+   - Social media links
+   - Other configurations
 
-### Yerleşik Analytics
+## 🔧 Configuration
 
-- **Real-time Viewers**: Gerçek zamanlı izleyici sayısı
-- **Popular Content**: En çok izlenen içerik
-- **User Engagement**: Kullanıcı etkileşim metrikleri
-- **Performance Metrics**: Site performans verileri
+### Application Settings
+Edit `config/app.php` for application-wide settings:
 
-### Google Analytics Entegrasyonu
-
-```html
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA_ID"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'YOUR_GA_ID');
-</script>
+```php
+return [
+    'name' => 'DG SPORTS',
+    'env' => 'production',
+    'debug' => false,
+    'timezone' => 'Europe/Istanbul',
+    'cache_ttl' => 3600,
+    'max_upload_size' => 5 * 1024 * 1024, // 5MB
+    // ... more settings
+];
 ```
 
-## 🔒 Güvenlik
+### Database Settings
+Configure `config/database.php` for database connections:
 
-### Güvenlik Önlemleri
+```php
+return [
+    'default' => 'mysql',
+    'connections' => [
+        'mysql' => [
+            'host' => $_ENV['DB_HOST'] ?? 'localhost',
+            'database' => $_ENV['DB_DATABASE'] ?? 'dg_sports',
+            // ... more settings
+        ]
+    ]
+];
+```
 
-- **XSS Protection**: Cross-site scripting koruması
-- **CSRF Protection**: Cross-site request forgery koruması
-- **SQL Injection**: Veritabanı güvenliği
-- **File Upload Security**: Güvenli dosya yükleme
+## 🚀 Performance Optimization
 
-### Önerilen Güvenlik Ayarları
+### Caching
+- **File-based caching** for database queries
+- **Browser caching** via .htaccess headers
+- **Gzip compression** for faster loading
+- **Cache invalidation** on content updates
 
+### Database Optimization
+- **Indexed queries** for fast data retrieval
+- **Database views** for complex queries
+- **Connection pooling** via PDO
+- **Query caching** for repeated requests
+
+### Frontend Optimization
+- **Minified assets** (CSS/JS)
+- **Image optimization** with fallbacks
+- **Lazy loading** for better performance
+- **CDN ready** structure
+
+## 🛡️ Security Best Practices
+
+### Server Security
+```bash
+# Hide PHP version
+echo "expose_php = Off" >> /etc/php/7.4/apache2/php.ini
+
+# Disable dangerous functions
+echo "disable_functions = exec,shell_exec,system" >> /etc/php/7.4/apache2/php.ini
+
+# Set secure session settings
+echo "session.cookie_httponly = 1" >> /etc/php/7.4/apache2/php.ini
+echo "session.cookie_secure = 1" >> /etc/php/7.4/apache2/php.ini
+```
+
+### Admin Protection
 ```apache
-# .htaccess güvenlik ayarları
-<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|inc|bak|sql|conf)$">
-    Order Allow,Deny
-    Deny from all
-</FilesMatch>
+# Add to .htaccess in /admin/ directory
+<RequireAll>
+    Require ip 192.168.1.100  # Your IP
+    Require ip 10.0.0.0/8     # Your network
+</RequireAll>
+
+# OR use basic auth
+AuthType Basic
+AuthName "DG SPORTS Admin"
+AuthUserFile /path/to/.htpasswd
+Require valid-user
 ```
 
-## 🐛 Sorun Giderme
+### Database Security
+```sql
+-- Create dedicated database user
+CREATE USER 'dgsports'@'localhost' IDENTIFIED BY 'strong_password';
+GRANT SELECT, INSERT, UPDATE, DELETE ON dg_sports.* TO 'dgsports'@'localhost';
+FLUSH PRIVILEGES;
+```
 
-### Yaygın Sorunlar
+## 📊 API Documentation (Future)
 
-#### Video Oynatma Sorunu
-- PlayerJS CDN'inin yüklendiğini kontrol edin
-- CORS proxy ayarlarını kontrol edin
-- Tarayıcı konsolunda hata mesajlarını inceleyin
+### Planned Endpoints
+```
+GET /api/matches          # Get live matches
+GET /api/channels         # Get active channels
+GET /api/stats            # Get statistics
+POST /api/log-view        # Log viewer activity
+```
 
-#### Admin Panel Erişim Sorunu
-- Doğru URL'yi kullandığınızdan emin olun (`/admin/`)
-- Giriş bilgilerini kontrol edin
-- IP kısıtlaması olup olmadığını kontrol edin
+### Authentication
+API will use token-based authentication with rate limiting.
 
-#### Responsive Tasarım Sorunu
-- Viewport meta etiketinin doğru olduğunu kontrol edin
-- CSS media query'lerini kontrol edin
-- Tarayıcı önbelleğini temizleyin
+## 🐛 Troubleshooting
 
-### Debug Modu
+### Common Issues
 
-Geliştirme sırasında console loglarını aktif edin:
+**Database Connection Error:**
+```
+Error: Database connection failed
+Solution: Check database credentials in .env file
+```
 
-```javascript
-// diziportal-core.js içinde
-const DEBUG_MODE = true;
+**Permission Denied:**
+```
+Error: Cannot write to cache directory
+Solution: chmod 777 cache/ logs/ uploads/
+```
+
+**Admin Login Issues:**
+```
+Error: Invalid credentials
+Solution: Check default credentials or reset via database
+```
+
+**Player Not Loading:**
+```
+Error: Stream URL not accessible
+Solution: Check CORS settings and stream URL validity
+```
+
+### Debug Mode
+Enable debug mode for development:
+```env
+APP_DEBUG=true
+APP_ENV=development
+```
+
+### Logging
+Check logs in `/logs/` directory:
+```bash
+tail -f logs/activity_$(date +%Y-%m-%d).log
+tail -f logs/php_errors.log
+```
+
+## 🔄 Updates & Maintenance
+
+### Regular Maintenance
+```bash
+# Clear cache
+rm -rf cache/*
+
+# Clear old logs (keep last 30 days)
+find logs/ -name "*.log" -mtime +30 -delete
+
+# Backup database
+mysqldump -u username -p dg_sports > backup_$(date +%Y%m%d).sql
+```
+
+### Database Maintenance
+```sql
+-- Optimize tables
+OPTIMIZE TABLE matches, channels, settings, viewer_logs;
+
+-- Clean old viewer logs (keep last 30 days)
+DELETE FROM viewer_logs WHERE created_at < DATE_SUB(NOW(), INTERVAL 30 DAY);
 ```
 
 ## 📝 Changelog
 
-### v1.0.0 (2024)
-- ✅ **Yeni**: Ayrı admin dashboard sistemi
-- ✅ **Yeni**: Gelişmiş analytics ve grafikler  
-- ✅ **Yeni**: Güvenlik odaklı erişim kontrolü
-- ✅ **Yeni**: Real-time viewer tracking
-- ✅ **Yeni**: Comprehensive content management
-- ✅ **İyileştirme**: Mobile-first responsive tasarım
-- ✅ **İyileştirme**: PlayerJS entegrasyonu
-- ✅ **İyileştirme**: CORS proxy sistemi
-- ✅ **İyileştirme**: Shared hosting optimizasyonu
+### Version 2.0.0 PHP (Current)
+- ✅ Complete PHP rewrite
+- ✅ MySQL database integration
+- ✅ Secure admin authentication
+- ✅ File-based caching system
+- ✅ CRUD operations for content
+- ✅ Enhanced security features
+- ✅ Professional admin dashboard
+- ✅ Mobile-responsive design
+- ✅ Logo fallback system
+- ✅ Activity logging
 
-## 🤝 Katkıda Bulunma
+### Previous Versions
+- **v1.x**: JavaScript-based version with localStorage
 
-1. Fork edin
-2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Commit edin (`git commit -m 'Add amazing feature'`)
-4. Push edin (`git push origin feature/amazing-feature`)
-5. Pull Request açın
+## 🤝 Support
 
-## 📄 Lisans
+For technical support and customization:
+- **Developer:** DiziPortal.Com
+- **Documentation:** See this README
+- **Issues:** Check troubleshooting section
 
-Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosyasını inceleyin.
+## 📄 License
 
-## 📞 İletişim
+This project is proprietary software developed by DiziPortal.Com. All rights reserved.
 
-**Geliştirici**: DiziPortal.Com
-**E-posta**: info@diziportal.com
-**Website**: https://diziportal.com
+## 🎯 Future Enhancements
+
+- RESTful API implementation
+- WebSocket real-time updates
+- User registration system
+- Comment and rating system
+- Advanced analytics dashboard
+- Multi-language support
+- CDN integration
+- Redis caching support
 
 ---
 
-<div align="center">
-  <strong>DG SPORTS</strong> - Profesyonel Canlı Maç İzleme Platformu<br>
-  Geliştirici: <a href="https://diziportal.com">DiziPortal.Com</a>
-</div>
+**⚡ DG SPORTS - Professional Sports Streaming Platform**  
+*Developed with ❤️ by DiziPortal.Com*
