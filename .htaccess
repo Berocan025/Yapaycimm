@@ -1,0 +1,148 @@
+# DG SPORTS .htaccess Configuration
+# Developer: DiziPortal.Com
+# Professional hosting optimization for cPanel
+
+# Enable Rewrite Engine
+RewriteEngine On
+
+# Admin Panel Security Protection
+# Block direct access to admin directory for unauthorized users
+<Files ~ "^admin/">
+    Order allow,deny
+    Deny from all
+    # Allow specific IPs (Add your IP here)
+    # Allow from 192.168.1.1
+    # Allow from YOUR_IP_ADDRESS
+</Files>
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options DENY
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.playerjs.com https://cdn.plrjs.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: http:; media-src 'self' https: http: blob:; connect-src 'self' https: wss:; frame-src 'self' https:;"
+    
+    # CORS Headers for streaming
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+</IfModule>
+
+# Gzip Compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/font-woff
+    AddOutputFilterByType DEFLATE application/font-woff2
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# Browser Caching
+<IfModule mod_expires.c>
+    ExpiresActive on
+    
+    # Images
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    
+    # CSS and JavaScript
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    
+    # Fonts
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    
+    # HTML
+    ExpiresByType text/html "access plus 1 hour"
+    
+    # Streaming files - shorter cache
+    ExpiresByType video/mp4 "access plus 1 hour"
+    ExpiresByType application/vnd.apple.mpegurl "access plus 30 seconds"
+    ExpiresByType video/mp2t "access plus 30 seconds"
+</IfModule>
+
+# Protect sensitive files
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|inc|bak|sql|conf)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Block bad bots and crawlers
+<IfModule mod_rewrite.c>
+    RewriteCond %{HTTP_USER_AGENT} ^$ [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^(-|\.|') [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^(.*(craftbot|download|extract|stripper|sucker|ninja|clshttp|webspider|leacher|collector|grabber|webpictures).*) [NC]
+    RewriteRule ^(.*)$ - [F,L]
+</IfModule>
+
+# Prevent directory browsing
+Options -Indexes
+
+# Custom MIME types for streaming
+<IfModule mod_mime.c>
+    AddType application/vnd.apple.mpegurl .m3u8
+    AddType video/mp2t .ts
+    AddType video/mp4 .mp4
+    AddType video/x-msvideo .avi
+    AddType video/x-matroska .mkv
+    AddType video/webm .webm
+</IfModule>
+
+# Pretty URLs for single page application
+<IfModule mod_rewrite.c>
+    # Handle Angular and other SPA routing
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} !^/admin
+    RewriteRule ^(.*)$ index.html [QSA,L]
+</IfModule>
+
+# Performance optimizations
+<IfModule mod_env.c>
+    SetEnv no-gzip dont-vary
+</IfModule>
+
+# Hotlink protection for images
+<IfModule mod_rewrite.c>
+    RewriteCond %{HTTP_REFERER} !^$
+    RewriteCond %{HTTP_REFERER} !^https?://(www\.)?yourdomain\.com [NC]
+    RewriteRule \.(jpg|jpeg|png|gif|bmp|svg)$ - [F]
+</IfModule>
+
+# Error pages
+ErrorDocument 403 /403.html
+ErrorDocument 404 /404.html
+ErrorDocument 500 /500.html
+
+# Deny access to admin unless authenticated
+<Directory "/admin">
+    AuthType Basic
+    AuthName "DG SPORTS Admin Area"
+    AuthUserFile /path/to/.htpasswd
+    Require valid-user
+    
+    # Additional IP restrictions
+    <RequireAll>
+        Require valid-user
+        # Require ip 192.168.1
+        # Require ip YOUR_IP_ADDRESS
+    </RequireAll>
+</Directory>
