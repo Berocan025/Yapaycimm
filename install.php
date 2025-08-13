@@ -18,14 +18,25 @@ session_start();
 // Kurulum durumu kontrolü
 $install_lock_file = __DIR__ . '/install.lock';
 if (file_exists($install_lock_file) && !isset($_GET['force'])) {
+    $install_date = file_get_contents($install_lock_file);
     die('
     <div style="background: #f8f9fa; padding: 40px; font-family: Arial, sans-serif; text-align: center;">
         <h2 style="color: #dc3545;">🔒 Kurulum Zaten Tamamlanmış!</h2>
-        <p>DG SPORTS sistemi zaten kurulmuş. Ana sayfaya gitmek için:</p>
-        <a href="index.php" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Ana Sayfaya Git</a>
-        <p style="margin-top: 20px; font-size: 12px;">
-            Tekrar kurmak için: <a href="?force=1&step=1">Zorla Tekrar Kur</a>
-        </p>
+        <p>DG SPORTS sistemi kurulmuş: <strong>' . htmlspecialchars($install_date) . '</strong></p>
+        
+        <div style="margin: 30px 0;">
+            <a href="index.php" style="background: #28a745; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; margin: 10px;">🏠 Ana Sayfaya Git</a>
+            <a href="admin/" style="background: #17a2b8; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; margin: 10px;">⚙️ Admin Paneli</a>
+            <a href="test-db.php" style="background: #6f42c1; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; margin: 10px;">🔍 Database Test</a>
+        </div>
+        
+        <details style="margin-top: 30px; text-align: left; max-width: 600px; margin: 30px auto;">
+            <summary style="cursor: pointer; font-weight: bold; color: #dc3545;">⚠️ Sorun mu var? Tekrar kurulum seçenekleri</summary>
+            <div style="padding: 20px; background: #fff3cd; border-radius: 8px; margin-top: 10px;">
+                <p><strong>Dikkat:</strong> Tekrar kurulum mevcut verileri etkileyebilir!</p>
+                <a href="?force=1&step=1" style="background: #dc3545; color: white; padding: 8px 16px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 10px;">🔄 Zorla Tekrar Kur</a>
+            </div>
+        </details>
     </div>
     ');
 }
@@ -468,9 +479,7 @@ window.addEventListener("load", function() {
             
             debug_log("Admin credentials updated in SQL");
             
-            // SQL komutlarını çalıştır - Transaction kullan
-            $pdo->beginTransaction();
-            
+            // SQL komutlarını çalıştır - İyi error handling ile
             try {
                 // SQL'i temizle ve parçala
                 $sql = preg_replace('/^--.*$/m', '', $sql); // Yorumları kaldır
@@ -479,6 +488,7 @@ window.addEventListener("load", function() {
                 $statements = array_filter(array_map('trim', explode(';', $sql)));
                 $executed = 0;
                 $failed = 0;
+                $ignored = 0;
                 
                 foreach ($statements as $statement) {
                     if (!empty($statement) && strlen(trim($statement)) > 5) {
@@ -487,27 +497,39 @@ window.addEventListener("load", function() {
                             debug_log("SQL Success: " . substr($statement, 0, 50) . "... (Affected: $result)");
                             $executed++;
                         } catch (PDOException $e) {
-                            debug_log("SQL Error: " . $e->getMessage() . " in: " . substr($statement, 0, 100));
-                            $failed++;
+                            $errorCode = $e->getCode();
+                            $errorMessage = $e->getMessage();
                             
-                            // Critical errors should stop the process
-                            if (strpos($e->getMessage(), 'syntax error') !== false) {
-                                throw $e;
+                            // Ignore duplicate/exists errors - these are okay on re-install
+                            if (in_array($errorCode, ['42S01', '42000']) || 
+                                strpos($errorMessage, 'already exists') !== false ||
+                                strpos($errorMessage, 'Duplicate') !== false ||
+                                strpos($errorMessage, 'yinelenen') !== false) {
+                                debug_log("SQL Ignored (Already exists): " . substr($statement, 0, 50));
+                                $ignored++;
+                            } else {
+                                debug_log("SQL Error: " . $errorMessage . " in: " . substr($statement, 0, 100));
+                                $failed++;
+                                
+                                // Only fail on truly critical errors
+                                if (strpos($errorMessage, 'syntax error') !== false ||
+                                    strpos($errorMessage, 'Unknown table') !== false ||
+                                    strpos($errorMessage, 'Unknown column') !== false) {
+                                    throw $e;
+                                }
                             }
                         }
                     }
                 }
                 
-                $pdo->commit();
-                debug_log("Transaction committed. Executed: $executed, Failed: $failed");
+                debug_log("SQL Execution completed. Executed: $executed, Failed: $failed, Ignored: $ignored");
                 
             } catch (Exception $e) {
-                $pdo->rollback();
-                debug_log("Transaction rolled back: " . $e->getMessage());
+                debug_log("SQL Execution failed: " . $e->getMessage());
                 throw $e;
             }
             
-            $this->success[] = "✅ Veritabanı tabloları oluşturuldu ($executed komut çalıştırıldı)";
+            $this->success[] = "✅ Veritabanı tabloları oluşturuldu ($executed yeni, $ignored mevcut)";
             debug_log("Database tables created, executed $executed statements");
             
             // .env dosyası oluştur

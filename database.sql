@@ -8,7 +8,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 -- Table structure for table `admins`
-CREATE TABLE `admins` (
+CREATE TABLE IF NOT EXISTS `admins` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE `admins` (
 -- --------------------------------------------------------
 
 -- Table structure for table `matches`
-CREATE TABLE `matches` (
+CREATE TABLE IF NOT EXISTS `matches` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `home_team` varchar(100) NOT NULL,
   `away_team` varchar(100) NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE `matches` (
 -- --------------------------------------------------------
 
 -- Table structure for table `channels`
-CREATE TABLE `channels` (
+CREATE TABLE IF NOT EXISTS `channels` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `slug` varchar(100) NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE `channels` (
 -- --------------------------------------------------------
 
 -- Table structure for table `settings`
-CREATE TABLE `settings` (
+CREATE TABLE IF NOT EXISTS `settings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `setting_key` varchar(100) NOT NULL,
   `setting_value` longtext DEFAULT NULL,
@@ -113,7 +113,7 @@ CREATE TABLE `settings` (
 -- --------------------------------------------------------
 
 -- Table structure for table `viewer_logs`
-CREATE TABLE `viewer_logs` (
+CREATE TABLE IF NOT EXISTS `viewer_logs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `content_type` enum('match','channel') NOT NULL,
   `content_id` int(11) NOT NULL,
@@ -136,7 +136,7 @@ CREATE TABLE `viewer_logs` (
 -- --------------------------------------------------------
 
 -- Table structure for table `login_logs`
-CREATE TABLE `login_logs` (
+CREATE TABLE IF NOT EXISTS `login_logs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `admin_id` int(11) DEFAULT NULL,
   `username` varchar(50) NOT NULL,
@@ -155,7 +155,7 @@ CREATE TABLE `login_logs` (
 -- --------------------------------------------------------
 
 -- Table structure for table `cache`
-CREATE TABLE `cache` (
+CREATE TABLE IF NOT EXISTS `cache` (
   `cache_key` varchar(255) NOT NULL,
   `cache_value` longtext NOT NULL,
   `expires_at` timestamp NOT NULL,
@@ -167,11 +167,11 @@ CREATE TABLE `cache` (
 -- --------------------------------------------------------
 
 -- Insert default admin user
-INSERT INTO `admins` (`username`, `password`, `email`, `full_name`, `role`, `status`) VALUES
+INSERT IGNORE INTO `admins` (`username`, `password`, `email`, `full_name`, `role`, `status`) VALUES
 ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@dgsports.com', 'System Administrator', 'super_admin', 'active');
 
 -- Insert default settings
-INSERT INTO `settings` (`setting_key`, `setting_value`, `setting_type`, `description`, `category`, `is_public`) VALUES
+INSERT IGNORE INTO `settings` (`setting_key`, `setting_value`, `setting_type`, `description`, `category`, `is_public`) VALUES
 ('site_title', 'DG SPORTS', 'string', 'Site title', 'general', 1),
 ('site_description', 'Kaliteli HD yayın ile tüm spor müsabakalarını canlı izleyin', 'string', 'Site description', 'general', 1),
 ('site_keywords', 'canlı maç, spor yayını, futbol, basketbol, HD yayın', 'string', 'Site keywords', 'seo', 1),
@@ -186,13 +186,13 @@ INSERT INTO `settings` (`setting_key`, `setting_value`, `setting_type`, `descrip
 ('allowed_file_types', 'jpg,jpeg,png,gif,svg', 'string', 'Allowed file types for upload', 'uploads', 0);
 
 -- Insert default channels
-INSERT INTO `channels` (`name`, `slug`, `logo`, `stream_url`, `category`, `description`, `status`, `featured`) VALUES
+INSERT IGNORE INTO `channels` (`name`, `slug`, `logo`, `stream_url`, `category`, `description`, `status`, `featured`) VALUES
 ('beIN SPORTS 1 HD', 'bein-sports-1-hd', 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Bein_sports_1.png/512px-Bein_sports_1.png', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4', 'football', '24/7 Canlı Spor Yayını', 'active', 1),
 ('TRT SPOR', 'trt-spor', 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/TRT_Spor_logo.png/512px-TRT_Spor_logo.png', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4', 'general', 'Türkiye\'nin Spor Kanalı', 'active', 1),
 ('SPORTS TV', 'sports-tv', 'https://via.placeholder.com/150x150/dc2626/ffffff?text=SPORTS', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4', 'general', 'Genel Spor Kanalı', 'active', 0);
 
 -- Insert default matches
-INSERT INTO `matches` (`home_team`, `away_team`, `home_logo`, `away_logo`, `match_time`, `location`, `stream_url`, `status`, `featured`, `category`, `league`) VALUES
+INSERT IGNORE INTO `matches` (`home_team`, `away_team`, `home_logo`, `away_logo`, `match_time`, `location`, `stream_url`, `status`, `featured`, `category`, `league`) VALUES
 ('Galatasaray', 'Fenerbahçe', 'https://logoeps.com/wp-content/uploads/2013/03/galatasaray-vector-logo.png', 'https://logoeps.com/wp-content/uploads/2013/03/fenerbahce-vector-logo.png', DATE_ADD(NOW(), INTERVAL 2 HOUR), 'Türk Telekom Stadyumu', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', 'live', 1, 'football', 'Süper Lig'),
 ('Real Madrid', 'Barcelona', 'https://logoeps.com/wp-content/uploads/2013/03/real-madrid-vector-logo.png', 'https://logoeps.com/wp-content/uploads/2013/03/barcelona-vector-logo.png', DATE_ADD(NOW(), INTERVAL 4 HOUR), 'Santiago Bernabéu', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4', 'upcoming', 1, 'football', 'La Liga'),
 ('Manchester United', 'Liverpool', 'https://via.placeholder.com/100x100/dc2626/ffffff?text=MU', 'https://via.placeholder.com/100x100/c41e3a/ffffff?text=LIV', DATE_ADD(NOW(), INTERVAL 1 DAY), 'Old Trafford', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4', 'upcoming', 1, 'football', 'Premier League');
@@ -200,28 +200,28 @@ INSERT INTO `matches` (`home_team`, `away_team`, `home_logo`, `away_logo`, `matc
 COMMIT;
 
 -- Indexes for performance
-CREATE INDEX idx_matches_status_time ON matches(status, match_time);
-CREATE INDEX idx_channels_status_featured ON channels(status, featured);
-CREATE INDEX idx_viewer_logs_date ON viewer_logs(created_at);
-CREATE INDEX idx_settings_category ON settings(category);
+CREATE INDEX IF NOT EXISTS idx_matches_status_time ON matches(status, match_time);
+CREATE INDEX IF NOT EXISTS idx_channels_status_featured ON channels(status, featured);
+CREATE INDEX IF NOT EXISTS idx_viewer_logs_date ON viewer_logs(created_at);
+CREATE INDEX IF NOT EXISTS idx_settings_category ON settings(category);
 
 -- Views for easy data access
-CREATE VIEW v_live_matches AS
+CREATE OR REPLACE VIEW v_live_matches AS
 SELECT * FROM matches 
 WHERE status = 'live' 
 ORDER BY viewers DESC, match_time ASC;
 
-CREATE VIEW v_upcoming_matches AS
+CREATE OR REPLACE VIEW v_upcoming_matches AS
 SELECT * FROM matches 
 WHERE status = 'upcoming' AND match_time > NOW()
 ORDER BY match_time ASC;
 
-CREATE VIEW v_active_channels AS
+CREATE OR REPLACE VIEW v_active_channels AS
 SELECT * FROM channels 
 WHERE status = 'active' 
 ORDER BY featured DESC, sort_order ASC, name ASC;
 
-CREATE VIEW v_featured_content AS
+CREATE OR REPLACE VIEW v_featured_content AS
 SELECT 'match' as content_type, id, home_team as title, away_team as subtitle, 
        home_logo as logo, stream_url, viewers, created_at
 FROM matches WHERE featured = 1 AND status IN ('live', 'upcoming')
