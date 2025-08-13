@@ -1,0 +1,5 @@
+# diziportal admin htaccess | Developer: DiziPortal.Com
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /admin/
+</IfModule>
