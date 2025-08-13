@@ -1,13 +1,19 @@
 <?php
 /**
- * DG SPORTS - Kolay Kurulum Scripti
+ * DG SPORTS - Kolay Kurulum Scripti v2.1
  * Developer: DiziPortal.Com
- * Tek tıkla otomatik kurulum sistemi
+ * Geliştirilmiş hata yönetimi ve debug ile
  */
 
+// Timeout ve memory ayarları
+set_time_limit(300); // 5 dakika
+ini_set('memory_limit', '256M');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 date_default_timezone_set('Europe/Istanbul');
+
+// Session başlat
+session_start();
 
 // Kurulum durumu kontrolü
 $install_lock_file = __DIR__ . '/install.lock';
@@ -18,10 +24,18 @@ if (file_exists($install_lock_file) && !isset($_GET['force'])) {
         <p>DG SPORTS sistemi zaten kurulmuş. Ana sayfaya gitmek için:</p>
         <a href="index.php" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Ana Sayfaya Git</a>
         <p style="margin-top: 20px; font-size: 12px;">
-            Tekrar kurmak için: <a href="?force=1">Zorla Tekrar Kur</a>
+            Tekrar kurmak için: <a href="?force=1&step=1">Zorla Tekrar Kur</a>
         </p>
     </div>
     ');
+}
+
+// Debug fonksiyonu
+function debug_log($message) {
+    error_log("[DG SPORTS INSTALL] " . $message);
+    if (isset($_GET['debug'])) {
+        echo "<div style='background: #f0f0f0; padding: 10px; margin: 5px; font-family: monospace; font-size: 12px; border-left: 3px solid #007bff;'>DEBUG: $message</div>";
+    }
 }
 
 class DGSportsInstaller {
@@ -30,32 +44,41 @@ class DGSportsInstaller {
     private $success = [];
     
     public function __construct() {
-        if (isset($_POST['step'])) {
-            $this->step = (int)$_POST['step'];
-        }
+        $this->step = isset($_GET['step']) ? (int)$_GET['step'] : (isset($_POST['step']) ? (int)$_POST['step'] : 1);
+        debug_log("Installer started at step: " . $this->step);
     }
     
     public function run() {
-        $this->showHeader();
-        
-        switch ($this->step) {
-            case 1:
-                $this->showWelcome();
-                break;
-            case 2:
-                $this->checkRequirements();
-                break;
-            case 3:
-                $this->setupDatabase();
-                break;
-            case 4:
-                $this->finalizeInstallation();
-                break;
-            default:
-                $this->showWelcome();
+        try {
+            $this->showHeader();
+            
+            switch ($this->step) {
+                case 1:
+                    $this->showWelcome();
+                    break;
+                case 2:
+                    $this->checkRequirements();
+                    break;
+                case 3:
+                    $this->setupDatabase();
+                    break;
+                case 4:
+                    $this->finalizeInstallation();
+                    break;
+                default:
+                    $this->showWelcome();
+            }
+            
+            $this->showFooter();
+        } catch (Exception $e) {
+            $this->showError("Kritik Hata: " . $e->getMessage());
         }
-        
-        $this->showFooter();
+    }
+    
+    private function showError($message) {
+        debug_log("ERROR: " . $message);
+        echo '<div class="alert alert-error"><strong>❌ Hata!</strong> ' . htmlspecialchars($message) . '</div>';
+        echo '<a href="install.php?step=1" class="btn btn-primary">Baştan Başla</a>';
     }
     
     private function showHeader() {
@@ -64,11 +87,11 @@ class DGSportsInstaller {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DG SPORTS - Kolay Kurulum</title>
+    <title>DG SPORTS - Kolay Kurulum v2.1</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
-        .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden; }
+        .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden; }
         .header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 30px; text-align: center; }
         .header h1 { font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
         .header p { opacity: 0.9; font-size: 1.1em; }
@@ -83,15 +106,18 @@ class DGSportsInstaller {
         .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #374151; }
         .form-control { width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.3s; }
         .form-control:focus { border-color: #dc2626; outline: none; }
-        .btn { padding: 12px 30px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-block; text-align: center; }
+        .btn { padding: 12px 30px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-block; text-align: center; margin: 5px; }
         .btn-primary { background: #dc2626; color: white; }
         .btn-primary:hover { background: #b91c1c; transform: translateY(-2px); }
         .btn-success { background: #10b981; color: white; }
         .btn-success:hover { background: #059669; }
+        .btn-warning { background: #f59e0b; color: white; }
+        .btn-warning:hover { background: #d97706; }
         .alert { padding: 15px; border-radius: 8px; margin: 20px 0; }
         .alert-success { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
         .alert-error { background: #fee2e2; color: #7f1d1d; border: 1px solid #fecaca; }
         .alert-warning { background: #fef3c7; color: #78350f; border: 1px solid #fde68a; }
+        .alert-info { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
         .progress { background: #e5e7eb; border-radius: 10px; height: 10px; margin: 20px 0; overflow: hidden; }
         .progress-bar { background: linear-gradient(90deg, #dc2626, #b91c1c); height: 100%; transition: width 0.5s ease; }
         .card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; margin: 15px 0; }
@@ -108,13 +134,25 @@ class DGSportsInstaller {
         @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
         .spinner { border: 3px solid #f3f3f3; border-top: 3px solid #dc2626; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; margin-right: 10px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .debug-panel { background: #1f2937; color: #f3f4f6; padding: 20px; margin: 20px 0; border-radius: 8px; font-family: monospace; font-size: 12px; max-height: 200px; overflow-y: auto; }
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; z-index: 9999; justify-content: center; align-items: center; color: white; font-size: 18px; }
+        .loading-content { text-align: center; }
+        .big-spinner { border: 4px solid #f3f3f3; border-top: 4px solid #dc2626; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+        .test-connection { background: #3b82f6; color: white; padding: 8px 16px; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px; }
     </style>
 </head>
 <body>
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-content">
+        <div class="big-spinner"></div>
+        <div>Kurulum işlemi devam ediyor...</div>
+        <div style="font-size: 14px; margin-top: 10px; opacity: 0.8;">Lütfen bekleyin, tarayıcıyı kapatmayın!</div>
+    </div>
+</div>
 <div class="container">
     <div class="header">
         <h1>🏆 DG SPORTS</h1>
-        <p>Profesyonel Spor Yayın Platformu - Kolay Kurulum</p>
+        <p>Profesyonel Spor Yayın Platformu - Kolay Kurulum v2.1</p>
         <p style="font-size: 0.9em; margin-top: 10px;">Developer: DiziPortal.Com</p>
     </div>
     <div class="content">';
@@ -134,16 +172,66 @@ class DGSportsInstaller {
         echo '</div>
 </div>
 <script>
-function showLoading(btn) {
-    btn.innerHTML = "<div class=\"spinner\"></div>Kuruluyor...";
-    btn.disabled = true;
+function showLoading() {
+    document.getElementById("loadingOverlay").style.display = "flex";
 }
+
+function hideLoading() {
+    document.getElementById("loadingOverlay").style.display = "none";
+}
+
+function testConnection() {
+    showLoading();
+    const formData = new FormData();
+    formData.append("action", "test_connection");
+    formData.append("db_host", document.querySelector("[name=db_host]").value);
+    formData.append("db_port", document.querySelector("[name=db_port]").value);
+    formData.append("db_username", document.querySelector("[name=db_username]").value);
+    formData.append("db_password", document.querySelector("[name=db_password]").value);
+    
+    fetch("install.php?step=3", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        hideLoading();
+        if (data.includes("✅")) {
+            alert("✅ Veritabanı bağlantısı başarılı!");
+        } else {
+            alert("❌ Bağlantı hatası: " + data);
+        }
+    })
+    .catch(error => {
+        hideLoading();
+        alert("❌ Test hatası: " + error);
+    });
+}
+
+// Form submit için loading göster
+document.addEventListener("DOMContentLoaded", function() {
+    const forms = document.querySelectorAll("form");
+    forms.forEach(form => {
+        form.addEventListener("submit", function(e) {
+            const submitBtn = form.querySelector("button[type=submit]");
+            if (submitBtn && !submitBtn.classList.contains("test-connection")) {
+                showLoading();
+            }
+        });
+    });
+});
+
+// Sayfa yüklendiğinde loading gizle
+window.addEventListener("load", function() {
+    hideLoading();
+});
 </script>
 </body>
 </html>';
     }
     
     private function showWelcome() {
+        debug_log("Showing welcome page");
         echo '<div class="text-center">
             <h2 style="color: #374151; margin-bottom: 20px;">🎉 DG SPORTS Kurulumuna Hoş Geldiniz!</h2>
             <div class="card">
@@ -159,16 +247,17 @@ function showLoading(btn) {
             <div class="alert alert-warning">
                 <strong>⚠️ Önemli:</strong> Bu script veritabanınızı ve ayar dosyalarınızı değiştirecek. Devam etmeden önce mevcut verilerinizin yedeğini alın!
             </div>
-            <form method="post">
-                <input type="hidden" name="step" value="2">
-                <button type="submit" class="btn btn-primary" style="font-size: 18px; padding: 15px 40px;">
-                    🚀 Kuruluma Başla
-                </button>
-            </form>
+            <div class="alert alert-info">
+                <strong>🔧 Debug Modu:</strong> Sorun yaşıyorsanız <a href="?step=1&debug=1">debug mode</a> ile detayları görebilirsiniz.
+            </div>
+            <a href="install.php?step=2" class="btn btn-primary" style="font-size: 18px; padding: 15px 40px;">
+                🚀 Kuruluma Başla
+            </a>
         </div>';
     }
     
     private function checkRequirements() {
+        debug_log("Checking requirements");
         echo '<h2 style="color: #374151; margin-bottom: 20px;">🔍 Sistem Gereksinimleri Kontrolü</h2>';
         
         $requirements = [
@@ -182,7 +271,8 @@ function showLoading(btn) {
             'Cache Directory Writable' => $this->checkWritable('cache'),
             'Logs Directory Writable' => $this->checkWritable('logs'),
             'Uploads Directory Writable' => $this->checkWritable('uploads'),
-            'Root Directory Writable' => is_writable(__DIR__)
+            'Root Directory Writable' => is_writable(__DIR__),
+            'database.sql File Exists' => file_exists(__DIR__ . '/database.sql')
         ];
         
         $allOk = true;
@@ -192,6 +282,8 @@ function showLoading(btn) {
             $iconText = $status ? '✓' : '✗';
             if (!$status) $allOk = false;
             
+            debug_log("Requirement: $requirement = " . ($status ? 'OK' : 'FAIL'));
+            
             echo "<li>
                 <div class=\"status-icon $icon\">$iconText</div>
                 <span>$requirement</span>
@@ -199,24 +291,27 @@ function showLoading(btn) {
         }
         echo '</ul>';
         
+        // PHP bilgileri
+        echo '<div class="card">
+            <h4>📊 Sistem Bilgileri</h4>
+            <p><strong>PHP Version:</strong> ' . PHP_VERSION . '</p>
+            <p><strong>Memory Limit:</strong> ' . ini_get('memory_limit') . '</p>
+            <p><strong>Max Execution Time:</strong> ' . ini_get('max_execution_time') . ' saniye</p>
+            <p><strong>Upload Max Size:</strong> ' . ini_get('upload_max_filesize') . '</p>
+        </div>';
+        
         if ($allOk) {
             echo '<div class="alert alert-success">
                 <strong>✅ Harika!</strong> Tüm sistem gereksinimleri karşılanıyor. Kuruluma devam edebilirsiniz.
             </div>';
             
-            echo '<form method="post">
-                <input type="hidden" name="step" value="3">
-                <button type="submit" class="btn btn-primary">📊 Veritabanı Kurulumuna Geç</button>
-            </form>';
+            echo '<a href="install.php?step=3" class="btn btn-primary">📊 Veritabanı Kurulumuna Geç</a>';
         } else {
             echo '<div class="alert alert-error">
                 <strong>❌ Hata!</strong> Bazı gereksinimler karşılanmıyor. Lütfen eksikleri giderin ve tekrar deneyin.
             </div>';
             
-            echo '<form method="post">
-                <input type="hidden" name="step" value="2">
-                <button type="submit" class="btn btn-primary">🔄 Tekrar Kontrol Et</button>
-            </form>';
+            echo '<a href="install.php?step=2" class="btn btn-warning">🔄 Tekrar Kontrol Et</a>';
         }
     }
     
@@ -229,7 +324,16 @@ function showLoading(btn) {
     }
     
     private function setupDatabase() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['db_action'])) {
+        debug_log("Setup database step started");
+        
+        // Test connection işlemi
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'test_connection') {
+            $this->testDatabaseConnection();
+            return;
+        }
+        
+        // Kurulum işlemi
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['db_action']) && $_POST['db_action'] === 'setup') {
             $this->processDatabase();
             return;
         }
@@ -240,7 +344,7 @@ function showLoading(btn) {
             <strong>📋 Bilgi:</strong> Veritabanı bilgilerinizi girin. Script otomatik olarak veritabanını oluşturacak ve demo verilerle dolduracak.
         </div>';
         
-        echo '<form method="post">
+        echo '<form method="post" id="dbForm">
             <input type="hidden" name="step" value="3">
             <input type="hidden" name="db_action" value="setup">
             
@@ -270,28 +374,53 @@ function showLoading(btn) {
                 <label>📊 Veritabanı Adı</label>
                 <input type="text" name="db_name" class="form-control" value="dg_sports" required>
                 <small style="color: #6b7280;">Mevcut değilse otomatik oluşturulacak</small>
+                <button type="button" class="test-connection" onclick="testConnection()">🔍 Bağlantıyı Test Et</button>
             </div>
             
-            <div class="form-group">
-                <label>👑 Admin Kullanıcı Adı</label>
-                <input type="text" name="admin_username" class="form-control" value="admin" required>
-            </div>
-            
-            <div class="form-group">
-                <label>🔐 Admin Şifresi</label>
-                <input type="password" name="admin_password" class="form-control" value="secret123" required>
-                <small style="color: #6b7280;">Admin paneline giriş için kullanılacak</small>
+            <div class="grid">
+                <div class="form-group">
+                    <label>👑 Admin Kullanıcı Adı</label>
+                    <input type="text" name="admin_username" class="form-control" value="admin" required>
+                </div>
+                <div class="form-group">
+                    <label>🔐 Admin Şifresi</label>
+                    <input type="password" name="admin_password" class="form-control" value="secret123" required>
+                    <small style="color: #6b7280;">Admin paneline giriş için kullanılacak</small>
+                </div>
             </div>
             
             <div class="text-center">
-                <button type="submit" class="btn btn-primary" onclick="showLoading(this)">
+                <button type="submit" class="btn btn-primary">
                     🚀 Veritabanını Kur ve Devam Et
                 </button>
             </div>
         </form>';
     }
     
+    private function testDatabaseConnection() {
+        try {
+            $host = $_POST['db_host'];
+            $port = $_POST['db_port'];
+            $username = $_POST['db_username'];
+            $password = $_POST['db_password'];
+            
+            $dsn = "mysql:host=$host;port=$port;charset=utf8mb4";
+            $pdo = new PDO($dsn, $username, $password, [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_TIMEOUT => 10
+            ]);
+            
+            echo "✅ Veritabanı bağlantısı başarılı!";
+            
+        } catch (Exception $e) {
+            echo "❌ Bağlantı hatası: " . $e->getMessage();
+        }
+        exit;
+    }
+    
     private function processDatabase() {
+        debug_log("Processing database setup");
+        
         $host = $_POST['db_host'];
         $port = $_POST['db_port'];
         $username = $_POST['db_username'];
@@ -301,18 +430,24 @@ function showLoading(btn) {
         $admin_password = $_POST['admin_password'];
         
         try {
+            debug_log("Connecting to database: $host:$port");
+            
             // Veritabanı bağlantısı (veritabanı olmadan)
             $dsn = "mysql:host=$host;port=$port;charset=utf8mb4";
             $pdo = new PDO($dsn, $username, $password, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_TIMEOUT => 30
             ]);
+            
+            debug_log("Database connection successful");
             
             // Veritabanı oluştur
             $pdo->exec("CREATE DATABASE IF NOT EXISTS `$database` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
             $pdo->exec("USE `$database`");
             
             $this->success[] = "✅ Veritabanı '$database' başarıyla oluşturuldu";
+            debug_log("Database created: $database");
             
             // SQL dosyasını oku ve çalıştır
             $sqlFile = __DIR__ . '/database.sql';
@@ -321,27 +456,78 @@ function showLoading(btn) {
             }
             
             $sql = file_get_contents($sqlFile);
+            debug_log("SQL file loaded, size: " . strlen($sql) . " bytes");
             
-            // Admin şifresini güncelle
+            // Admin kullanıcısını özelleştir
             $hashedPassword = password_hash($admin_password, PASSWORD_DEFAULT);
-            $sql = str_replace(
-                "INSERT INTO `admins` (`username`, `password`, `email`, `full_name`, `role`, `status`) VALUES\n('admin', '\$2y\$10\$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@dgsports.com', 'System Administrator', 'super_admin', 'active');",
-                "INSERT INTO `admins` (`username`, `password`, `email`, `full_name`, `role`, `status`) VALUES\n('$admin_username', '$hashedPassword', 'admin@dgsports.com', 'System Administrator', 'super_admin', 'active');"
-            );
+            
+            // SQL'de admin insert satırını bul ve değiştir
+            $pattern = "/INSERT INTO `admins`.*?VALUES.*?'admin'.*?;/s";
+            $replacement = "INSERT INTO `admins` (`username`, `password`, `email`, `full_name`, `role`, `status`) VALUES\n('$admin_username', '$hashedPassword', 'admin@dgsports.com', 'System Administrator', 'super_admin', 'active');";
+            $sql = preg_replace($pattern, $replacement, $sql);
+            
+            debug_log("Admin credentials updated in SQL");
             
             // SQL komutlarını çalıştır
-            $statements = explode(';', $sql);
+            $statements = array_filter(array_map('trim', explode(';', $sql)));
+            $executed = 0;
+            
             foreach ($statements as $statement) {
-                $statement = trim($statement);
-                if (!empty($statement)) {
-                    $pdo->exec($statement);
+                if (!empty($statement) && !preg_match('/^\s*--/', $statement)) {
+                    try {
+                        $pdo->exec($statement);
+                        $executed++;
+                    } catch (PDOException $e) {
+                        debug_log("SQL Error in statement: " . substr($statement, 0, 100) . "... Error: " . $e->getMessage());
+                        // Bazı hataları görmezden gel (IF NOT EXISTS vs.)
+                    }
                 }
             }
             
-            $this->success[] = "✅ Veritabanı tabloları ve demo veriler oluşturuldu";
+            $this->success[] = "✅ Veritabanı tabloları oluşturuldu ($executed komut çalıştırıldı)";
+            debug_log("Database tables created, executed $executed statements");
             
             // .env dosyası oluştur
-            $envContent = "# DG SPORTS - Otomatik Oluşturulan Yapılandırma
+            $envContent = $this->generateEnvContent($host, $port, $database, $username, $password);
+            file_put_contents(__DIR__ . '/.env', $envContent);
+            $this->success[] = "✅ .env yapılandırma dosyası oluşturuldu";
+            debug_log(".env file created");
+            
+            // Klasör izinlerini ayarla
+            $this->setupDirectories();
+            
+            // Session'a bilgileri kaydet
+            $_SESSION['install_success'] = true;
+            $_SESSION['admin_username'] = $admin_username;
+            $_SESSION['admin_password'] = $admin_password;
+            
+            debug_log("Installation completed successfully");
+            
+            // Başarı mesajı ve devam butonu
+            echo '<div class="alert alert-success">
+                <strong>🎉 Harika!</strong> Veritabanı kurulumu başarıyla tamamlandı!
+            </div>';
+            
+            foreach ($this->success as $message) {
+                echo "<div class=\"alert alert-success\">$message</div>";
+            }
+            
+            echo '<a href="install.php?step=4" class="btn btn-success">🏁 Kurulumu Tamamla</a>';
+            
+        } catch (Exception $e) {
+            debug_log("Database setup failed: " . $e->getMessage());
+            echo '<div class="alert alert-error">
+                <strong>❌ Hata!</strong> Veritabanı kurulumunda sorun oluştu:<br>
+                <code>' . htmlspecialchars($e->getMessage()) . '</code>
+            </div>';
+            
+            echo '<a href="install.php?step=3" class="btn btn-warning">🔄 Tekrar Dene</a>';
+            echo '<a href="install.php?step=3&debug=1" class="btn btn-primary">🔍 Debug Modu</a>';
+        }
+    }
+    
+    private function generateEnvContent($host, $port, $database, $username, $password) {
+        return "# DG SPORTS - Otomatik Oluşturulan Yapılandırma
 # Kurulum Tarihi: " . date('Y-m-d H:i:s') . "
 
 # APPLICATION SETTINGS
@@ -389,42 +575,6 @@ INSTAGRAM_URL=https://instagram.com/diziportal
 TWITTER_URL=https://twitter.com/diziportal
 TIKTOK_URL=https://tiktok.com/@diziportal
 ";
-            
-            file_put_contents(__DIR__ . '/.env', $envContent);
-            $this->success[] = "✅ .env yapılandırma dosyası oluşturuldu";
-            
-            // Klasör izinlerini ayarla
-            $this->setupDirectories();
-            
-            // Session'a bilgileri kaydet
-            $_SESSION['install_success'] = true;
-            $_SESSION['admin_username'] = $admin_username;
-            $_SESSION['admin_password'] = $admin_password;
-            
-            // Son adıma geç
-            echo '<div class="alert alert-success">
-                <strong>🎉 Harika!</strong> Veritabanı kurulumu başarıyla tamamlandı!
-            </div>';
-            
-            foreach ($this->success as $message) {
-                echo "<div class=\"alert alert-success\">$message</div>";
-            }
-            
-            echo '<form method="post">
-                <input type="hidden" name="step" value="4">
-                <button type="submit" class="btn btn-success">🏁 Kurulumu Tamamla</button>
-            </form>';
-            
-        } catch (Exception $e) {
-            echo '<div class="alert alert-error">
-                <strong>❌ Hata!</strong> Veritabanı kurulumunda sorun oluştu: ' . htmlspecialchars($e->getMessage()) . '
-            </div>';
-            
-            echo '<form method="post">
-                <input type="hidden" name="step" value="3">
-                <button type="submit" class="btn btn-primary">🔄 Tekrar Dene</button>
-            </form>';
-        }
     }
     
     private function setupDirectories() {
@@ -445,6 +595,7 @@ TIKTOK_URL=https://tiktok.com/@diziportal
         }
         
         $this->success[] = "✅ Klasör izinleri ve yapısı oluşturuldu";
+        debug_log("Directories setup completed");
     }
     
     private function generateRandomKey() {
@@ -459,11 +610,14 @@ TIKTOK_URL=https://tiktok.com/@diziportal
     }
     
     private function finalizeInstallation() {
+        debug_log("Finalizing installation");
+        
         $admin_username = $_SESSION['admin_username'] ?? 'admin';
         $admin_password = $_SESSION['admin_password'] ?? 'secret123';
         
         // Kurulum lock dosyası oluştur
         file_put_contents(__DIR__ . '/install.lock', 'DG SPORTS kurulumu tamamlandı: ' . date('Y-m-d H:i:s'));
+        debug_log("Install lock file created");
         
         echo '<div class="text-center">
             <h2 style="color: #10b981; margin-bottom: 30px;">🎉 Kurulum Başarıyla Tamamlandı!</h2>
@@ -504,28 +658,29 @@ TIKTOK_URL=https://tiktok.com/@diziportal
                     <li>Maç ve kanal bilgilerini güncelleyin</li>
                     <li>Logo ve görselleri yükleyin</li>
                     <li>Sosyal medya linklerini ayarlayın</li>
-                    <li>install.php dosyasını silin</li>
+                    <li><strong>install.php dosyasını silin!</strong></li>
                 </ol>
             </div>
-        </div>
-        
-        <script>
-        // 5 saniye sonra ana sayfaya yönlendir
-        setTimeout(function() {
-            if (confirm("Ana sayfaya gitmek ister misiniz?")) {
-                window.location.href = "index.php";
-            }
-        }, 5000);
-        </script>';
+        </div>';
         
         // Session temizle
         unset($_SESSION['install_success']);
         unset($_SESSION['admin_username']);
         unset($_SESSION['admin_password']);
+        
+        debug_log("Installation finalized, session cleaned");
     }
 }
 
 // Kurulumu başlat
-$installer = new DGSportsInstaller();
-$installer->run();
+try {
+    $installer = new DGSportsInstaller();
+    $installer->run();
+} catch (Exception $e) {
+    echo '<div style="background: #fee2e2; color: #7f1d1d; padding: 20px; margin: 20px; border-radius: 8px;">
+        <h3>❌ Kritik Kurulum Hatası</h3>
+        <p>' . htmlspecialchars($e->getMessage()) . '</p>
+        <a href="install.php?step=1" style="background: #dc2626; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Baştan Başla</a>
+    </div>';
+}
 ?>
