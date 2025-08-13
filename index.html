@@ -12,7 +12,6 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/diziportal-styles.css">
-    <link rel="stylesheet" href="assets/css/diziportal-admin.css">
     
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -28,26 +27,30 @@
     <div id="diziportal-loading" class="loading-screen">
         <div class="loading-content">
             <div class="loading-logo">
-                <i class="fas fa-futbol spinning"></i>
-                <h2>DG SPORTS</h2>
+                <i class="fas fa-futbol"></i>
+                <h1>DG SPORTS</h1>
             </div>
-            <div class="loading-bar">
-                <div class="loading-progress"></div>
+            <div class="loading-spinner">
+                <div class="spinner"></div>
             </div>
-            <p>Canlı maçlar yükleniyor...</p>
+            <p>Canlı yayınlar yükleniyor...</p>
+            <small>Geliştirici: DiziPortal.Com</small>
         </div>
     </div>
 
     <!-- Header -->
     <header class="header" id="diziportal-header">
-        <nav class="navbar">
-            <div class="nav-container">
-                <div class="nav-logo">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
                     <i class="fas fa-futbol"></i>
                     <span>DG SPORTS</span>
                 </div>
-                <div class="nav-menu">
-                    <a href="#live-matches" class="nav-link" data-section="live-matches">
+                <nav class="nav">
+                    <a href="#home" class="nav-link active" data-section="home">
+                        <i class="fas fa-home"></i> Ana Sayfa
+                    </a>
+                    <a href="#matches" class="nav-link" data-section="matches">
                         <i class="fas fa-play-circle"></i> Canlı Maçlar
                     </a>
                     <a href="#channels" class="nav-link" data-section="channels">
@@ -56,9 +59,6 @@
                     <a href="#contact" class="nav-link" data-section="contact">
                         <i class="fas fa-envelope"></i> İletişim
                     </a>
-                    <button id="admin-login-btn" class="admin-btn">
-                        <i class="fas fa-cog"></i> Admin
-                    </button>
                 </div>
                 <div class="mobile-menu-toggle">
                     <span></span>
@@ -66,108 +66,96 @@
                     <span></span>
                 </div>
             </div>
-        </nav>
+        </div>
     </header>
 
     <!-- Main Content -->
     <main class="main-content">
         <!-- Hero Section -->
-        <section class="hero-section" id="hero">
-            <div class="hero-background">
-                <div class="hero-overlay"></div>
-            </div>
-            <div class="hero-content">
-                <h1 class="hero-title">
-                    <span class="highlight">DG SPORTS</span><br>
-                    Canlı Maç Keyfi
-                </h1>
-                <p class="hero-subtitle">
-                    Kaliteli HD yayın ile tüm spor müsabakalarını canlı izleyin
-                </p>
-                <div class="hero-stats">
-                    <div class="stat-item">
-                        <span class="stat-number" id="total-viewers">0</span>
-                        <span class="stat-label">Aktif İzleyici</span>
+        <section class="hero" id="home">
+            <div class="hero-bg"></div>
+            <div class="container">
+                <div class="hero-content">
+                    <h1>DG SPORTS</h1>
+                    <p>Canlı Maç İzleme ve 7/24 Spor Kanalları</p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="total-viewers">0</div>
+                            <div class="stat-label">Toplam İzleyici</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="live-matches">0</div>
+                            <div class="stat-label">Canlı Maç</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="total-channels">0</div>
+                            <div class="stat-label">Aktif Kanal</div>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-number" id="live-matches-count">0</span>
-                        <span class="stat-label">Canlı Maç</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number" id="channels-count">0</span>
-                        <span class="stat-label">7/24 Kanal</span>
+                    <div class="cta-buttons">
+                        <button class="cta-btn primary" onclick="scrollToSection('matches')">
+                            <i class="fas fa-play"></i> Canlı Maçlar
+                        </button>
+                        <button class="cta-btn secondary" onclick="scrollToSection('channels')">
+                            <i class="fas fa-tv"></i> 7/24 Kanallar
+                        </button>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Live Matches Section -->
-        <section class="matches-section" id="live-matches">
-            <div class="section-header">
-                <h2 class="section-title">
-                    <i class="fas fa-play-circle"></i>
-                    Canlı Maçlar
-                </h2>
-                <div class="section-actions">
-                    <button class="refresh-btn" onclick="diziportalRefreshMatches()">
-                        <i class="fas fa-sync-alt"></i> Yenile
-                    </button>
+        <section class="matches-section" id="matches">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Canlı Maçlar</h2>
+                    <p>Şu anda yayında olan maçları izleyin</p>
                 </div>
-            </div>
-            <div class="matches-grid" id="matches-container">
-                <!-- Matches will be loaded dynamically -->
+                <div class="matches-grid" id="matches-container">
+                    <!-- Matches will be loaded here by JavaScript -->
+                </div>
             </div>
         </section>
 
-        <!-- 24/7 Channels Section -->
+        <!-- Channels Section -->
         <section class="channels-section" id="channels">
-            <div class="section-header">
-                <h2 class="section-title">
-                    <i class="fas fa-tv"></i>
-                    7/24 Spor Kanalları
-                </h2>
-                <div class="channel-filters">
-                    <button class="filter-btn active" data-filter="all">Tümü</button>
-                    <button class="filter-btn" data-filter="futbol">Futbol</button>
-                    <button class="filter-btn" data-filter="basketbol">Basketbol</button>
-                    <button class="filter-btn" data-filter="genel">Genel Spor</button>
+            <div class="container">
+                <div class="section-header">
+                    <h2>7/24 Spor Kanalları</h2>
+                    <p>Kesintisiz spor yayınları</p>
                 </div>
-            </div>
-            <div class="channels-grid" id="channels-container">
-                <!-- Channels will be loaded dynamically -->
+                
+                <!-- Category Filters -->
+                <div class="category-filters">
+                    <button class="filter-btn active" data-category="all">
+                        <i class="fas fa-th"></i> Tümü
+                    </button>
+                    <button class="filter-btn" data-category="futbol">
+                        <i class="fas fa-futbol"></i> Futbol
+                    </button>
+                    <button class="filter-btn" data-category="basketbol">
+                        <i class="fas fa-basketball-ball"></i> Basketbol
+                    </button>
+                    <button class="filter-btn" data-category="genel">
+                        <i class="fas fa-trophy"></i> Genel Spor
+                    </button>
+                </div>
+                
+                <div class="channels-grid" id="channels-container">
+                    <!-- Channels will be loaded here by JavaScript -->
+                </div>
             </div>
         </section>
 
         <!-- Contact Section -->
         <section class="contact-section" id="contact">
-            <div class="section-header">
-                <h2 class="section-title">
-                    <i class="fas fa-envelope"></i>
-                    İletişim
-                </h2>
-            </div>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h3>Bizimle İletişime Geçin</h3>
-                    <p>Sorularınız, önerileriniz ve geri bildirimleriniz için bize ulaşabilirsiniz.</p>
+            <div class="container">
+                <div class="section-header">
+                    <h2>İletişim</h2>
+                    <p>Bizi takip edin ve haberdar olun</p>
                 </div>
-                <div class="social-links">
-                    <a href="#" class="social-link telegram" id="telegram-link">
-                        <i class="fab fa-telegram"></i>
-                        <span>Telegram</span>
-                    </a>
-                    <a href="#" class="social-link instagram" id="instagram-link">
-                        <i class="fab fa-instagram"></i>
-                        <span>Instagram</span>
-                    </a>
-                    <a href="#" class="social-link twitter" id="twitter-link">
-                        <i class="fab fa-twitter"></i>
-                        <span>Twitter</span>
-                    </a>
-                    <a href="#" class="social-link tiktok" id="tiktok-link">
-                        <i class="fab fa-tiktok"></i>
-                        <span>TikTok</span>
-                    </a>
+                <div class="social-links" id="social-links">
+                    <!-- Social links will be loaded here by JavaScript -->
                 </div>
             </div>
         </section>
@@ -175,15 +163,16 @@
 
     <!-- Video Player Modal -->
     <div class="player-modal" id="player-modal">
+        <div class="player-backdrop" onclick="closePlayer()"></div>
         <div class="player-container">
             <div class="player-header">
-                <h3 id="player-title">Yayın İzleniyor</h3>
+                <div class="player-title" id="player-title">Video Player</div>
                 <div class="player-controls">
-                    <span class="viewer-count">
+                    <div class="viewer-count">
                         <i class="fas fa-eye"></i>
-                        <span id="current-viewers">0</span> izleyici
-                    </span>
-                    <button class="close-player" onclick="diziportalClosePlayer()">
+                        <span id="current-viewers">0</span>
+                    </div>
+                    <button class="close-player" onclick="closePlayer()">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -217,209 +206,49 @@
         </div>
     </div>
 
-    <!-- Admin Panel -->
-    <div class="admin-panel" id="admin-panel">
-        <div class="admin-container">
-            <div class="admin-header">
-                <h2>DG SPORTS Admin Panel</h2>
-                <button class="close-admin" onclick="diziportalCloseAdmin()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="admin-content">
-                <div class="admin-tabs">
-                    <button class="admin-tab active" data-tab="matches">Maçlar</button>
-                    <button class="admin-tab" data-tab="channels">Kanallar</button>
-                    <button class="admin-tab" data-tab="settings">Ayarlar</button>
-                </div>
-                
-                <!-- Matches Tab -->
-                <div class="admin-tab-content active" id="matches-tab">
-                    <div class="admin-section">
-                        <h3>Canlı Maç Ekle</h3>
-                        <form class="admin-form" id="add-match-form">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Ev Sahibi Takım</label>
-                                    <input type="text" name="homeTeam" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Deplasman Takımı</label>
-                                    <input type="text" name="awayTeam" required>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Ev Sahibi Logo URL</label>
-                                    <input type="url" name="homeLogo">
-                                </div>
-                                <div class="form-group">
-                                    <label>Deplasman Logo URL</label>
-                                    <input type="url" name="awayLogo">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Maç Saati</label>
-                                    <input type="datetime-local" name="matchTime" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Maç Yeri</label>
-                                    <input type="text" name="location" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Yayın URL'si</label>
-                                <input type="url" name="streamUrl" required placeholder="HLS, TS, MP4 desteklenir">
-                            </div>
-                            <button type="submit" class="admin-btn primary">Maç Ekle</button>
-                        </form>
-                        
-                        <div class="admin-list">
-                            <h3>Mevcut Maçlar</h3>
-                            <div id="admin-matches-list">
-                                <!-- Matches list will be populated -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Channels Tab -->
-                <div class="admin-tab-content" id="channels-tab">
-                    <div class="admin-section">
-                        <h3>7/24 Kanal Ekle</h3>
-                        <form class="admin-form" id="add-channel-form">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Kanal Adı</label>
-                                    <input type="text" name="channelName" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Kategori</label>
-                                    <select name="category" required>
-                                        <option value="futbol">Futbol</option>
-                                        <option value="basketbol">Basketbol</option>
-                                        <option value="genel">Genel Spor</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Kanal Logo URL</label>
-                                <input type="url" name="channelLogo" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Yayın URL'si</label>
-                                <input type="url" name="streamUrl" required placeholder="HLS, TS, MP4 desteklenir">
-                            </div>
-                            <button type="submit" class="admin-btn primary">Kanal Ekle</button>
-                        </form>
-                        
-                        <div class="admin-list">
-                            <h3>Mevcut Kanallar</h3>
-                            <div id="admin-channels-list">
-                                <!-- Channels list will be populated -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Settings Tab -->
-                <div class="admin-tab-content" id="settings-tab">
-                    <div class="admin-section">
-                        <h3>Site Ayarları</h3>
-                        <form class="admin-form" id="settings-form">
-                            <div class="form-group">
-                                <label>Site Başlığı</label>
-                                <input type="text" name="siteTitle" value="DG SPORTS">
-                            </div>
-                            <div class="form-group">
-                                <label>Site Açıklaması</label>
-                                <textarea name="siteDescription">Kaliteli HD yayın ile tüm spor müsabakalarını canlı izleyin</textarea>
-                            </div>
-                            <h4>Sosyal Medya Linkleri</h4>
-                            <div class="form-group">
-                                <label>Telegram</label>
-                                <input type="url" name="telegramUrl" id="admin-telegram">
-                            </div>
-                            <div class="form-group">
-                                <label>Instagram</label>
-                                <input type="url" name="instagramUrl" id="admin-instagram">
-                            </div>
-                            <div class="form-group">
-                                <label>Twitter</label>
-                                <input type="url" name="twitterUrl" id="admin-twitter">
-                            </div>
-                            <div class="form-group">
-                                <label>TikTok</label>
-                                <input type="url" name="tiktokUrl" id="admin-tiktok">
-                            </div>
-                            <button type="submit" class="admin-btn primary">Ayarları Kaydet</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Admin Login Modal -->
-    <div class="admin-login-modal" id="admin-login-modal">
-        <div class="login-container">
-            <div class="login-header">
-                <h3>Admin Girişi</h3>
-                <button class="close-login" onclick="diziportalCloseLogin()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <form class="login-form" id="admin-login-form">
-                <div class="form-group">
-                    <label>Kullanıcı Adı</label>
-                    <input type="text" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label>Şifre</label>
-                    <input type="password" name="password" required>
-                </div>
-                <button type="submit" class="admin-btn primary">Giriş Yap</button>
-            </form>
-            <small>Geliştirici: DiziPortal.Com</small>
-        </div>
-    </div>
-
     <!-- Footer -->
     <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>DG SPORTS</h3>
-                <p>Profesyonel spor yayın platformu</p>
-            </div>
-            <div class="footer-section">
-                <h4>Hızlı Linkler</h4>
-                <ul>
-                    <li><a href="#live-matches">Canlı Maçlar</a></li>
-                    <li><a href="#channels">7/24 Kanallar</a></li>
-                    <li><a href="#contact">İletişim</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Sosyal Medya</h4>
-                <div class="footer-social">
-                    <a href="#" id="footer-telegram"><i class="fab fa-telegram"></i></a>
-                    <a href="#" id="footer-instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" id="footer-twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="#" id="footer-tiktok"><i class="fab fa-tiktok"></i></a>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-futbol"></i>
+                        <span>DG SPORTS</span>
+                    </div>
+                    <p>Profesyonel canlı maç izleme platformu</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Hızlı Linkler</h4>
+                    <ul>
+                        <li><a href="#home">Ana Sayfa</a></li>
+                        <li><a href="#matches">Canlı Maçlar</a></li>
+                        <li><a href="#channels">7/24 Kanallar</a></li>
+                        <li><a href="#contact">İletişim</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Kategoriler</h4>
+                    <ul>
+                        <li><a href="#" data-category="futbol">Futbol</a></li>
+                        <li><a href="#" data-category="basketbol">Basketbol</a></li>
+                        <li><a href="#" data-category="genel">Genel Spor</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Geliştirici</h4>
+                    <p><strong>DiziPortal.Com</strong></p>
+                    <p>Profesyonel web çözümleri</p>
                 </div>
             </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 DG SPORTS. Tüm hakları saklıdır.</p>
-            <p>Geliştirici: <a href="https://diziportal.com" target="_blank">DiziPortal.Com</a></p>
+            <div class="footer-bottom">
+                <p>&copy; 2024 DG SPORTS. Tüm hakları saklıdır. | Geliştirici: DiziPortal.Com</p>
+            </div>
         </div>
     </footer>
 
     <!-- Scripts -->
     <script src="assets/js/diziportal-core.js"></script>
     <script src="assets/js/diziportal-player.js"></script>
-    <script src="assets/js/diziportal-admin.js"></script>
     <script src="assets/js/diziportal-data.js"></script>
     
     <!-- Initialize DiziPortal App -->

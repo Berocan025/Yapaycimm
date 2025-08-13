@@ -1,36 +1,36 @@
-# DG SPORTS - DiziPortal.Com Optimizations
-# Professional Sports Streaming Platform
+# DG SPORTS .htaccess Configuration
 # Developer: DiziPortal.Com
+# Professional hosting optimization for cPanel
 
-# Enable rewrite engine
+# Enable Rewrite Engine
 RewriteEngine On
+
+# Admin Panel Security Protection
+# Block direct access to admin directory for unauthorized users
+<Files ~ "^admin/">
+    Order allow,deny
+    Deny from all
+    # Allow specific IPs (Add your IP here)
+    # Allow from 192.168.1.1
+    # Allow from YOUR_IP_ADDRESS
+</Files>
 
 # Security Headers
 <IfModule mod_headers.c>
-    # Prevent clickjacking
     Header always set X-Frame-Options DENY
-    
-    # Prevent MIME type sniffing
     Header always set X-Content-Type-Options nosniff
-    
-    # Enable XSS protection
     Header always set X-XSS-Protection "1; mode=block"
-    
-    # Referrer policy
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
-    
-    # Content Security Policy for video streaming
     Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.playerjs.com https://cdn.plrjs.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: http:; media-src 'self' https: http: blob:; connect-src 'self' https: wss:; frame-src 'self' https:;"
     
-    # CORS headers for video streaming
+    # CORS Headers for streaming
     Header always set Access-Control-Allow-Origin "*"
     Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
     Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
 </IfModule>
 
-# Compression for better performance
+# Gzip Compression
 <IfModule mod_deflate.c>
-    # Enable compression for text files
     AddOutputFilterByType DEFLATE text/plain
     AddOutputFilterByType DEFLATE text/html
     AddOutputFilterByType DEFLATE text/xml
@@ -42,173 +42,107 @@ RewriteEngine On
     AddOutputFilterByType DEFLATE application/javascript
     AddOutputFilterByType DEFLATE application/x-javascript
     AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/font-woff
+    AddOutputFilterByType DEFLATE application/font-woff2
     AddOutputFilterByType DEFLATE image/svg+xml
-    
-    # Don't compress already compressed files
-    SetEnvIfNoCase Request_URI \
-        \.(?:gif|jpe?g|png|swf|woff|woff2)$ no-gzip dont-vary
-    SetEnvIfNoCase Request_URI \
-        \.(?:exe|t?gz|zip|bz2|sit|rar)$ no-gzip dont-vary
-    SetEnvIfNoCase Request_URI \
-        \.(?:avi|mov|mp3|mp4|rm)$ no-gzip dont-vary
 </IfModule>
 
 # Browser Caching
 <IfModule mod_expires.c>
-    ExpiresActive On
+    ExpiresActive on
     
-    # HTML files (short cache for dynamic content)
-    ExpiresByType text/html "access plus 1 hour"
+    # Images
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
     
-    # CSS and JavaScript files
+    # CSS and JavaScript
     ExpiresByType text/css "access plus 1 month"
     ExpiresByType application/javascript "access plus 1 month"
     ExpiresByType text/javascript "access plus 1 month"
     
-    # Images
-    ExpiresByType image/png "access plus 1 month"
-    ExpiresByType image/jpg "access plus 1 month"
-    ExpiresByType image/jpeg "access plus 1 month"
-    ExpiresByType image/gif "access plus 1 month"
-    ExpiresByType image/svg+xml "access plus 1 month"
-    ExpiresByType image/ico "access plus 1 month"
-    ExpiresByType image/x-icon "access plus 1 month"
-    
     # Fonts
-    ExpiresByType font/woff "access plus 1 month"
-    ExpiresByType font/woff2 "access plus 1 month"
-    ExpiresByType application/font-woff "access plus 1 month"
-    ExpiresByType application/font-woff2 "access plus 1 month"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
     
-    # Video files (short cache due to streaming)
-    ExpiresByType video/mp4 "access plus 1 day"
-    ExpiresByType video/webm "access plus 1 day"
-    ExpiresByType application/x-mpegURL "access plus 5 minutes"
-    ExpiresByType video/MP2T "access plus 5 minutes"
+    # HTML
+    ExpiresByType text/html "access plus 1 hour"
     
-    # JSON and XML
-    ExpiresByType application/json "access plus 1 hour"
-    ExpiresByType application/xml "access plus 1 hour"
-    ExpiresByType text/xml "access plus 1 hour"
+    # Streaming files - shorter cache
+    ExpiresByType video/mp4 "access plus 1 hour"
+    ExpiresByType application/vnd.apple.mpegurl "access plus 30 seconds"
+    ExpiresByType video/mp2t "access plus 30 seconds"
 </IfModule>
 
-# Alternative cache control if mod_expires is not available
-<IfModule !mod_expires.c>
-    <IfModule mod_headers.c>
-        # CSS and JS files
-        <FilesMatch "\.(css|js)$">
-            Header set Cache-Control "max-age=2592000, public"
-        </FilesMatch>
-        
-        # Images
-        <FilesMatch "\.(png|jpg|jpeg|gif|svg|ico)$">
-            Header set Cache-Control "max-age=2592000, public"
-        </FilesMatch>
-        
-        # HTML files
-        <FilesMatch "\.(html|htm)$">
-            Header set Cache-Control "max-age=3600, public"
-        </FilesMatch>
-    </IfModule>
-</IfModule>
-
-# Prevent access to sensitive files
-<FilesMatch "^\.">
-    Require all denied
+# Protect sensitive files
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|inc|bak|sql|conf)$">
+    Order Allow,Deny
+    Deny from all
 </FilesMatch>
 
-# Protect configuration files
-<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|sql|conf|bak)$">
-    Require all denied
-</FilesMatch>
-
-# Block bad bots and scrapers
+# Block bad bots and crawlers
 <IfModule mod_rewrite.c>
-    RewriteCond %{HTTP_USER_AGENT} (ahrefs|alexibot|majestic|mj12bot|rogerbot) [NC]
-    RewriteRule .* - [F,L]
+    RewriteCond %{HTTP_USER_AGENT} ^$ [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^(-|\.|') [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^(.*(craftbot|download|extract|stripper|sucker|ninja|clshttp|webspider|leacher|collector|grabber|webpictures).*) [NC]
+    RewriteRule ^(.*)$ - [F,L]
 </IfModule>
-
-# Redirect HTTP to HTTPS (uncomment if using SSL)
-# <IfModule mod_rewrite.c>
-#     RewriteCond %{HTTPS} off
-#     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-# </IfModule>
-
-# Pretty URLs - Single Page Application routing
-<IfModule mod_rewrite.c>
-    # Handle Angular/React style routing
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} !^/assets/
-    RewriteCond %{REQUEST_URI} !\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|mp4|webm|m3u8|ts)$
-    RewriteRule . /index.html [L]
-</IfModule>
-
-# Error pages
-ErrorDocument 404 /index.html
-ErrorDocument 403 /index.html
-ErrorDocument 500 /index.html
 
 # Prevent directory browsing
 Options -Indexes
 
-# Custom MIME types for video streaming
+# Custom MIME types for streaming
 <IfModule mod_mime.c>
-    # HLS streaming
-    AddType application/x-mpegURL .m3u8
-    AddType video/MP2T .ts
-    
-    # Video formats
+    AddType application/vnd.apple.mpegurl .m3u8
+    AddType video/mp2t .ts
     AddType video/mp4 .mp4
+    AddType video/x-msvideo .avi
+    AddType video/x-matroska .mkv
     AddType video/webm .webm
-    AddType video/ogg .ogv
-    
-    # Audio formats
-    AddType audio/mpeg .mp3
-    AddType audio/ogg .ogg
-    AddType audio/wav .wav
-    
-    # Font formats
-    AddType application/font-woff .woff
-    AddType application/font-woff2 .woff2
-    AddType application/vnd.ms-fontobject .eot
-    AddType font/truetype .ttf
-    AddType font/opentype .otf
-    
-    # JSON
-    AddType application/json .json
 </IfModule>
 
-# File upload limits (adjust as needed)
-<IfModule mod_php.c>
-    php_value upload_max_filesize 50M
-    php_value post_max_size 50M
-    php_value max_execution_time 300
-    php_value max_input_time 300
-</IfModule>
-
-# Memory limits for PHP (if using PHP backend)
-<IfModule mod_php.c>
-    php_value memory_limit 128M
-</IfModule>
-
-# Prevent hotlinking of images (uncomment if needed)
-# <IfModule mod_rewrite.c>
-#     RewriteCond %{HTTP_REFERER} !^$
-#     RewriteCond %{HTTP_REFERER} !^https?://(www\.)?yourdomain\.com [NC]
-#     RewriteRule \.(gif|jpg|jpeg|png|svg)$ - [F,L]
-# </IfModule>
-
-# Enable KeepAlive for better performance
-<IfModule mod_headers.c>
-    Header set Connection keep-alive
-</IfModule>
-
-# Optimize for shared hosting environments
+# Pretty URLs for single page application
 <IfModule mod_rewrite.c>
-    # Reduce server load
-    RewriteRule ^$ /index.html [L]
+    # Handle Angular and other SPA routing
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} !^/admin
+    RewriteRule ^(.*)$ index.html [QSA,L]
 </IfModule>
 
-# End of DG SPORTS .htaccess configuration
-# This file is optimized for DiziPortal.Com sports streaming platform
+# Performance optimizations
+<IfModule mod_env.c>
+    SetEnv no-gzip dont-vary
+</IfModule>
+
+# Hotlink protection for images
+<IfModule mod_rewrite.c>
+    RewriteCond %{HTTP_REFERER} !^$
+    RewriteCond %{HTTP_REFERER} !^https?://(www\.)?yourdomain\.com [NC]
+    RewriteRule \.(jpg|jpeg|png|gif|bmp|svg)$ - [F]
+</IfModule>
+
+# Error pages
+ErrorDocument 403 /403.html
+ErrorDocument 404 /404.html
+ErrorDocument 500 /500.html
+
+# Deny access to admin unless authenticated
+<Directory "/admin">
+    AuthType Basic
+    AuthName "DG SPORTS Admin Area"
+    AuthUserFile /path/to/.htpasswd
+    Require valid-user
+    
+    # Additional IP restrictions
+    <RequireAll>
+        Require valid-user
+        # Require ip 192.168.1
+        # Require ip YOUR_IP_ADDRESS
+    </RequireAll>
+</Directory>

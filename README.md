@@ -8,75 +8,108 @@
 
 DG SPORTS, modern ve kullanıcı dostu arayüzü ile canlı spor maçlarını ve 7/24 spor kanallarını izleyebileceğiniz profesyonel bir web platformudur. Siyah ve kırmızı tonlarında göz yormayan degrade tasarımı ile geliştirilmiştir.
 
-### ✨ Özellikler
+## ✨ Özellikler
 
-- 🎬 **PlayerJS Entegrasyonu**: HLS, TS, MP4 ve diğer tüm video formatları desteği
-- 📱 **Responsive Tasarım**: Tüm cihazlarla uyumlu (mobil, tablet, masaüstü)
-- ⚡ **CORS Desteği**: Asla sorun çıkmayan, tüm cihazlarla uyumlu yayın sistemi
-- 🔧 **Admin Panel**: Tam içerik yönetim sistemi
-- 📊 **Anlık İzleyici Sayısı**: Gerçek zamanlı viewer counter
-- 🎨 **Dark Theme**: Göz yormayan siyah-kırmızı gradient tasarım
-- 🏢 **Shared Hosting Uyumlu**: cPanel paylaşımlı hostinglerde sorunsuz çalışır
-- 📱 **Sosyal Medya Entegrasyonu**: Telegram, Instagram, Twitter, TikTok desteği
+### 🎯 PlayerJS Entegrasyonu
+- **Profesyonel Video Player**: `playerjs.com` entegrasyonu
+- **Format Desteği**: HLS, TS, MP4, MKV, AVI, WebM
+- **CORS Çözümü**: Otomatik proxy sistemi
+- **Cihaz Uyumluluğu**: Mobil, tablet, masaüstü tam uyumluluk
 
-### 🎯 Ana Bölümler
+### 📱 Responsive Tasarım
+- **Mobile-First**: Öncelikle mobil cihazlar için optimize
+- **Adaptive Layout**: Tüm ekran boyutlarına uyum
+- **Touch Optimized**: Dokunmatik cihazlar için optimize
 
-1. **Canlı Maçlar**: Takım isimleri, logoları, maç saati ve konum bilgileri
-2. **7/24 Kanallar**: Spor kanalları kategorilere göre filtrelenebilir
-3. **İletişim**: Sosyal medya bağlantıları
-4. **Admin Panel**: Tüm içerik yönetimi
+### 🚫 CORS Koruması
+- **Otomatik Proxy**: Gerektiğinde otomatik proxy kullanımı
+- **Fallback Sistemi**: Çoklu proxy desteği
+- **Error Handling**: Akıllı hata yönetimi
+
+### 👑 Gelişmiş Admin Panel
+- **Ayrı Admin Dashboard**: Ana siteden tamamen bağımsız
+- **Real-time Analytics**: Gerçek zamanlı istatistikler
+- **Comprehensive Management**: Tam CRUD işlemleri
+- **Security First**: IP bazlı erişim kontrolü
+
+### 📊 İzleyici Sayacı
+- **Gerçek Zamanlı**: Anlık izleyici sayısı
+- **Otomatik Güncelleme**: Düzenli veri yenileme
+- **Visual Feedback**: Görsel izleyici gösterimi
+
+### 🎨 Karanlık Tema
+- **Göz Dostu**: Siyah-kırmızı renk paleti
+- **Soft Gradients**: Yumuşak geçişler
+- **Premium Look**: Profesyonel görünüm
+
+### 🚀 Shared Hosting Optimizasyonu
+- **cPanel Uyumlu**: Paylaşımlı hosting desteği
+- **Performance Tuned**: Hız optimizasyonu
+- **Resource Efficient**: Kaynak verimli kod
+
+### 📢 Sosyal Medya Entegrasyonu
+- **Telegram**: Anlık duyurular
+- **Instagram**: Görsel içerik
+- **Twitter**: Hızlı güncellemeler
+- **TikTok**: Video içerik
+
+## 📂 Proje Yapısı
+
+### 🏠 Ana Site Bölümleri
+
+- **Ana Sayfa**: Hero section ve genel istatistikler
+- **Canlı Maçlar**: Şu anda yayında olan maçlar
+- **7/24 Kanallar**: Kesintisiz spor kanalları
+- **İletişim**: Sosyal medya bağlantıları
 
 ## 🚀 Kurulum
 
-### Gereksinimler
+### 1. Dosya Yükleme
 
-- Web sunucusu (Apache/Nginx)
-- Modern web tarayıcısı
-- İsteğe bağlı: PHP desteği (gelişmiş özellikler için)
+Tüm dosyaları web sunucunuzun ana dizinine yükleyin:
 
-### Adım 1: Dosyaları Yükleme
+```
+/public_html/
+├── index.html
+├── admin/
+│   ├── index.html
+│   ├── admin-dashboard.css
+│   └── admin-dashboard.js
+├── assets/
+│   ├── css/
+│   │   └── diziportal-styles.css
+│   ├── js/
+│   │   ├── diziportal-core.js
+│   │   ├── diziportal-player.js
+│   │   └── diziportal-data.js
+│   └── images/
+│       └── dg-sports-logo.png
+└── .htaccess
+```
 
-1. Tüm dosyaları web sunucunuzun root dizinine yükleyin
-2. Dosya izinlerini kontrol edin (755 önerilen)
+### 2. .htaccess Yapılandırması
 
-### Adım 2: Konfigürasyon
-
-#### Temel Ayarlar
-
-Herhangi bir ek konfigürasyon gerekmez. Site hazır kullanım için optimize edilmiştir.
-
-#### .htaccess Optimizasyonu (İsteğe Bağlı)
+`.htaccess` dosyası otomatik olarak yapılandırılmıştır:
 
 ```apache
-# DG SPORTS - DiziPortal.Com Optimizations
-<IfModule mod_expires.c>
-    ExpiresActive On
-    ExpiresByType text/css "access plus 1 month"
-    ExpiresByType application/javascript "access plus 1 month"
-    ExpiresByType image/png "access plus 1 month"
-    ExpiresByType image/jpg "access plus 1 month"
-    ExpiresByType image/jpeg "access plus 1 month"
-    ExpiresByType image/gif "access plus 1 month"
-    ExpiresByType image/svg+xml "access plus 1 month"
-</IfModule>
-
+# Gzip compression
 <IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/plain
-    AddOutputFilterByType DEFLATE text/html
-    AddOutputFilterByType DEFLATE text/xml
-    AddOutputFilterByType DEFLATE text/css
-    AddOutputFilterByType DEFLATE application/xml
-    AddOutputFilterByType DEFLATE application/xhtml+xml
-    AddOutputFilterByType DEFLATE application/rss+xml
-    AddOutputFilterByType DEFLATE application/javascript
-    AddOutputFilterByType DEFLATE application/x-javascript
+   AddOutputFilterByType DEFLATE text/plain
+   AddOutputFilterByType DEFLATE text/html
+   AddOutputFilterByType DEFLATE text/xml
+   AddOutputFilterByType DEFLATE text/css
+   AddOutputFilterByType DEFLATE application/xml
+   AddOutputFilterByType DEFLATE application/xhtml+xml
+   AddOutputFilterByType DEFLATE application/rss+xml
+   AddOutputFilterByType DEFLATE application/javascript
+   AddOutputFilterByType DEFLATE application/x-javascript
 </IfModule>
 
 # Security headers
 <IfModule mod_headers.c>
-    Header always set X-Content-Type-Options nosniff
-    Header always set X-Frame-Options DENY
-    Header always set X-XSS-Protection "1; mode=block"
+   Header always set X-Content-Type-Options nosniff
+   Header always set X-Frame-Options DENY
+   Header always set X-XSS-Protection "1; mode=block"
 </IfModule>
 
 # Error pages
@@ -86,34 +119,83 @@ ErrorDocument 403 /index.html
 
 ## 🔧 Admin Panel Kullanımı
 
-### Giriş Bilgileri
+### Admin Paneline Erişim
 
+Admin paneli ana siteden tamamen ayrı olarak geliştirilmiştir:
+
+- **URL**: `https://yoursite.com/admin/`
 - **Kullanıcı Adı**: `admin`
 - **Şifre**: `dgsports2024`
 
-> ⚠️ **Güvenlik Uyarısı**: Kurulum sonrası `assets/js/diziportal-admin.js` dosyasında şifreyi değiştirin!
+> ⚠️ **Güvenlik Uyarısı**: Kurulum sonrası `admin/admin-dashboard.js` dosyasında şifreyi değiştirin!
 
-### Admin Panel Özellikleri
+### Admin Dashboard Özellikleri
 
-#### 🏈 Maç Yönetimi
+#### 🎯 Dashboard Ana Sayfa
 
-- **Maç Ekleme**: Takım isimleri, logoları, maç saati, konum ve yayın URL'si
-- **Maç Düzenleme**: Mevcut maç bilgilerini güncelleme
-- **Maç Silme**: İstenmeyen maçları kaldırma
-- **Otomatik Durum**: Maç saatine göre otomatik "CANLI" veya "YAKINDA" durumu
+- **Gerçek Zamanlı İstatistikler**: Toplam izleyici, canlı maç, aktif kanal sayıları
+- **Grafik Analizleri**: Chart.js ile gelişmiş viewer analitikleri
+- **Son Aktiviteler**: Sistem olayları ve kullanıcı etkileşimleri
+- **Hızlı Erişim**: Tüm yönetim araçlarına tek tıkla erişim
+
+#### 🏈 Canlı Maç Yönetimi
+
+- **Gelişmiş Maç Ekleme**: Takım bilgileri, logoları, tarih, konum ve stream URL
+- **Tablo Görünümü**: Filtrelenebilir ve aranabilir maç listesi
+- **Durum Yönetimi**: Live, upcoming maç durumları
+- **Viewer Tracking**: Gerçek zamanlı izleyici sayısı takibi
+- **Bulk Operations**: Toplu maç işlemleri
 
 #### 📺 Kanal Yönetimi
 
-- **Kanal Ekleme**: Kanal adı, kategorisi, logosu ve yayın URL'si
-- **Kategori Sistemi**: Futbol, Basketbol, Genel Spor kategorileri
-- **Kanal Düzenleme**: Mevcut kanal bilgilerini güncelleme
-- **Kanal Silme**: İstenmeyen kanalları kaldırma
+- **Kategorili Sistem**: Futbol, basketbol, genel spor ayrımı
+- **Kanal Kalite Takibi**: Stream kalitesi ve uptime monitoring
+- **Logo & Branding**: Kanal görsellerinin yönetimi
+- **24/7 Stream Control**: Kesintisiz yayın kontrolü
 
-#### ⚙️ Site Ayarları
+#### 📊 Gelişmiş Analytics
 
-- **Site Başlığı ve Açıklaması**: Meta bilgileri düzenleme
-- **Sosyal Medya Linkleri**: Telegram, Instagram, Twitter, TikTok URL'leri
-- **Anlık Kaydetme**: Tüm değişiklikler otomatik kaydedilir
+- **Viewer Analytics**: Saatlik, günlük, aylık izleyici raporları
+- **Content Performance**: En popüler maç ve kanallar
+- **Geographic Data**: İzleyici coğrafi dağılımı
+- **Device Analytics**: Mobil/desktop kullanım oranları
+
+#### 👥 Kullanıcı Yönetimi
+
+- **Admin Accounts**: Yönetici hesap kontrolü
+- **Session Management**: Oturum güvenliği ve timeout
+- **Access Control**: IP bazlı erişim kontrolü
+- **Activity Logs**: Kullanıcı aktivite logları
+
+#### 🎨 İçerik Yöneticisi
+
+- **Site Content**: Tüm site metinlerini düzenleme
+- **Media Management**: Görsel içerik yönetimi
+- **SEO Settings**: Meta etiketler ve açıklamalar
+- **Social Links**: Sosyal medya bağlantıları
+
+#### 🔧 Sistem Ayarları
+
+- **Site Configuration**: Genel site ayarları
+- **Backup & Restore**: Veri yedekleme ve geri yükleme
+- **System Logs**: Detaylı sistem logları
+- **Security Settings**: Güvenlik konfigürasyonu
+
+### Güvenlik Özellikleri
+
+#### 🔒 Erişim Kontrolü
+
+- **Separate Admin Interface**: Ana siteden tamamen ayrı admin paneli
+- **IP Restriction**: Belirli IP adreslerinden erişim
+- **Session Security**: Güvenli oturum yönetimi
+- **Remember Me**: 30 günlük güvenli oturum seçeneği
+
+#### 🛡️ Sistem Güvenliği
+
+- **Authentication**: Güçlü kimlik doğrulama
+- **CSRF Protection**: Cross-site request forgery koruması
+- **XSS Prevention**: Cross-site scripting engelleme
+- **Brute Force Protection**: Kaba kuvvet saldırısı koruması
 
 ## 🎬 PlayerJS Entegrasyonu
 
@@ -149,24 +231,24 @@ https://example.com/stream.ts
 
 ## 📱 Responsive Tasarım
 
-### Desteklenen Cihazlar
+### Breakpoint'ler
 
-- **Masaüstü**: 1200px ve üzeri
-- **Tablet**: 768px - 1199px
-- **Mobil**: 320px - 767px
+- **Mobile**: 320px - 768px
+- **Tablet**: 768px - 1024px  
+- **Desktop**: 1024px+
 
-### Özellikler
+### Responsive Özellikler
 
-- Akıllı grid sistem
-- Dokunmatik friendly arayüz
-- Mobil optimized player
-- Hızlı loading performansı
+- **Fluid Grid**: Esnek grid sistemi
+- **Adaptive Images**: Otomatik görsel optimizasyonu
+- **Touch-Friendly**: Dokunmatik kontroller
+- **Mobile Navigation**: Hamburger menü
 
 ## 🎨 Özelleştirme
 
-### Renk Değişkenleri
+### Renk Teması
 
-`assets/css/diziportal-styles.css` dosyasında:
+CSS değişkenleri ile kolay özelleştirme:
 
 ```css
 :root {
@@ -178,141 +260,129 @@ https://example.com/stream.ts
 }
 ```
 
-### Logo Değiştirme
+### Logo ve Branding
 
-`assets/images/` klasörüne kendi logonuzu ekleyin ve HTML'de güncelleyin.
+`assets/images/` klasöründe logonuzu değiştirerek sitenizi kişiselleştirin.
 
-## 🏢 Shared Hosting Optimizasyonları
+## 🚀 Hosting Optimizasyonları
 
-### Performans İyileştirmeleri
+### Shared Hosting İçin
 
-- Otomatik sıkıştırma sistemi
-- Azaltılmış yedekleme sıklığı
-- Optimized localStorage kullanımı
-- Bandwidth tasarruf algoritmaları
+- **Gzip Compression**: Otomatik dosya sıkıştırma
+- **Browser Caching**: Tarayıcı önbellekleme
+- **Minified Assets**: Optimize edilmiş dosyalar
+- **CDN Ready**: CDN entegrasyonu için hazır
 
-### Uyumluluk
+### Performans İpuçları
 
-- ✅ cPanel hosting
-- ✅ Shared hosting ortamları
-- ✅ Düşük kaynak kullanımı
-- ✅ Hızlı yükleme süreleri
+- **Image Optimization**: Görselleri WebP formatında kullanın
+- **Lazy Loading**: Görseller için lazy loading
+- **Code Splitting**: JS kodunu parçalara bölün
+- **Service Worker**: Offline support için
 
-## 📊 Analitik ve İstatistikler
+## 📊 Analytics
 
-### Otomatik Takip
+### Yerleşik Analytics
 
-- Anlık izleyici sayıları
-- Maç popülerlik istatistikleri
-- Kanal kullanım verileri
-- Real-time viewer counter
+- **Real-time Viewers**: Gerçek zamanlı izleyici sayısı
+- **Popular Content**: En çok izlenen içerik
+- **User Engagement**: Kullanıcı etkileşim metrikleri
+- **Performance Metrics**: Site performans verileri
 
-### Google Analytics Desteği
+### Google Analytics Entegrasyonu
 
-```javascript
-// Google Analytics entegrasyonu için
-gtag('event', 'video_play', {
-    video_title: title,
-    video_type: type,
-    video_id: id
-});
+```html
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA_ID"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'YOUR_GA_ID');
+</script>
 ```
 
-## 🔒 Güvenlik Özellikleri
+## 🔒 Güvenlik
 
-### İçerik Güvenliği
+### Güvenlik Önlemleri
 
-- XSS koruması
-- CSRF token sistemi
-- Güvenli veri validation
-- Sanitized user inputs
+- **XSS Protection**: Cross-site scripting koruması
+- **CSRF Protection**: Cross-site request forgery koruması
+- **SQL Injection**: Veritabanı güvenliği
+- **File Upload Security**: Güvenli dosya yükleme
 
-### Session Yönetimi
+### Önerilen Güvenlik Ayarları
 
-- Güvenli admin sessions
-- Otomatik timeout
-- Encrypted localStorage
-- Secure cookie handling
+```apache
+# .htaccess güvenlik ayarları
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|inc|bak|sql|conf)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+```
 
-## 🆘 Sorun Giderme
+## 🐛 Sorun Giderme
 
 ### Yaygın Sorunlar
 
-#### Player Çalışmıyor
+#### Video Oynatma Sorunu
+- PlayerJS CDN'inin yüklendiğini kontrol edin
+- CORS proxy ayarlarını kontrol edin
+- Tarayıcı konsolunda hata mesajlarını inceleyin
+
+#### Admin Panel Erişim Sorunu
+- Doğru URL'yi kullandığınızdan emin olun (`/admin/`)
+- Giriş bilgilerini kontrol edin
+- IP kısıtlaması olup olmadığını kontrol edin
+
+#### Responsive Tasarım Sorunu
+- Viewport meta etiketinin doğru olduğunu kontrol edin
+- CSS media query'lerini kontrol edin
+- Tarayıcı önbelleğini temizleyin
+
+### Debug Modu
+
+Geliştirme sırasında console loglarını aktif edin:
 
 ```javascript
-// Console'da kontrol edin:
-console.log('PlayerJS available:', typeof Playerjs !== 'undefined');
+// diziportal-core.js içinde
+const DEBUG_MODE = true;
 ```
-
-**Çözüm**: PlayerJS CDN bağlantısını kontrol edin.
-
-#### Yayın Açılmıyor
-
-1. CORS ayarlarını kontrol edin
-2. Yayın URL'sinin geçerli olduğunu doğrulayın
-3. Network sekmesinde hata olup olmadığına bakın
-
-#### Admin Panel Açılmıyor
-
-1. Doğru kullanıcı adı/şifre kullandığınızdan emin olun
-2. Browser console'da JavaScript hataları kontrol edin
-3. localStorage'ın aktif olduğunu doğrulayın
-
-### Hata Raporlama
-
-Karşılaştığınız sorunları şu bilgilerle birlikte bildirin:
-
-- Tarayıcı versiyonu
-- İşletim sistemi
-- Hata mesajı (varsa)
-- Adım adım tekrarlama yöntemi
 
 ## 📝 Changelog
 
 ### v1.0.0 (2024)
-
-- ✨ İlk stabil sürüm
-- 🎬 PlayerJS entegrasyonu
-- 📱 Responsive tasarım
-- 🔧 Admin panel
-- 📊 Analytics entegrasyonu
-- 🏢 Shared hosting optimizasyonları
+- ✅ **Yeni**: Ayrı admin dashboard sistemi
+- ✅ **Yeni**: Gelişmiş analytics ve grafikler  
+- ✅ **Yeni**: Güvenlik odaklı erişim kontrolü
+- ✅ **Yeni**: Real-time viewer tracking
+- ✅ **Yeni**: Comprehensive content management
+- ✅ **İyileştirme**: Mobile-first responsive tasarım
+- ✅ **İyileştirme**: PlayerJS entegrasyonu
+- ✅ **İyileştirme**: CORS proxy sistemi
+- ✅ **İyileştirme**: Shared hosting optimizasyonu
 
 ## 🤝 Katkıda Bulunma
 
-Bu proje sürekli geliştirilmektedir. Katkılarınızı bekliyoruz!
-
-### Geliştirme Ortamı
-
-1. Proje dosyalarını indirin
-2. Yerel web sunucusu kurun
-3. `index.html` dosyasını açın
-4. Değişikliklerinizi yapın
-
-## 📞 İletişim ve Destek
-
-- **Geliştirici**: DiziPortal.Com
-- **Website**: [https://diziportal.com](https://diziportal.com)
-- **E-posta**: info@diziportal.com
+1. Fork edin
+2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
+3. Commit edin (`git commit -m 'Add amazing feature'`)
+4. Push edin (`git push origin feature/amazing-feature`)
+5. Pull Request açın
 
 ## 📄 Lisans
 
-Bu proje DiziPortal.Com tarafından geliştirilmiştir. Tüm hakları saklıdır.
+Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosyasını inceleyin.
+
+## 📞 İletişim
+
+**Geliştirici**: DiziPortal.Com
+**E-posta**: info@diziportal.com
+**Website**: https://diziportal.com
 
 ---
 
-### 🌟 Özellik İstekleri
-
-Yeni özellik önerilerinizi aşağıdaki kategorilerde değerlendiriyoruz:
-
-- **Player İyileştirmeleri**: Yeni format desteği, kalite seçenekleri
-- **UI/UX**: Tasarım iyileştirmeleri, animasyonlar
-- **Admin Panel**: Yeni yönetim özellikleri
-- **Analitik**: Detaylı raporlama sistemleri
-- **Güvenlik**: Ek güvenlik katmanları
-
----
-
-**DG SPORTS** - Profesyonel spor yayın deneyimi için tasarlandı.
-*Geliştirici: DiziPortal.Com*
+<div align="center">
+  <strong>DG SPORTS</strong> - Profesyonel Canlı Maç İzleme Platformu<br>
+  Geliştirici: <a href="https://diziportal.com">DiziPortal.Com</a>
+</div>
